@@ -47,8 +47,12 @@
 	  	</copy>
 		
 		<copy todir="${dist}/images">
-				<fileset dir="images" includes="*" />
+			<fileset dir="images" includes="*" />
 		</copy>
+		
+    	<copy todir="${dist}/images/icons">
+    		<fileset dir="images/icons" includes="*"/>
+    	</copy>
 	
 		<copy file="config/config.xml" todir="${dist}" />
 		<copy todir="${dist}">
