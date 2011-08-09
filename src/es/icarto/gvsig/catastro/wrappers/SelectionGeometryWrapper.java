@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro;
+package es.icarto.gvsig.catastro.wrappers;
 
 import com.iver.cit.gvsig.SelectionGeometryExtension;
 

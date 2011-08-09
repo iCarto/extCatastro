@@ -2,6 +2,8 @@ package es.icarto.gvsig.catastro;
 
 import com.iver.andami.plugins.Extension;
 
+import es.icarto.gvsig.catastro.wrappers.SelectionGeometryWrapper;
+
 public class SelectionGeometryCatastroExtension extends Extension {
 
 	private SelectionGeometryWrapper selectionGeometryWrapper;
