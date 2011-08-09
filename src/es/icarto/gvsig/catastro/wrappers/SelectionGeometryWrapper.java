@@ -1,6 +1,14 @@
 package es.icarto.gvsig.catastro.wrappers;
 
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.SelectionGeometryExtension;
+import com.iver.cit.gvsig.fmap.MapControl;
+import com.iver.cit.gvsig.fmap.layers.FLayer;
+import com.iver.cit.gvsig.fmap.layers.FLayers;
+import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
+
+import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class SelectionGeometryWrapper extends SelectionGeometryExtension {
 	
@@ -9,6 +17,9 @@ public class SelectionGeometryWrapper extends SelectionGeometryExtension {
 	}
 	
 	public void execute(String s) {
+		FLayer activeLayer = getActiveLayer();
+		ToggleEditing te = new ToggleEditing();
+		te.startEditing(activeLayer);
 		super.execute(s);
 	}
 		
@@ -20,4 +31,17 @@ public class SelectionGeometryWrapper extends SelectionGeometryExtension {
 		return true;
 	}
 
+	private FLayer getActiveLayer() {
+		BaseView view = (BaseView) PluginServices.getMDIManager()
+		.getActiveWindow();
+		MapControl mapControl = view.getMapControl();
+		FLayers flayers = mapControl.getMapContext().getLayers();
+		FLyrVect actLayer = null;
+		for (int i = 0; i < flayers.getActives().length; i++) {
+			if (!(flayers.getActives()[i] instanceof FLayers)) {
+				actLayer = (FLyrVect) flayers.getActives()[i];
+			}
+		}
+		return actLayer;
+	}
 }
