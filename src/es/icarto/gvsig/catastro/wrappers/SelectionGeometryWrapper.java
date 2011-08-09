@@ -17,8 +17,8 @@ public class SelectionGeometryWrapper extends SelectionGeometryExtension {
 	}
 	
 	public void execute(String s) {
-		FLayer activeLayer = getActiveLayer();
 		ToggleEditing te = new ToggleEditing();
+		FLayer activeLayer = getActiveLayer();
 		te.startEditing(activeLayer);
 		super.execute(s);
 	}
