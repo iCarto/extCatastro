@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<plugin-config>
+	<depends plugin-name="com.iver.cit.gvsig"/>
+	<depends plugin-name="com.iver.cit.gvsig.cad"/>
+	<libraries library-dir="lib"/>
+	<resourceBundle name="text"/>
+	<extensions>
+	
+	<!-- USER FUNCTIONALITIES MENUS -->
+	
+		<extension class-name="com.iver.cit.gvsig.SelectionGeometryExtension" description="Join Polygon" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="Fusionar"
+					action-command="NavTable" position="1"/>
+			</tool-bar>-->
+			<menu text="Catastro/Construcciones/Fusionar" action-command="_selection"
+				icon="images/join.png" position="1501"/> 
+		</extension>
+		
+		<extension class-name="com.iver.cit.gvsig.CutPolygonExtension" description="Split Polygon" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="Dividir"
+					action-command="NavTable" position="1"/>
+			</tool-bar>-->
+			<menu text="Catastro/Construcciones/Dividir" action-command="_cut_polygon"
+				icon="images/split.png" position="1501"/> 
+		</extension>
+		
+	<!-- UTILITIES EXTENSIONS -->	
+		
+		<extension class-name="es.icarto.gvsig.catastro.ActionDispatcherExtension" description="FORMS_PANEL" active="true">
+			<tool-bar name="Catastro">
+				<action-tool icon="catastro-mexico" tooltip="Catastro Extension"
+					action-command="catastro-mexico" position="5000"/>
+			</tool-bar>
+		</extension>
+	</extensions>
+</plugin-config>
