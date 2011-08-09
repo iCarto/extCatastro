@@ -6,7 +6,36 @@
 	<resourceBundle name="text"/>
 	<extensions>
 	
-	<!-- USER FUNCTIONALITIES MENUS -->
+	<!-- USER FUNCTIONALITIES MENU PREDIOS -->
+	
+		<extension class-name="es.icarto.gvsig.catastro.InsertAreaCatastroExtension" description="New Feature" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="Alta"
+					action-command="_area" position="1003"/>
+			</tool-bar>-->
+			<menu text="Catastro/Predios/Alta" action-command="_area"
+				icon="images/new.png" position="1003"/> 
+		</extension>
+	
+		<extension class-name="es.icarto.gvsig.catastro.SelectionGeometryCatastroExtension" description="Join Polygon" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="Fusionar"
+					action-command="_selection" position="2006"/>
+			</tool-bar>-->
+			<menu text="Catastro/Predios/Fusionar" action-command="_selection"
+				icon="images/join.png" position="2006"/> 
+		</extension>
+		
+		<extension class-name="es.icarto.gvsig.catastro.CutPolygonCatastroExtension" description="Split Polygon" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="Dividir"
+					action-command="_cut_polygon" position="3009"/>
+			</tool-bar>-->
+			<menu text="Catastro/Predios/Dividir" action-command="_cut_polygon"
+				icon="images/split.png" position="3009"/> 
+		</extension>
+	
+	<!-- USER FUNCTIONALITIES MENU CONSTRUCCIONES -->
 	
 		<extension class-name="es.icarto.gvsig.catastro.InsertAreaCatastroExtension" description="New Feature" active="true">
 			<!--<tool-bar name="Catastro">
@@ -29,7 +58,7 @@
 		<extension class-name="es.icarto.gvsig.catastro.CutPolygonCatastroExtension" description="Split Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Dividir"
-					action-command="_cut_polygon" position="300003"/>
+					action-command="_cut_polygon" position="30009"/>
 			</tool-bar>-->
 			<menu text="Catastro/Construcciones/Dividir" action-command="_cut_polygon"
 				icon="images/split.png" position="300009"/> 
