@@ -19,7 +19,9 @@ public class CutPolygonWrapper extends CutPolygonExtension {
 	public void execute(String s) {
 		ToggleEditing te = new ToggleEditing();
 		FLayer activeLayer = getActiveLayer();
-		te.startEditing(activeLayer);
+		if (!activeLayer.isEditing()) {
+			te.startEditing(activeLayer);
+		}
 		super.execute(s);
 	}
 		
