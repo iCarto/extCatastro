@@ -40,6 +40,7 @@ public class InsertAreaWrapper extends InsertAreaExtension {
 		FLayers flayers = mapControl.getMapContext().getLayers();
 		FLyrVect actLayer = null;
 		for (int i = 0; i < flayers.getActives().length; i++) {
+			
 			if (!(flayers.getActives()[i] instanceof FLayers)) {
 				actLayer = (FLyrVect) flayers.getActives()[i];
 			}
