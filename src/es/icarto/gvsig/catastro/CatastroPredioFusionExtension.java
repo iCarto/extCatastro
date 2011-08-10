@@ -1,36 +1,34 @@
 package es.icarto.gvsig.catastro;
 
 import com.iver.andami.plugins.Extension;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
-import es.icarto.gvsig.catastro.utils.CatastroUtils;
-import es.icarto.gvsig.catastro.utils.Preferences;
+import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.wrappers.SelectionGeometryWrapper;
 
 public class CatastroPredioFusionExtension extends Extension {
 
-	private SelectionGeometryWrapper selectionGeometryWrapper;
-	private FLayer layer;
+    private SelectionGeometryWrapper selectionGeometryWrapper;
+    private TOCLayerManager tocLayerManager;
 
-	@Override
-	public void execute(String actionCommand) {
-		layer = CatastroUtils.getLayerByName(Preferences.PREDIOS_LAYER_NAME);
-		layer.setActive(true);
-		selectionGeometryWrapper.execute(actionCommand);
-	}
+    @Override
+    public void initialize() {
+	selectionGeometryWrapper = new SelectionGeometryWrapper();
+	selectionGeometryWrapper.initialize();
+    }
 
-	@Override
-	public void initialize() {
-		selectionGeometryWrapper = new SelectionGeometryWrapper();
-		selectionGeometryWrapper.initialize();
-	}
+    @Override
+    public void execute(String actionCommand) {
+	tocLayerManager = new TOCLayerManager();
+	tocLayerManager.setActiveAndVisibleLayersForPredios();
+	selectionGeometryWrapper.execute(actionCommand);
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return selectionGeometryWrapper.isEnabled();
-	}
+    @Override
+    public boolean isEnabled() {
+	return selectionGeometryWrapper.isEnabled();
+    }
 
-	@Override
-	public boolean isVisible() {
-		return selectionGeometryWrapper.isVisible();
-	}
+    @Override
+    public boolean isVisible() {
+	return selectionGeometryWrapper.isVisible();
+    }
 }

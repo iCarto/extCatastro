@@ -14,7 +14,6 @@ public class CatastroUtils {
 		.getActiveWindow();
 		MapControl mapControl = view.getMapControl();
 		FLayers flayers = mapControl.getMapContext().getLayers();
-		flayers.setAllActives(false);
 		FLyrVect actLayer = null;
 		for (int i = 0; i < flayers.getLayersCount(); i++) {
 			if (flayers.getLayer(i).getName().equalsIgnoreCase(layerName)) {
