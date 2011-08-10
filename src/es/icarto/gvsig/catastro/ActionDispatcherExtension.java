@@ -12,7 +12,7 @@ import com.iver.cit.gvsig.gui.cad.tools.CutPolygonCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
-import es.icarto.gvsig.catastro.actions.NewPredio;
+import es.icarto.gvsig.catastro.actions.IDPredioCalculator;
 
 public class ActionDispatcherExtension extends Extension implements
 EndGeometryListener {
@@ -41,12 +41,24 @@ EndGeometryListener {
     @Override
     public void endGeometry(FLayer layer, String cadToolKey) {
 	CADTool cadTool = CADExtension.getCADTool();
-	if(cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END_FIRST_POLYGON) && (cadTool instanceof CutPolygonCADTool) && (layer instanceof FLyrVect)){
+	if(isDividingPredio(layer, cadToolKey, cadTool)){
 	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool).getSelectedRow();
-	    NewPredio newPredio = new NewPredio((FLyrVect) layer, selectedRow);
+	    IDPredioCalculator newPredio = new IDPredioCalculator((FLyrVect) layer, selectedRow);
 	    Value[] values = newPredio.getAttributes();
 	    ((CutPolygonCADTool) cadTool).setParametrizableValues(values);
+	} else if (isDividingPredioEnded(layer, cadToolKey, cadTool)){
+	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(layer);
+	    predioRulesEvaluator.execute();
 	}
+    }
+
+    private boolean isDividingPredioEnded(FLayer layer, String cadToolKey, CADTool cadTool) {
+	return (cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END) ) && (cadTool instanceof CutPolygonCADTool) && (layer instanceof FLyrVect);
+    }
+
+    private boolean isDividingPredio(FLayer layer, String cadToolKey,
+	    CADTool cadTool) {
+	return (cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END_FIRST_POLYGON)) && (cadTool instanceof CutPolygonCADTool) && (layer instanceof FLyrVect);
     }
 
 }

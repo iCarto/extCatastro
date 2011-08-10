@@ -8,12 +8,12 @@ import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.tools.CutPolygonCADTool;
 
-public class NewPredio {
+public class IDPredioCalculator {
     
     FLyrVect layer = null;
     IRowEdited selectedRow = null;
 
-    public NewPredio(FLyrVect l, IRowEdited row) {
+    public IDPredioCalculator(FLyrVect l, IRowEdited row) {
 	layer = l;
 	selectedRow = row;
     }
