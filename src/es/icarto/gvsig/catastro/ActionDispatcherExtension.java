@@ -13,6 +13,7 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
 import es.icarto.gvsig.catastro.actions.IDPredioCalculator;
+import es.icarto.gvsig.catastro.actions.PredioRulesEvaluator;
 
 public class ActionDispatcherExtension extends Extension implements
 EndGeometryListener {
@@ -47,8 +48,12 @@ EndGeometryListener {
 	    Value[] values = newPredio.getAttributes();
 	    ((CutPolygonCADTool) cadTool).setParametrizableValues(values);
 	} else if (isDividingPredioEnded(layer, cadToolKey, cadTool)){
-	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(layer);
-	    predioRulesEvaluator.execute();
+	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool).getSelectedRow();
+	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(selectedRow);
+	    if(predioRulesEvaluator.isOK()){
+		//TODO: launch padron form for the user to update
+		System.out.println(" -------- Launch form");
+	    }
 	}
     }
 
