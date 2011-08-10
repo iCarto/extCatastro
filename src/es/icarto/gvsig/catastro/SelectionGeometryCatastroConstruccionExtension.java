@@ -8,12 +8,11 @@ import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
+import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.wrappers.SelectionGeometryWrapper;
 
 public class SelectionGeometryCatastroConstruccionExtension extends Extension {
 	
-	private static final String LAYER_NAME = "construcciones";
-
 	private SelectionGeometryWrapper selectionGeometryWrapper;
 	private FLayer layer;
 
@@ -48,7 +47,7 @@ public class SelectionGeometryCatastroConstruccionExtension extends Extension {
 		flayers.setAllActives(false);
 		FLyrVect actLayer = null;
 		for (int i = 0; i < flayers.getLayersCount(); i++) {
-			if (flayers.getLayer(i).getName().equalsIgnoreCase(LAYER_NAME)) {
+			if (flayers.getLayer(i).getName().equalsIgnoreCase(Preferences.CONSTRUCCIONES_LAYER_NAME)) {
 				actLayer = (FLyrVect) flayers.getLayer(i);
 			}
 		}

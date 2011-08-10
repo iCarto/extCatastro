@@ -8,11 +8,10 @@ import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
+import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.wrappers.CutPolygonWrapper;
 
 public class CutPolygonCatastroPredioExtension extends Extension {
-	
-	private static final String LAYER_NAME = "predios";
 	
 	private CutPolygonWrapper cutPolygonWrapper;
 	private FLayer layer;
@@ -22,7 +21,6 @@ public class CutPolygonCatastroPredioExtension extends Extension {
 		layer = getLayerByName();
 		layer.setActive(true);
 		cutPolygonWrapper.execute(actionCommand);
-		
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class CutPolygonCatastroPredioExtension extends Extension {
 		flayers.setAllActives(false);
 		FLyrVect actLayer = null;
 		for (int i = 0; i < flayers.getLayersCount(); i++) {
-			if (flayers.getLayer(i).getName().equalsIgnoreCase(LAYER_NAME)) {
+			if (flayers.getLayer(i).getName().equalsIgnoreCase(Preferences.PREDIOS_LAYER_NAME)) {
 				actLayer = (FLyrVect) flayers.getLayer(i);
 			}
 		}
