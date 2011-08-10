@@ -41,7 +41,7 @@ EndGeometryListener {
     @Override
     public void endGeometry(FLayer layer, String cadToolKey) {
 	CADTool cadTool = CADExtension.getCADTool();
-	if(cadToolKey.equalsIgnoreCase("_cut_polygon_the_new_geom") && (cadTool instanceof CutPolygonCADTool) && (layer instanceof FLyrVect)){	    
+	if(cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END_FIRST_POLYGON) && (cadTool instanceof CutPolygonCADTool) && (layer instanceof FLyrVect)){
 	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool).getSelectedRow();
 	    NewPredio newPredio = new NewPredio((FLyrVect) layer, selectedRow);
 	    Value[] values = newPredio.getAttributes();
