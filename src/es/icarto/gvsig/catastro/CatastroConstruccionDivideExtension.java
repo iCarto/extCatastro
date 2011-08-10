@@ -2,35 +2,36 @@ package es.icarto.gvsig.catastro;
 
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
-import es.icarto.gvsig.catastro.utils.CatastroUtils;
 import es.icarto.gvsig.catastro.utils.Preferences;
-import es.icarto.gvsig.catastro.wrappers.InsertAreaWrapper;
+import es.icarto.gvsig.catastro.utils.CatastroUtils;
+import es.icarto.gvsig.catastro.wrappers.CutPolygonWrapper;
 
-public class InsertAreaCatastroConstruccionExtension extends Extension {
+public class CatastroConstruccionDivideExtension extends Extension {
 	
-	private InsertAreaWrapper insertAreaWrapper;
+	private CutPolygonWrapper cutPolygonWrapper;
 	private FLayer layer;
-
+	
 	@Override
 	public void execute(String actionCommand) {
 		layer = CatastroUtils.getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
 		layer.setActive(true);
-		insertAreaWrapper.execute(actionCommand);
+		cutPolygonWrapper.execute(actionCommand);
+		
 	}
 
 	@Override
 	public void initialize() {
-		insertAreaWrapper = new InsertAreaWrapper();
-		insertAreaWrapper.initialize();
+		cutPolygonWrapper = new CutPolygonWrapper();
+		cutPolygonWrapper.initialize();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return insertAreaWrapper.isEnabled();
+		return cutPolygonWrapper.isEnabled();
 	}
 
 	@Override
 	public boolean isVisible() {
-		return insertAreaWrapper.isVisible();
+		return cutPolygonWrapper.isVisible();
 	}
 }

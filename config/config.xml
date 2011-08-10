@@ -7,17 +7,8 @@
 	<extensions>
 	
 	<!-- USER FUNCTIONALITIES MENU PREDIOS -->
-	
-		<extension class-name="es.icarto.gvsig.catastro.InsertAreaCatastroPredioExtension" description="New Feature" active="true">
-			<!--<tool-bar name="Catastro">
-				<action-tool icon="" tooltip="Alta"
-					action-command="_area" position="1003"/>
-			</tool-bar>-->
-			<menu text="Catastro/Predios/Alta" action-command="_area"
-				icon="images/new.png" position="1003"/> 
-		</extension>
-	
-		<extension class-name="es.icarto.gvsig.catastro.SelectionGeometryCatastroPredioExtension" description="Join Polygon" active="true">
+		
+		<extension class-name="es.icarto.gvsig.catastro.CatastroPredioFusionExtension" description="Join Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Fusionar"
 					action-command="_selection" position="2006"/>
@@ -26,7 +17,7 @@
 				icon="images/join.png" position="2006"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.CutPolygonCatastroPredioExtension" description="Split Polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroPredioDivideExtension" description="Split Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Dividir"
 					action-command="_cut_polygon" position="3009"/>
@@ -37,7 +28,7 @@
 	
 	<!-- USER FUNCTIONALITIES MENU CONSTRUCCIONES -->
 	
-		<extension class-name="es.icarto.gvsig.catastro.InsertAreaCatastroConstruccionExtension" description="New Feature" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionNewExtension" description="New Feature" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Alta"
 					action-command="_area" position="100003"/>
@@ -46,7 +37,7 @@
 				icon="images/new.png" position="100003"/> 
 		</extension>
 	
-		<extension class-name="es.icarto.gvsig.catastro.SelectionGeometryCatastroConstruccionExtension" description="Join Polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionFusionExtension" description="Join Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Fusionar"
 					action-command="_selection" position="200003"/>
@@ -55,7 +46,7 @@
 				icon="images/join.png" position="200006"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.CutPolygonCatastroConstruccionExtension" description="Split Polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionDivideExtension" description="Split Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Dividir"
 					action-command="_cut_polygon" position="30009"/>
@@ -72,5 +63,6 @@
 					action-command="catastro-mexico" position="5000"/>
 			</tool-bar>
 		</extension>
+
 	</extensions>
 </plugin-config>

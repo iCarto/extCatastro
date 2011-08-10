@@ -6,14 +6,14 @@ import es.icarto.gvsig.catastro.utils.CatastroUtils;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.wrappers.SelectionGeometryWrapper;
 
-public class SelectionGeometryCatastroPredioExtension extends Extension {
-
+public class CatastroConstruccionFusionExtension extends Extension {
+	
 	private SelectionGeometryWrapper selectionGeometryWrapper;
 	private FLayer layer;
 
 	@Override
 	public void execute(String actionCommand) {
-		layer = CatastroUtils.getLayerByName(Preferences.PREDIOS_LAYER_NAME);
+		layer = CatastroUtils.getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
 		layer.setActive(true);
 		selectionGeometryWrapper.execute(actionCommand);
 	}
