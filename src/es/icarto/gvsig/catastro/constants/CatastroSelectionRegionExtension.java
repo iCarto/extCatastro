@@ -2,6 +2,7 @@ package es.icarto.gvsig.catastro.constants;
 
 import com.iver.andami.plugins.Extension;
 
+
 public class CatastroSelectionRegionExtension extends Extension {
 
     @Override
@@ -11,7 +12,10 @@ public class CatastroSelectionRegionExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	// TODO Auto-generated method stub
+	ConstantManager constantManager = new ConstantManager();
+	Constants constants = new Constants();
+	constants.setRegion("region");
+	constantManager.setConstants(constants);
     }
 
     @Override
