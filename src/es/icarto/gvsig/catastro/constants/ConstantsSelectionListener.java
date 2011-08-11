@@ -1,5 +1,7 @@
 package es.icarto.gvsig.catastro.constants;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.HashMap;
 
 import javax.swing.JLabel;
@@ -32,8 +34,7 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 	private final Constants constants;
 	private final HashMap<String, Integer> layerCodes;
 
-	MDIFrame mF;
-	NewStatusBar footerStatusBar;
+	private JLabel constantsLabel;
 
 	public ConstantsSelectionListener(MapControl mc) {
 		super(mc);
@@ -42,7 +43,6 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 		constants = new Constants();
 		layerCodes = new HashMap<String, Integer>();
 		initLayerCodes();
-		initConstantsStatusBar();
 	}
 
 	private void initLayerCodes() {
@@ -109,7 +109,7 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 								geom.getBounds2D());
 					} else {
 						constants.clear();
-						clearConstantsStatusBar();
+						updateConstantsStatusBar();
 						layer.getRecordset().clearSelection();
 					}
 				} else {
@@ -126,21 +126,47 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 		}
 	}
 
-	private void initConstantsStatusBar() {
-		mF = (MDIFrame) PluginServices.getMainFrame();
-		footerStatusBar = mF.getStatusBar();
-	}
-
 	private void updateConstantsStatusBar() {
-		Constants constants = constantManager.getConstants();
-		String constantsInfo = "R: " + constants.getRegion() + " M: "
-				+ constants.getManzana() + " P: " + constants.getPredio();
-		JLabel constantsLabel = new JLabel(constantsInfo);
-		footerStatusBar.add(constantsLabel);
+		removeConstantsFromStatusBar();
+		addConstantsToStatusBar();
 	}
 
-	private void clearConstantsStatusBar() {
-		JLabel clearConstantsLabel = new JLabel("R:- M:- P:-");
-		footerStatusBar.add(clearConstantsLabel);
+	private void addConstantsToStatusBar() {
+		MDIFrame mF = (MDIFrame) PluginServices.getMainFrame();
+		NewStatusBar footerStatusBar = mF.getStatusBar();
+
+		Font font = new Font("Arial", Font.BOLD, 11);
+
+		Constants constants = constantManager.getConstants();
+		String constantsInfo = getConstantsInfo(constants);
+		constantsLabel = new JLabel(constantsInfo);
+		constantsLabel.setFont(font);
+		constantsLabel.setForeground(Color.blue);
+		footerStatusBar.add(constantsLabel);
+		footerStatusBar.repaint();
+	}
+
+	private void removeConstantsFromStatusBar() {
+		MDIFrame mF = (MDIFrame) PluginServices.getMainFrame();
+		NewStatusBar footerStatusBar = mF.getStatusBar();
+
+		if ((footerStatusBar != null) && (constantsLabel != null)) {
+			footerStatusBar.remove(constantsLabel);
+		}
+	}
+
+	private String getConstantsInfo(Constants constants) {
+		String region = nullToString(constants.getRegion());
+		String manzana = nullToString(constants.getManzana());
+		String predio = nullToString(constants.getPredio());
+
+		return "R: " + region + " M: " + manzana + " P: " + predio;
+	}
+
+	private String nullToString(String s) {
+		if (s == null)
+			return "_";
+		else
+			return s;
 	}
 }
