@@ -3,6 +3,7 @@ package es.icarto.gvsig.catastro.actions;
 import org.gvsig.fmap.core.NewFConverter;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.ReadableVectorial;
@@ -47,5 +48,10 @@ public class CheckManzanaIsOverlapingAnotherOne implements ITopologicalRule {
 			e.printStackTrace();
 		}
 		return checkRule;
+	}
+
+	@Override
+	public String getMessage() {
+		return PluginServices.getText(this, "overlaps_manzana_message");
 	}
 }

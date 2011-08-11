@@ -9,6 +9,7 @@ public class ManzanaRulesEvaluator {
 	IGeometry geometryInserted;
 	ArrayList<ITopologicalRule> topologicalRules;
 	ArrayList<IBusinessRule> businessRules;
+	String errorMessage = null;
 
 	public ManzanaRulesEvaluator(IGeometry geometryInserted) {
 		this.geometryInserted = geometryInserted;
@@ -18,20 +19,21 @@ public class ManzanaRulesEvaluator {
 	}
 
 	private void init() {
-		topologicalRules.add(new CheckManzanaIsOverlapingAnotherOne(geometryInserted));
+		topologicalRules.add(new CheckManzanaIsOverlapingAnotherOne(
+				geometryInserted));
 	}
 
 	public boolean isOK() {
 		for (ITopologicalRule topologicalRule : topologicalRules) {
 			if (!topologicalRule.isObey()) {
-				return false;
-			}
-		}
-		for (IBusinessRule businessRule : businessRules) {
-			if (!businessRule.launchRule()) {
+				errorMessage = topologicalRule.getMessage();
 				return false;
 			}
 		}
 		return true;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 }

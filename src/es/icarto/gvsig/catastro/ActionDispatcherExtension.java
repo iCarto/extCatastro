@@ -77,9 +77,9 @@ public class ActionDispatcherExtension extends Extension implements
 			if (!manzanaRulesEvaluator.isOK()) {
 				ToggleEditing te = new ToggleEditing();
 				te.stopEditing(layer, true);
-				JOptionPane.showMessageDialog(null,
-						"La manzana está solapando a otra existene",
-						"Alta Manzana", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
+						.getErrorMessage(), "Alta Manzana",
+						JOptionPane.WARNING_MESSAGE);
 			} else {
 				CreatePredioWhenAddNewManzana createPredio = new CreatePredioWhenAddNewManzana(
 						(FLyrVect) layer);

@@ -12,33 +12,41 @@ import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
 public class CheckPredioIsWithinOneManzana implements ITopologicalRule {
 
-    IRowEdited selectedRow;
-    public CheckPredioIsWithinOneManzana(IRowEdited selectedRow){
-	this.selectedRow = selectedRow;
-    }
+	IRowEdited selectedRow;
 
-    @Override
-    public boolean isObey() {
-	// TODO
-	// * check the predio is within the manzana we are working on
-	IGeometry predioGeom = ((IFeature) selectedRow.getLinkedRow()).getGeometry();
-	Geometry predioJTSGeom = NewFConverter.toJtsGeometry(predioGeom);
-	Geometry manzanaJTSGeom = getManzanaGeom();
-	predioJTSGeom.within(manzanaJTSGeom);
-	return true;
-    }
+	public CheckPredioIsWithinOneManzana(IRowEdited selectedRow) {
+		this.selectedRow = selectedRow;
+	}
 
-    private Geometry getManzanaGeom() {
-	TOCLayerManager tocLayerManager = new TOCLayerManager();
-	FLyrVect manzana = tocLayerManager.getLayerManzana();
-	IGeometry manzanaGeom = getGeomFromFLyrVect(manzana);
-	Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(manzanaGeom);
-	return manzanaJTSGeom;
-    }
+	@Override
+	public boolean isObey() {
+		// TODO
+		// * check the predio is within the manzana we are working on
+		IGeometry predioGeom = ((IFeature) selectedRow.getLinkedRow())
+				.getGeometry();
+		Geometry predioJTSGeom = NewFConverter.toJtsGeometry(predioGeom);
+		Geometry manzanaJTSGeom = getManzanaGeom();
+		predioJTSGeom.within(manzanaJTSGeom);
+		return true;
+	}
 
-    private IGeometry getGeomFromFLyrVect(FLyrVect layer) {
-	return null;
-	//TODO: coller dende capa
-    }
+	private Geometry getManzanaGeom() {
+		TOCLayerManager tocLayerManager = new TOCLayerManager();
+		FLyrVect manzana = tocLayerManager.getLayerManzana();
+		IGeometry manzanaGeom = getGeomFromFLyrVect(manzana);
+		Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(manzanaGeom);
+		return manzanaJTSGeom;
+	}
+
+	private IGeometry getGeomFromFLyrVect(FLyrVect layer) {
+		return null;
+		// TODO: coller dende capa
+	}
+
+	@Override
+	public String getMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
