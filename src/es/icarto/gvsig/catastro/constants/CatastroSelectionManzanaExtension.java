@@ -24,11 +24,11 @@ public class CatastroSelectionManzanaExtension extends Extension {
 	tocLayerManager.setActiveAndVisibleLayer(Preferences.MANZANAS_LAYER_NAME);
 	View view = (View) PluginServices.getMDIManager().getActiveWindow();
 	MapControl mc = view.getMapControl();
-	if (!mc.getNamesMapTools().containsKey("constantsSelectionPoint")) {
+	if (!mc.getNamesMapTools().containsKey("constantsSelectionManzana")) {
 	    ConstantsSelectionListener csl = new ConstantsSelectionListener(mc);
-	    mc.addMapTool("constantsSelectionPoint", new PointBehavior(csl));
+	    mc.addMapTool("constantsSelectionManzana", new PointBehavior(csl));
 	}
-	mc.setTool("constantsSelectionPoint");
+	mc.setTool("constantsSelectionManzana");
     }
 
     @Override

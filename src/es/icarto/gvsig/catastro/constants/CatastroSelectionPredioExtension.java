@@ -25,11 +25,11 @@ public class CatastroSelectionPredioExtension extends Extension {
 	tocLayerManager.setActiveAndVisibleLayer(Preferences.PREDIOS_LAYER_NAME);
 	View view = (View) PluginServices.getMDIManager().getActiveWindow();
 	MapControl mc = view.getMapControl();
-	if (!mc.getNamesMapTools().containsKey("constantsSelectionPoint")) {
+	if (!mc.getNamesMapTools().containsKey("constantsSelectionPredio")) {
 	    ConstantsSelectionListener csl = new ConstantsSelectionListener(mc);
-	    mc.addMapTool("constantsSelectionPoint", new PointBehavior(csl));
+	    mc.addMapTool("constantsSelectionPredio", new PointBehavior(csl));
 	}
-	mc.setTool("constantsSelectionPoint");
+	mc.setTool("constantsSelectionPredio");
     }
 
     @Override

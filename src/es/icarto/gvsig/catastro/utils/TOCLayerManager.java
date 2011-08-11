@@ -2,18 +2,20 @@ package es.icarto.gvsig.catastro.utils;
 
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.MapControl;
+import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
 public class TOCLayerManager {
 
-    private final FLayers layersInTOC;
 
-    public TOCLayerManager() {
-	BaseView view = (BaseView) PluginServices.getMDIManager()
-		.getActiveWindow();
-	MapControl mapControl = view.getMapControl();
+    private FLayers layersInTOC;
+    private MapControl mapControl;
+
+    public TOCLayerManager(){
+	BaseView view = (BaseView) PluginServices.getMDIManager().getActiveWindow();
+	mapControl = view.getMapControl();
 	layersInTOC = mapControl.getMapContext().getLayers();
     }
 
@@ -72,10 +74,11 @@ public class TOCLayerManager {
 	layersInTOC.setAllVisibles(false);
 	layersInTOC.setAllActives(false);
 	for (int i=0; i<layersInTOC.getLayersCount(); i++){
-	    String name = layersInTOC.getLayer(i).getName();
+	    FLayer layer = layersInTOC.getLayer(i);
+	    String name = layer.getName();
 	    if(name.equalsIgnoreCase(layerName)){
-		layersInTOC.getLayer(i).setVisible(true);
-		layersInTOC.getLayer(i).setActive(true);
+		layer.setVisible(true);
+		layer.setActive(true);
 	    }
 	}
     }
@@ -87,5 +90,13 @@ public class TOCLayerManager {
 	    }
 	}
 	return null;
+    }
+
+    public FLyrVect getActiveLayer(){
+	return (FLyrVect) mapControl.getMapContext().getLayers().getActives()[0];
+    }
+
+    public String getNameOfActiveLayer(){
+	return mapControl.getMapContext().getLayers().getActives()[0].getName();
     }
 }
