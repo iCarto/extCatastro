@@ -8,52 +8,54 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
 public class TOCLayerManager {
 
-    private FLayers layersInTOC;
+	private final FLayers layersInTOC;
 
-    public TOCLayerManager(){
-	BaseView view = (BaseView) PluginServices.getMDIManager().getActiveWindow();
-	MapControl mapControl = view.getMapControl();
-	layersInTOC = mapControl.getMapContext().getLayers();
-    }
-
-    public void setActiveAndVisibleLayersForPredios(){
-	layersInTOC.setAllActives(false);
-	layersInTOC.setAllVisibles(false);
-	for (int i=0; i<layersInTOC.getLayersCount(); i++){
-	    String layerName = layersInTOC.getLayer(i).getName();
-	    if(layerName.equalsIgnoreCase("construcciones")){
-		layersInTOC.getLayer(i).setVisible(true);
-	    } else if(layerName.equalsIgnoreCase("predios")){
-		layersInTOC.getLayer(i).setVisible(true);
-		layersInTOC.getLayer(i).setActive(true);
-	    }
+	public TOCLayerManager() {
+		BaseView view = (BaseView) PluginServices.getMDIManager()
+				.getActiveWindow();
+		MapControl mapControl = view.getMapControl();
+		layersInTOC = mapControl.getMapContext().getLayers();
 	}
-    }
 
-    public void setActiveAndVisibleLayersForConstrucciones(){
-	layersInTOC.setAllActives(false);
-	layersInTOC.setAllVisibles(false);
-	for (int i=0; i<layersInTOC.getLayersCount(); i++){
-	    String layerName = layersInTOC.getLayer(i).getName();
-	    if(layerName.equalsIgnoreCase("predios")){
-		layersInTOC.getLayer(i).setVisible(true);
-	    } else if(layerName.equalsIgnoreCase("construcciones")){
-		layersInTOC.getLayer(i).setVisible(true);
-		layersInTOC.getLayer(i).setActive(true);
-	    }
+	public void setActiveAndVisibleLayersForPredios() {
+		layersInTOC.setAllActives(false);
+		layersInTOC.setAllVisibles(false);
+		for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
+			String layerName = layersInTOC.getLayer(i).getName();
+			if (layerName.equalsIgnoreCase("construcciones")) {
+				layersInTOC.getLayer(i).setVisible(true);
+			} else if (layerName.equalsIgnoreCase("predios")) {
+				layersInTOC.getLayer(i).setVisible(true);
+				layersInTOC.getLayer(i).setActive(true);
+			}
+		}
 	}
-    }
 
-    public void setVisibleAllLayers(){
-	layersInTOC.setAllVisibles(true);
-    }
-
-    public FLyrVect getLayerManzana(){
-	for (int i=0; i<layersInTOC.getLayersCount(); i++){
-	    if(layersInTOC.getLayer(i).getName().equalsIgnoreCase(Preferences.MANZANA_LAYER_NAME)){
-		return (FLyrVect) layersInTOC.getLayer(i);
-	    }
+	public void setActiveAndVisibleLayersForConstrucciones() {
+		layersInTOC.setAllActives(false);
+		layersInTOC.setAllVisibles(false);
+		for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
+			String layerName = layersInTOC.getLayer(i).getName();
+			if (layerName.equalsIgnoreCase("predios")) {
+				layersInTOC.getLayer(i).setVisible(true);
+			} else if (layerName.equalsIgnoreCase("construcciones")) {
+				layersInTOC.getLayer(i).setVisible(true);
+				layersInTOC.getLayer(i).setActive(true);
+			}
+		}
 	}
-	return null;
-    }
+
+	public void setVisibleAllLayers() {
+		layersInTOC.setAllVisibles(true);
+	}
+
+	public FLyrVect getLayerManzana() {
+		for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
+			if (layersInTOC.getLayer(i).getName().equalsIgnoreCase(
+					Preferences.MANZANAS_LAYER_NAME)) {
+				return (FLyrVect) layersInTOC.getLayer(i);
+			}
+		}
+		return null;
+	}
 }
