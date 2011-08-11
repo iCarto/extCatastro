@@ -21,8 +21,12 @@ import es.icarto.gvsig.catastro.actions.rules.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.actions.rules.PredioRulesEvaluator;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class ActionDispatcherExtension extends Extension implements
-EndGeometryListener {
+public class ActionDispatcherExtension extends Extension implements EndGeometryListener {
+
+    private static final int NO_ACTION = -1;
+    private final int ACTION_CALCULATE_NEW_PREDIO_ID = 0;
+    private final int ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO = 1;
+    private static final int ACTION_CHECK_RULES_FOR_NEW_MANZANA = 2;
 
     @Override
     public void initialize() {
@@ -47,15 +51,18 @@ EndGeometryListener {
 
     @Override
     public void endGeometry(FLayer layer, String cadToolKey) {
+
 	CADTool cadTool = CADExtension.getCADTool();
-	if (isDividingPredio(layer, cadToolKey, cadTool)) {
+	int action = getAction(layer, cadToolKey, cadTool);
+
+	if (action == ACTION_CALCULATE_NEW_PREDIO_ID) {
 	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
 		    .getSelectedRow();
 	    IDPredioCalculator newPredio = new IDPredioCalculator(
 		    (FLyrVect) layer, selectedRow);
 	    Value[] values = newPredio.getAttributes();
 	    ((CutPolygonCADTool) cadTool).setParametrizableValues(values);
-	} else if (isDividingPredioEnded(layer, cadToolKey, cadTool)) {
+	} else if (action == ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO) {
 	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
 		    .getSelectedRow();
 	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(
@@ -64,9 +71,7 @@ EndGeometryListener {
 		// TODO: launch padron form for the user to update
 		System.out.println(" -------- Launch form");
 	    }
-	} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
-		&& (cadTool instanceof AreaCADTool)
-		&& (layer instanceof FLyrVect)) {
+	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
 	    // CreatePredioWhenAddNewManzana createPredio = new
 	    // CreatePredioWhenAddNewManzana(
 	    // (FLyrVect) layer);
@@ -85,6 +90,19 @@ EndGeometryListener {
 			(FLyrVect) layer);
 	    }
 	}
+    }
+
+    private int getAction(FLayer layer, String cadToolKey, CADTool cadTool) {
+	if(isDividingPredio(layer, cadToolKey, cadTool)){
+	    return ACTION_CALCULATE_NEW_PREDIO_ID;
+	} else if (isDividingPredioEnded(layer, cadToolKey, cadTool)){
+	    return ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO;
+	} else if(cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
+		&& (cadTool instanceof AreaCADTool)
+		&& (layer instanceof FLyrVect)){
+	    return ACTION_CHECK_RULES_FOR_NEW_MANZANA;
+	}
+	return NO_ACTION;
     }
 
     private boolean isDividingPredioEnded(FLayer layer, String cadToolKey,
