@@ -67,10 +67,22 @@ public class TOCLayerManager {
 	layersInTOC.setAllVisibles(true);
     }
 
-    public FLyrVect getLayerManzana() {
-	for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
-	    if (layersInTOC.getLayer(i).getName().equalsIgnoreCase(
-		    Preferences.MANZANAS_LAYER_NAME)) {
+
+    public void setActiveAndVisibleLayer(String layerName){
+	layersInTOC.setAllVisibles(false);
+	layersInTOC.setAllActives(false);
+	for (int i=0; i<layersInTOC.getLayersCount(); i++){
+	    String name = layersInTOC.getLayer(i).getName();
+	    if(name.equalsIgnoreCase(layerName)){
+		layersInTOC.getLayer(i).setVisible(true);
+		layersInTOC.getLayer(i).setActive(true);
+	    }
+	}
+    }
+
+    public FLyrVect getLayerManzana(){
+	for (int i=0; i<layersInTOC.getLayersCount(); i++){
+	    if(layersInTOC.getLayer(i).getName().equalsIgnoreCase(Preferences.MANZANAS_LAYER_NAME)){
 		return (FLyrVect) layersInTOC.getLayer(i);
 	    }
 	}
