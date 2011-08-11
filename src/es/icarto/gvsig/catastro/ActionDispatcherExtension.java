@@ -72,9 +72,6 @@ public class ActionDispatcherExtension extends Extension implements EndGeometryL
 		System.out.println(" -------- Launch form");
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
-	    // CreatePredioWhenAddNewManzana createPredio = new
-	    // CreatePredioWhenAddNewManzana(
-	    // (FLyrVect) layer);
 	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
 		    .getInsertedGeometry();
 	    ManzanaRulesEvaluator manzanaRulesEvaluator = new ManzanaRulesEvaluator(
