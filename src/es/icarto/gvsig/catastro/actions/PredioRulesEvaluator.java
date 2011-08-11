@@ -6,36 +6,37 @@ import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 
 public class PredioRulesEvaluator {
 
-    IRowEdited selectedRow;
-    ArrayList<ITopologicalRule> topologicalRules;
-    ArrayList<IBusinessRule> businessRules;
-    public PredioRulesEvaluator(IRowEdited selectedRow){
-	this.selectedRow = selectedRow;
-	topologicalRules = new ArrayList<ITopologicalRule>();
-	businessRules = new ArrayList<IBusinessRule>();
-	init();
-    }
+	IRowEdited selectedRow;
+	ArrayList<ITopologicalRule> topologicalRules;
+	ArrayList<IBusinessRule> businessRules;
 
-    private void init() {
-	topologicalRules.add(new CheckPredioIsWithinOneManzana(selectedRow));
-	topologicalRules.add(new CheckAllAreaPrediosEqualsAreaManzana());
-	businessRules.add(new UpdateConstructionsGeom());
-	businessRules.add(new UpdateConstructionsFather());
-	businessRules.add(new UpdateAreaPredioInDB());
-    }
+	public PredioRulesEvaluator(IRowEdited selectedRow) {
+		this.selectedRow = selectedRow;
+		topologicalRules = new ArrayList<ITopologicalRule>();
+		businessRules = new ArrayList<IBusinessRule>();
+		init();
+	}
 
-    public boolean isOK() {
-	for(ITopologicalRule topologicalRule : topologicalRules){
-	    if(!topologicalRule.isObey()){
-		return false;
-	    }
+	private void init() {
+		topologicalRules.add(new CheckPredioIsWithinOneManzana(selectedRow));
+		topologicalRules.add(new CheckAllAreaPrediosEqualsAreaManzana());
+		businessRules.add(new UpdateConstructionsGeom());
+		businessRules.add(new UpdateConstructionsFather());
+		businessRules.add(new UpdateAreaPredioInDB());
 	}
-	for(IBusinessRule businessRule : businessRules){
-	    if(!businessRule.launchRule()){
-		return false;
-	    }
+
+	public boolean isOK() {
+		for (ITopologicalRule topologicalRule : topologicalRules) {
+			if (!topologicalRule.isObey()) {
+				return false;
+			}
+		}
+		for (IBusinessRule businessRule : businessRules) {
+			if (!businessRule.launchRule()) {
+				return false;
+			}
+		}
+		return true;
 	}
-	return true;
-    }
 
 }

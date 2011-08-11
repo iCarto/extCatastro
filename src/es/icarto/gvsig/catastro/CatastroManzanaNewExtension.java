@@ -1,21 +1,19 @@
 package es.icarto.gvsig.catastro;
 
 import com.iver.andami.plugins.Extension;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
 
-import es.icarto.gvsig.catastro.utils.CatastroUtils;
-import es.icarto.gvsig.catastro.utils.Preferences;
+import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.wrappers.InsertAreaWrapper;
 
 public class CatastroManzanaNewExtension extends Extension {
 
 	private InsertAreaWrapper insertAreaWrapper;
-	private FLayer layer;
+	private TOCLayerManager tocLayerManager;
 
 	@Override
 	public void execute(String actionCommand) {
-		layer = CatastroUtils.getLayerByName(Preferences.MANZANAS_LAYER_NAME);
-		layer.setActive(true);
+		tocLayerManager = new TOCLayerManager();
+		tocLayerManager.setActiveAndVisibleLayersForManzanas();
 		insertAreaWrapper.execute(actionCommand);
 	}
 

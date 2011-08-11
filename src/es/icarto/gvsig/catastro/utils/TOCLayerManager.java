@@ -17,14 +17,31 @@ public class TOCLayerManager {
 		layersInTOC = mapControl.getMapContext().getLayers();
 	}
 
+	public void setActiveAndVisibleLayersForManzanas() {
+		layersInTOC.setAllActives(false);
+		layersInTOC.setAllVisibles(false);
+		for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
+			String layerName = layersInTOC.getLayer(i).getName();
+			if (layerName.equalsIgnoreCase(Preferences.MANZANAS_LAYER_NAME)) {
+				layersInTOC.getLayer(i).setVisible(true);
+			} else if (layerName
+					.equalsIgnoreCase(Preferences.PREDIOS_LAYER_NAME)) {
+				layersInTOC.getLayer(i).setVisible(true);
+				layersInTOC.getLayer(i).setActive(true);
+			}
+		}
+	}
+
 	public void setActiveAndVisibleLayersForPredios() {
 		layersInTOC.setAllActives(false);
 		layersInTOC.setAllVisibles(false);
 		for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
 			String layerName = layersInTOC.getLayer(i).getName();
-			if (layerName.equalsIgnoreCase("construcciones")) {
+			if (layerName
+					.equalsIgnoreCase(Preferences.CONSTRUCCIONES_LAYER_NAME)) {
 				layersInTOC.getLayer(i).setVisible(true);
-			} else if (layerName.equalsIgnoreCase("predios")) {
+			} else if (layerName
+					.equalsIgnoreCase(Preferences.PREDIOS_LAYER_NAME)) {
 				layersInTOC.getLayer(i).setVisible(true);
 				layersInTOC.getLayer(i).setActive(true);
 			}
@@ -36,9 +53,10 @@ public class TOCLayerManager {
 		layersInTOC.setAllVisibles(false);
 		for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
 			String layerName = layersInTOC.getLayer(i).getName();
-			if (layerName.equalsIgnoreCase("predios")) {
+			if (layerName.equalsIgnoreCase(Preferences.PREDIOS_LAYER_NAME)) {
 				layersInTOC.getLayer(i).setVisible(true);
-			} else if (layerName.equalsIgnoreCase("construcciones")) {
+			} else if (layerName
+					.equalsIgnoreCase(Preferences.CONSTRUCCIONES_LAYER_NAME)) {
 				layersInTOC.getLayer(i).setVisible(true);
 				layersInTOC.getLayer(i).setActive(true);
 			}
