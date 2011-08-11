@@ -17,7 +17,7 @@ public class PredioRulesEvaluator {
     }
 
     private void init() {
-	topologicalRules.add(new CheckPredioIsWithinOneManzana());
+	topologicalRules.add(new CheckPredioIsWithinOneManzana(selectedRow));
 	topologicalRules.add(new CheckAllAreaPrediosEqualsAreaManzana());
 	businessRules.add(new UpdateConstructionsGeom());
 	businessRules.add(new UpdateConstructionsFather());

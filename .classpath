@@ -13,5 +13,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/libExceptions"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libProjection"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/libTopology"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -3,6 +3,7 @@ package es.icarto.gvsig.catastro.utils;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
+import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
 public class TOCLayerManager {
@@ -45,5 +46,14 @@ public class TOCLayerManager {
 
     public void setVisibleAllLayers(){
 	layersInTOC.setAllVisibles(true);
+    }
+
+    public FLyrVect getLayerManzana(){
+	for (int i=0; i<layersInTOC.getLayersCount(); i++){
+	    if(layersInTOC.getLayer(i).getName().equalsIgnoreCase(Preferences.MANZANA_LAYER_NAME)){
+		return (FLyrVect) layersInTOC.getLayer(i);
+	    }
+	}
+	return null;
     }
 }
