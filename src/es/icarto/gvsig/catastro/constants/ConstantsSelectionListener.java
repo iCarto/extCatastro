@@ -11,6 +11,7 @@ import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.tools.BehaviorException;
 import com.iver.cit.gvsig.fmap.tools.PointSelectionListener;
 import com.iver.cit.gvsig.fmap.tools.Events.PointEvent;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import es.icarto.gvsig.catastro.utils.Preferences;
@@ -49,9 +50,9 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 	String layerName = layer.getName();
 	try {
 	    FBitSet selectionIndex = layer.getRecordset().getSelection();
-	    int indexInRecordset = selectionIndex.nextSetBit(0);
-	    if(indexInRecordset != -1){
-		Value[] values = layer.getRecordset().getRow(indexInRecordset);
+	    int indexOfFeatureSelected = selectionIndex.nextSetBit(0);
+	    if(indexOfFeatureSelected != -1){
+		Value[] values = layer.getRecordset().getRow(indexOfFeatureSelected);
 		String[] fieldNames = layer.getRecordset().getFieldNames();
 		int predioIndex = -1;
 		int manzanaIndex = -1;
@@ -86,6 +87,8 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 		    if(option == JOptionPane.OK_OPTION){
 			constantManager.setConstants(constants);
 			tocLayerManager.setVisibleAllLayers();
+			IGeometry geom = layer.getSource().getFeature(indexOfFeatureSelected).getGeometry();
+			layer.getMapContext().getViewPort().setExtent(geom.getBounds2D());
 		    } else {
 			constants.clear();
 			layer.getRecordset().clearSelection();
