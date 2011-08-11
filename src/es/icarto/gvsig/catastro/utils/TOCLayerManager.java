@@ -42,7 +42,10 @@ public class TOCLayerManager {
 	    if (layerName
 		    .equalsIgnoreCase(Preferences.CONSTRUCCIONES_LAYER_NAME)) {
 		layersInTOC.getLayer(i).setVisible(true);
-	    } else if (layerName
+	    } else if(layerName.equalsIgnoreCase(Preferences.MANZANAS_LAYER_NAME)){
+		layersInTOC.getLayer(i).setVisible(true);
+	    }
+	    else if (layerName
 		    .equalsIgnoreCase(Preferences.PREDIOS_LAYER_NAME)) {
 		layersInTOC.getLayer(i).setVisible(true);
 		layersInTOC.getLayer(i).setActive(true);
