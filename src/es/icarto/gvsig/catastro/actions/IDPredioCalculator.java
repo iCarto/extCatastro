@@ -1,23 +1,35 @@
 package es.icarto.gvsig.catastro.actions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.hardcode.driverManager.DriverLoadException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.hardcode.gdbms.engine.data.DataSource;
+import com.hardcode.gdbms.engine.data.DataSourceFactory;
+import com.hardcode.gdbms.engine.instruction.EvaluationException;
+import com.hardcode.gdbms.engine.instruction.SemanticException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
+import com.hardcode.gdbms.parser.ParseException;
+import com.iver.cit.gvsig.fmap.edition.EditionEvent;
 import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
+import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
 public class IDPredioCalculator {
 
     FLyrVect layer = null;
     IRowEdited selectedRow = null;
+    ConstantManager constantManager = null;
 
     public IDPredioCalculator(FLyrVect l, IRowEdited row) {
 	layer = l;
 	selectedRow = row;
+	constantManager = new ConstantManager();
     }
 
     public Value[] getAttributes() {
@@ -37,9 +49,46 @@ public class IDPredioCalculator {
 
     private Value getNewPredioID() {
 	//TODO: get a set of predios taking into account the constants
-	String[] prediosID = {"1", "3", "2"};
+	String[] prediosID = getAllPrediosIDInRecordset();
 	Arrays.sort(prediosID);
-	return ValueFactory.createValue(prediosID[prediosID.length-1]);
+	int biggerPredioID = Integer.parseInt(prediosID[prediosID.length-1]);
+	String newPredioID = String.format("%1$03d", (biggerPredioID+1));
+	return ValueFactory.createValue(newPredioID);
+    }
+
+    private String[] getAllPrediosIDInRecordset() {
+	SelectableDataSource originalRecordset;
+	int columnIndex = getPredioIDIndex();
+	ArrayList<String> prediosID = new ArrayList<String>();
+	try {
+	    originalRecordset = layer.getRecordset();
+	    String sqlQuery = "select * from " + originalRecordset.getName() +
+		    " where " + Preferences.MANZANA_NAME_IN_DB + " ='" + constantManager.getConstants().getManzana() + "' "+
+		    " and " + Preferences.REGION_NAME_IN_DB + " = '" + constantManager.getConstants().getRegion() +"';";
+	    DataSourceFactory dsf = originalRecordset.getDataSourceFactory();
+	    DataSource ds = dsf.executeSQL(sqlQuery, EditionEvent.ALPHANUMERIC);
+	    ds.setDataSourceFactory(dsf);
+	    SelectableDataSource filteredRecordset= new SelectableDataSource(ds);
+	    for (int rowIndex=0; rowIndex<filteredRecordset.getRowCount(); rowIndex++){
+		prediosID.add(filteredRecordset.getFieldValue(rowIndex, columnIndex).toString());
+	    }
+	    return prediosID.toArray(new String[]{""});
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return null;
+	} catch (DriverLoadException e) {
+	    e.printStackTrace();
+	    return null;
+	} catch (ParseException e) {
+	    e.printStackTrace();
+	    return null;
+	} catch (SemanticException e) {
+	    e.printStackTrace();
+	    return null;
+	} catch (EvaluationException e) {
+	    e.printStackTrace();
+	    return null;
+	}
     }
 
     private int getPredioIDIndex(){

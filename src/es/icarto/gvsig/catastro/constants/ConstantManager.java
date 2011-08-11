@@ -3,14 +3,13 @@ package es.icarto.gvsig.catastro.constants;
 public class ConstantManager {
 
     //class variable for all clients to know the constants
-    private static Constants constants;
+    private static Constants constants = null;
 
     public ConstantManager(){
-	constants = null;
     }
 
     public void setConstants(Constants constants){
-	this.constants = constants;
+	ConstantManager.constants = constants;
     }
 
     public Constants getConstants(){

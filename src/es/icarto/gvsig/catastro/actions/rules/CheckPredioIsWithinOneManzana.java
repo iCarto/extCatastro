@@ -2,7 +2,6 @@ package es.icarto.gvsig.catastro.actions.rules;
 
 import org.gvsig.fmap.core.NewFConverter;
 
-import com.iver.cit.gvsig.fmap.core.IFeature;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -21,14 +20,14 @@ public class CheckPredioIsWithinOneManzana implements ITopologicalRule {
 
     @Override
     public boolean isObey() {
+	return true;
 	// TODO
 	// * check the predio is within the manzana we are working on
-	IGeometry predioGeom = ((IFeature) selectedRow.getLinkedRow())
-		.getGeometry();
-	Geometry predioJTSGeom = NewFConverter.toJtsGeometry(predioGeom);
-	Geometry manzanaJTSGeom = getManzanaGeom();
-	predioJTSGeom.within(manzanaJTSGeom);
-	return true;
+	//	IGeometry predioGeom = ((IFeature) selectedRow.getLinkedRow())
+	//		.getGeometry();
+	//	Geometry predioJTSGeom = NewFConverter.toJtsGeometry(predioGeom);
+	//	Geometry manzanaJTSGeom = getManzanaGeom();
+	//	predioJTSGeom.within(manzanaJTSGeom);
     }
 
     private Geometry getManzanaGeom() {
