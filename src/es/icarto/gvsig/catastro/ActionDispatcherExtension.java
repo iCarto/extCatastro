@@ -3,6 +3,7 @@ package es.icarto.gvsig.catastro;
 import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.CADExtension;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -12,8 +13,8 @@ import com.iver.cit.gvsig.gui.cad.tools.CutPolygonCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
-import es.icarto.gvsig.catastro.actions.CreatePredioWhenAddNewManzana;
 import es.icarto.gvsig.catastro.actions.IDPredioCalculator;
+import es.icarto.gvsig.catastro.actions.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.actions.PredioRulesEvaluator;
 
 public class ActionDispatcherExtension extends Extension implements
@@ -62,8 +63,18 @@ public class ActionDispatcherExtension extends Extension implements
 		} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
 				&& (cadTool instanceof AreaCADTool)
 				&& (layer instanceof FLyrVect)) {
-			CreatePredioWhenAddNewManzana createPredio = new CreatePredioWhenAddNewManzana(
-					(FLyrVect) layer);
+			// CreatePredioWhenAddNewManzana createPredio = new
+			// CreatePredioWhenAddNewManzana(
+			// (FLyrVect) layer);
+			IGeometry insertedGeometry = ((AreaCADTool) cadTool)
+					.getInsertedGeometry();
+			ManzanaRulesEvaluator manzanaRulesEvaluator = new ManzanaRulesEvaluator(
+					insertedGeometry);
+			if (!manzanaRulesEvaluator.isOK()) {
+				System.out.println("====No se cumple la regla");
+			} else {
+				System.out.println("=====Se cumple la regla");
+			}
 		}
 	}
 

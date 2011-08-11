@@ -2,18 +2,23 @@ package es.icarto.gvsig.catastro.actions;
 
 import java.util.ArrayList;
 
+import com.iver.cit.gvsig.fmap.core.IGeometry;
+
 public class ManzanaRulesEvaluator {
 
+	IGeometry geometryInserted;
 	ArrayList<ITopologicalRule> topologicalRules;
 	ArrayList<IBusinessRule> businessRules;
 
-	public ManzanaRulesEvaluator() {
+	public ManzanaRulesEvaluator(IGeometry geometryInserted) {
+		this.geometryInserted = geometryInserted;
 		topologicalRules = new ArrayList<ITopologicalRule>();
 		businessRules = new ArrayList<IBusinessRule>();
 		init();
 	}
 
 	private void init() {
+		topologicalRules.add(new CheckManzanaIsOverlapingAnotherOne(geometryInserted));
 	}
 
 	public boolean isOK() {
