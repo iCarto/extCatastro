@@ -88,6 +88,7 @@ public class ActionDispatcherExtension extends Extension implements EndGeometryL
 	    } else {
 		CreatePredioWhenAddNewManzana createPredio = new CreatePredioWhenAddNewManzana(
 			(FLyrVect) layer);
+		createPredio.execute();
 	    }
 	}
     }

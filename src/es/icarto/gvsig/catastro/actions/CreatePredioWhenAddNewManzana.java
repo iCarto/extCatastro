@@ -17,19 +17,20 @@ public class CreatePredioWhenAddNewManzana {
     public CreatePredioWhenAddNewManzana(FLyrVect layer) {
 	tocLayerManager = new TOCLayerManager();
 	this.sourceLayer = layer;
+    }
+
+    public void execute(){
 	try {
 	    CopyFeaturesUtils.copyFeatures(sourceLayer);
 	    ToggleEditing te = new ToggleEditing();
-	    te.stopEditing(layer, false);
+	    te.stopEditing(sourceLayer, false);
 	    getDestinationLayer().setActive(true);
 	    te.startEditing(getDestinationLayer());
 	    CopyFeaturesUtils.pasteFeatures((FLyrVect) getDestinationLayer());
 	    te.stopEditing(getDestinationLayer(), false);
 	} catch (ReadDriverException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} catch (Exception e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }
