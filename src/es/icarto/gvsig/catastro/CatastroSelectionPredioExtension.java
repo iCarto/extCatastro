@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro.constants;
+package es.icarto.gvsig.catastro;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
@@ -6,11 +6,12 @@ import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.tools.Behavior.PointBehavior;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 
+import es.icarto.gvsig.catastro.constants.ConstantsSelectionListener;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
 
-public class CatastroSelectionRegionExtension extends Extension {
+public class CatastroSelectionPredioExtension extends Extension {
 
     TOCLayerManager tocLayerManager;
 
@@ -22,14 +23,14 @@ public class CatastroSelectionRegionExtension extends Extension {
     @Override
     public void execute(String actionCommand) {
 	tocLayerManager = new TOCLayerManager();
-	tocLayerManager.setActiveAndVisibleLayer(Preferences.REGIONES_LAYER_NAME);
+	tocLayerManager.setActiveAndVisibleLayer(Preferences.PREDIOS_LAYER_NAME);
 	View view = (View) PluginServices.getMDIManager().getActiveWindow();
 	MapControl mc = view.getMapControl();
-	if (!mc.getNamesMapTools().containsKey("constantsSelectionRegion")) {
+	if (!mc.getNamesMapTools().containsKey("constantsSelectionPredio")) {
 	    ConstantsSelectionListener csl = new ConstantsSelectionListener(mc);
-	    mc.addMapTool("constantsSelectionRegion", new PointBehavior(csl));
+	    mc.addMapTool("constantsSelectionPredio", new PointBehavior(csl));
 	}
-	mc.setTool("constantsSelectionRegion");
+	mc.setTool("constantsSelectionPredio");
     }
 
     @Override

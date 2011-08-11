@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro.actions;
+package es.icarto.gvsig.catastro.actions.rules;
 
 public class UpdateAreaPredioInDB implements IBusinessRule {
 

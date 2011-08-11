@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro.actions;
+package es.icarto.gvsig.catastro.actions.rules;
 
 import java.util.ArrayList;
 
