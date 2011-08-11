@@ -1,5 +1,7 @@
 package es.icarto.gvsig.catastro;
 
+import javax.swing.JOptionPane;
+
 import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.CADExtension;
@@ -13,9 +15,11 @@ import com.iver.cit.gvsig.gui.cad.tools.CutPolygonCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
+import es.icarto.gvsig.catastro.actions.CreatePredioWhenAddNewManzana;
 import es.icarto.gvsig.catastro.actions.IDPredioCalculator;
 import es.icarto.gvsig.catastro.actions.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.actions.PredioRulesEvaluator;
+import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements
 		EndGeometryListener {
@@ -71,9 +75,14 @@ public class ActionDispatcherExtension extends Extension implements
 			ManzanaRulesEvaluator manzanaRulesEvaluator = new ManzanaRulesEvaluator(
 					insertedGeometry);
 			if (!manzanaRulesEvaluator.isOK()) {
-				System.out.println("====No se cumple la regla");
+				ToggleEditing te = new ToggleEditing();
+				te.stopEditing(layer, true);
+				JOptionPane.showMessageDialog(null,
+						"La manzana está solapando a otra existene",
+						"Alta Manzana", JOptionPane.WARNING_MESSAGE);
 			} else {
-				System.out.println("=====Se cumple la regla");
+				CreatePredioWhenAddNewManzana createPredio = new CreatePredioWhenAddNewManzana(
+						(FLyrVect) layer);
 			}
 		}
 	}
