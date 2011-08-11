@@ -6,24 +6,35 @@
 	<resourceBundle name="text"/>
 	<extensions>
 	
+		<!-- USER FUNCTIONALITIES MENU MANZANAS -->
+		
+		<extension class-name="es.icarto.gvsig.catastro.CatastroManzanaNewExtension" description="New Feature" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="Alta"
+					action-command="_area" position="1006"/>
+			</tool-bar>-->
+			<menu text="Catastro/Manzanas/Alta" action-command="_area"
+				icon="images/new.png" position="1006"/> 
+		</extension>
+	
 	<!-- USER FUNCTIONALITIES MENU PREDIOS -->
 		
 		<extension class-name="es.icarto.gvsig.catastro.CatastroPredioFusionExtension" description="Join Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Fusionar"
-					action-command="_selection" position="2006"/>
+					action-command="_selection" position="20006"/>
 			</tool-bar>-->
 			<menu text="Catastro/Predios/Fusionar" action-command="_selection"
-				icon="images/join.png" position="2006"/> 
+				icon="images/join.png" position="20006"/> 
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.catastro.CatastroPredioDivideExtension" description="Split Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Dividir"
-					action-command="_cut_polygon" position="3009"/>
+					action-command="_cut_polygon" position="30009"/>
 			</tool-bar>-->
 			<menu text="Catastro/Predios/Dividir" action-command="_cut_polygon"
-				icon="images/split.png" position="3009"/> 
+				icon="images/split.png" position="30009"/> 
 		</extension>
 	
 	<!-- USER FUNCTIONALITIES MENU CONSTRUCCIONES -->
