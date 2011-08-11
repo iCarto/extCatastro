@@ -83,9 +83,9 @@ public class TOCLayerManager {
 	}
     }
 
-    public FLyrVect getLayerManzana(){
+    public FLyrVect getLayerByName(String layerName){
 	for (int i=0; i<layersInTOC.getLayersCount(); i++){
-	    if(layersInTOC.getLayer(i).getName().equalsIgnoreCase(Preferences.MANZANAS_LAYER_NAME)){
+	    if(layersInTOC.getLayer(i).getName().equalsIgnoreCase(layerName)){
 		return (FLyrVect) layersInTOC.getLayer(i);
 	    }
 	}
