@@ -2,15 +2,17 @@ package es.icarto.gvsig.catastro.constants;
 
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.tools.BehaviorException;
 import com.iver.cit.gvsig.fmap.tools.PointSelectionListener;
 import com.iver.cit.gvsig.fmap.tools.Events.PointEvent;
 import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
@@ -78,8 +80,20 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 		    break;
 		}
 		if(constants != null){
-		    constantManager.setConstants(constants);
-		    tocLayerManager.setVisibleAllLayers();
+		    int option = JOptionPane.showConfirmDialog(null, PluginServices.getText(this, "selection_confirm"), "Confirm selection",
+			    JOptionPane.OK_CANCEL_OPTION, JOptionPane.OK_CANCEL_OPTION,
+			    null);
+		    if(option == JOptionPane.OK_OPTION){
+			constantManager.setConstants(constants);
+			tocLayerManager.setVisibleAllLayers();
+		    } else {
+			constants.clear();
+		    }
+		} else {
+		    Object[] options = { "OK" };
+		    JOptionPane.showOptionDialog(null, PluginServices.getText(this, "selection_is_none"), "Warning",
+			    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+			    null, options, options[0]);
 		}
 	    } else {
 		// launch dialog asking for a new selection

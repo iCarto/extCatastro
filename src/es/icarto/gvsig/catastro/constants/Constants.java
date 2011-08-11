@@ -7,9 +7,7 @@ public class Constants {
     private String predio;
 
     public Constants(){
-	region = null;
-	manzana = null;
-	predio = null;
+	clear();
     }
 
     public void setRegion(String region){
@@ -34,5 +32,11 @@ public class Constants {
 
     public String getPredio(){
 	return this.predio;
+    }
+
+    public void clear() {
+	region = null;
+	manzana = null;
+	predio = null;
     }
 }
