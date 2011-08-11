@@ -22,10 +22,10 @@ public class TOCLayerManager {
 		layersInTOC.setAllVisibles(false);
 		for (int i = 0; i < layersInTOC.getLayersCount(); i++) {
 			String layerName = layersInTOC.getLayer(i).getName();
-			if (layerName.equalsIgnoreCase(Preferences.MANZANAS_LAYER_NAME)) {
+			if (layerName.equalsIgnoreCase(Preferences.PREDIOS_LAYER_NAME)) {
 				layersInTOC.getLayer(i).setVisible(true);
 			} else if (layerName
-					.equalsIgnoreCase(Preferences.PREDIOS_LAYER_NAME)) {
+					.equalsIgnoreCase(Preferences.MANZANAS_LAYER_NAME)) {
 				layersInTOC.getLayer(i).setVisible(true);
 				layersInTOC.getLayer(i).setActive(true);
 			}
