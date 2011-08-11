@@ -7,7 +7,7 @@
 	<extensions>
 	
 		<!-- SELECT ARE TO WORK OVER: DEFINE CONSTANTS -->
-		<extension class-name="es.icarto.gvsig.catastro.constants.CatastroSelectionRegionExtension" description="Select region" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionRegionExtension" description="Select region" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="SeleccionarRegion"
 					action-command="_select_region" position="1003"/>
@@ -16,7 +16,7 @@
 				icon="images/split.png" position="1003"/> 
 		</extension>
 
-		<extension class-name="es.icarto.gvsig.catastro.constants.CatastroSelectionManzanaExtension" description="Select manzana" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionManzanaExtension" description="Select manzana" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="SeleccionarManzana"
 					action-command="_select_manzana" position="2006"/>
@@ -25,7 +25,7 @@
 				icon="images/split.png" position="2006"/> 
 		</extension>
 
-		<extension class-name="es.icarto.gvsig.catastro.constants.CatastroSelectionPredioExtension" description="Select predio" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionPredioExtension" description="Select predio" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="SeleccionarPredio"
 					action-command="_select_predio" position="3009"/>
