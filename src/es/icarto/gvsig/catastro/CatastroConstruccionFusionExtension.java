@@ -24,7 +24,7 @@ public class CatastroConstruccionFusionExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	if(constantManager.areConstantsSet()){
+	if(constantManager.areConstantsSetForConstruccion()){
 	    tocLayerManager = new TOCLayerManager();
 	    tocLayerManager.setActiveAndVisibleLayersForConstrucciones();
 	    selectionGeometryWrapper.execute(actionCommand);

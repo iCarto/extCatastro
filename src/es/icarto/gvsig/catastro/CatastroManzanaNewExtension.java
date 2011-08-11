@@ -27,7 +27,7 @@ public class CatastroManzanaNewExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	if(constantManager.areConstantsSet()){
+	if(constantManager.areConstantsSetForManzana()){
 	    layer = CatastroUtils.getLayerByName(Preferences.MANZANAS_LAYER_NAME);
 	    layer.setActive(true);
 	    insertAreaWrapper.execute(actionCommand);

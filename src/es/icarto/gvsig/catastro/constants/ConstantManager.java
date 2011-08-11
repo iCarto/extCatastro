@@ -17,10 +17,35 @@ public class ConstantManager {
 	return constants;
     }
 
-    public boolean areConstantsSet(){
+    public boolean areConstantsSetForConstruccion(){
 	if(constants!=null){
-	    return true;
+	    if((constants.getPredio() != null) && (constants.getManzana() != null) && (constants.getRegion() != null)) {
+		return true;
+	    }
+	    return false;
 	}
 	return false;
     }
+
+    public boolean areConstantsSetForPredio(){
+	if(constants!=null){
+	    if((constants.getManzana() != null) && (constants.getRegion() != null)) {
+		return true;
+	    }
+	    return false;
+	}
+	return false;
+    }
+
+    public boolean areConstantsSetForManzana(){
+	if(constants!=null){
+	    if(constants.getRegion() != null) {
+		return true;
+	    }
+	    return false;
+	}
+	return false;
+    }
+
 }
+

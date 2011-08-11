@@ -24,7 +24,7 @@ public class CatastroPredioFusionExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	if(constantManager.areConstantsSet()){
+	if(constantManager.areConstantsSetForPredio()){
 	    tocLayerManager = new TOCLayerManager();
 	    tocLayerManager.setActiveAndVisibleLayersForPredios();
 	    selectionGeometryWrapper.execute(actionCommand);

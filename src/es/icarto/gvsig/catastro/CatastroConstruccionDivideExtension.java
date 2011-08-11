@@ -24,7 +24,7 @@ public class CatastroConstruccionDivideExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	if(constantManager.areConstantsSet()){
+	if(constantManager.areConstantsSetForConstruccion()){
 	    tocLayerManager = new TOCLayerManager();
 	    tocLayerManager.setActiveAndVisibleLayersForConstrucciones();
 	    cutPolygonWrapper.execute(actionCommand);

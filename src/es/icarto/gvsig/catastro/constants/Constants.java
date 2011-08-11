@@ -23,4 +23,16 @@ public class Constants {
     public void setPredio(String predio){
 	this.predio = predio;
     }
+
+    public String getRegion(){
+	return this.region;
+    }
+
+    public String getManzana(){
+	return this.manzana;
+    }
+
+    public String getPredio(){
+	return this.predio;
+    }
 }

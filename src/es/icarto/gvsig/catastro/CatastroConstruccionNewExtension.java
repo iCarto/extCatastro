@@ -24,7 +24,7 @@ public class CatastroConstruccionNewExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	if(constantManager.areConstantsSet()){
+	if(constantManager.areConstantsSetForConstruccion()){
 	    tocLayerManager = new TOCLayerManager();
 	    tocLayerManager.setActiveAndVisibleLayersForConstrucciones();
 	    insertAreaWrapper.execute(actionCommand);
