@@ -17,89 +17,88 @@ import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
 import es.icarto.gvsig.catastro.actions.CreatePredioWhenAddNewManzana;
 import es.icarto.gvsig.catastro.actions.IDPredioCalculator;
-import es.icarto.gvsig.catastro.actions.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.actions.PredioRulesEvaluator;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements
-		EndGeometryListener {
+EndGeometryListener {
 
-	@Override
-	public void initialize() {
-		CADListenerManager.removeEndGeometryListener("catastro");
-		CADListenerManager.addEndGeometryListener("catastro", this);
-	}
+    @Override
+    public void initialize() {
+	CADListenerManager.removeEndGeometryListener("catastro");
+	CADListenerManager.addEndGeometryListener("catastro", this);
+    }
 
-	@Override
-	public void execute(String actionCommand) {
-		// nothing to do
-	}
+    @Override
+    public void execute(String actionCommand) {
+	// nothing to do
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return false;
-	}
+    @Override
+    public boolean isEnabled() {
+	return false;
+    }
 
-	@Override
-	public boolean isVisible() {
-		return false;
-	}
+    @Override
+    public boolean isVisible() {
+	return false;
+    }
 
-	@Override
-	public void endGeometry(FLayer layer, String cadToolKey) {
-		CADTool cadTool = CADExtension.getCADTool();
-		if (isDividingPredio(layer, cadToolKey, cadTool)) {
-			IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
-					.getSelectedRow();
-			IDPredioCalculator newPredio = new IDPredioCalculator(
-					(FLyrVect) layer, selectedRow);
-			Value[] values = newPredio.getAttributes();
-			((CutPolygonCADTool) cadTool).setParametrizableValues(values);
-		} else if (isDividingPredioEnded(layer, cadToolKey, cadTool)) {
-			IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
-					.getSelectedRow();
-			PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(
-					selectedRow);
-			if (predioRulesEvaluator.isOK()) {
-				// TODO: launch padron form for the user to update
-				System.out.println(" -------- Launch form");
-			}
-		} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
-				&& (cadTool instanceof AreaCADTool)
-				&& (layer instanceof FLyrVect)) {
-			// CreatePredioWhenAddNewManzana createPredio = new
-			// CreatePredioWhenAddNewManzana(
-			// (FLyrVect) layer);
-			IGeometry insertedGeometry = ((AreaCADTool) cadTool)
-					.getInsertedGeometry();
-			ManzanaRulesEvaluator manzanaRulesEvaluator = new ManzanaRulesEvaluator(
-					insertedGeometry);
-			if (!manzanaRulesEvaluator.isOK()) {
-				ToggleEditing te = new ToggleEditing();
-				te.stopEditing(layer, true);
-				JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
-						.getErrorMessage(), "Alta Manzana",
-						JOptionPane.WARNING_MESSAGE);
-			} else {
-				CreatePredioWhenAddNewManzana createPredio = new CreatePredioWhenAddNewManzana(
-						(FLyrVect) layer);
-			}
-		}
+    @Override
+    public void endGeometry(FLayer layer, String cadToolKey) {
+	CADTool cadTool = CADExtension.getCADTool();
+	if (isDividingPredio(layer, cadToolKey, cadTool)) {
+	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
+		    .getSelectedRow();
+	    IDPredioCalculator newPredio = new IDPredioCalculator(
+		    (FLyrVect) layer, selectedRow);
+	    Value[] values = newPredio.getAttributes();
+	    ((CutPolygonCADTool) cadTool).setParametrizableValues(values);
+	} else if (isDividingPredioEnded(layer, cadToolKey, cadTool)) {
+	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
+		    .getSelectedRow();
+	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(
+		    selectedRow);
+	    if (predioRulesEvaluator.isOK()) {
+		// TODO: launch padron form for the user to update
+		System.out.println(" -------- Launch form");
+	    }
+	} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
+		&& (cadTool instanceof AreaCADTool)
+		&& (layer instanceof FLyrVect)) {
+	    // CreatePredioWhenAddNewManzana createPredio = new
+	    // CreatePredioWhenAddNewManzana(
+	    // (FLyrVect) layer);
+	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
+		    .getInsertedGeometry();
+	    ManzanaRulesEvaluator manzanaRulesEvaluator = new ManzanaRulesEvaluator(
+		    insertedGeometry);
+	    if (!manzanaRulesEvaluator.isOK()) {
+		ToggleEditing te = new ToggleEditing();
+		te.stopEditing(layer, true);
+		JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
+			.getErrorMessage(), "Alta Manzana",
+			JOptionPane.WARNING_MESSAGE);
+	    } else {
+		CreatePredioWhenAddNewManzana createPredio = new CreatePredioWhenAddNewManzana(
+			(FLyrVect) layer);
+	    }
 	}
+    }
 
-	private boolean isDividingPredioEnded(FLayer layer, String cadToolKey,
-			CADTool cadTool) {
-		return (cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END))
-				&& (cadTool instanceof CutPolygonCADTool)
-				&& (layer instanceof FLyrVect);
-	}
+    private boolean isDividingPredioEnded(FLayer layer, String cadToolKey,
+	    CADTool cadTool) {
+	return (cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END))
+		&& (cadTool instanceof CutPolygonCADTool)
+		&& (layer instanceof FLyrVect);
+    }
 
-	private boolean isDividingPredio(FLayer layer, String cadToolKey,
-			CADTool cadTool) {
-		return (cadToolKey
-				.equalsIgnoreCase(CutPolygonCADTool.CUT_END_FIRST_POLYGON))
-				&& (cadTool instanceof CutPolygonCADTool)
-				&& (layer instanceof FLyrVect);
-	}
+    private boolean isDividingPredio(FLayer layer, String cadToolKey,
+	    CADTool cadTool) {
+	return (cadToolKey
+		.equalsIgnoreCase(CutPolygonCADTool.CUT_END_FIRST_POLYGON))
+		&& (cadTool instanceof CutPolygonCADTool)
+		&& (layer instanceof FLyrVect);
+    }
 
 }
