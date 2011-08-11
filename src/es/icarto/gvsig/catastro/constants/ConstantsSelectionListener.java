@@ -88,6 +88,7 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 			tocLayerManager.setVisibleAllLayers();
 		    } else {
 			constants.clear();
+			layer.getRecordset().clearSelection();
 		    }
 		} else {
 		    Object[] options = { "OK" };
