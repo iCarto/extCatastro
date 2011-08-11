@@ -32,7 +32,7 @@ import com.iver.utiles.XMLEntity;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 
-public class CatastroUtils {
+public class CopyFeaturesUtils {
 
     private static WKTWriter geometryWriter = new WKTWriter();
     private static WKTReader geometryReader = new WKTReader();
