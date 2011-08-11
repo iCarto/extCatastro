@@ -6,15 +6,43 @@
 	<resourceBundle name="text"/>
 	<extensions>
 	
+		<!-- SELECT ARE TO WORK OVER: DEFINE CONSTANTS -->
+		<extension class-name="es.icarto.gvsig.catastro.constants.CatastroSelectionRegionExtension" description="Select region" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="SeleccionarRegion"
+					action-command="_select_region" position="1003"/>
+			</tool-bar>-->
+			<menu text="Catastro/Selección/Región" action-command="_select_region"
+				icon="images/split.png" position="1003"/> 
+		</extension>
+
+		<extension class-name="es.icarto.gvsig.catastro.constants.CatastroSelectionManzanaExtension" description="Select manzana" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="SeleccionarManzana"
+					action-command="_select_manzana" position="2006"/>
+			</tool-bar>-->
+			<menu text="Catastro/Selección/Manzana" action-command="_select_manzana"
+				icon="images/split.png" position="2006"/> 
+		</extension>
+
+		<extension class-name="es.icarto.gvsig.catastro.constants.CatastroSelectionPredioExtension" description="Select predio" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="SeleccionarPredio"
+					action-command="_select_predio" position="3009"/>
+			</tool-bar>-->
+			<menu text="Catastro/Selección/Predio" action-command="_select_predio"
+				icon="images/split.png" position="3009"/> 
+		</extension>
+	
 		<!-- USER FUNCTIONALITIES MENU MANZANAS -->
 		
 		<extension class-name="es.icarto.gvsig.catastro.CatastroManzanaNewExtension" description="New Feature" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Alta"
-					action-command="_area" position="1006"/>
+					action-command="_area" position="10003"/>
 			</tool-bar>-->
 			<menu text="Catastro/Manzanas/Alta" action-command="_area"
-				icon="images/new.png" position="1006"/> 
+				icon="images/new.png" position="10003"/> 
 		</extension>
 	
 	<!-- USER FUNCTIONALITIES MENU PREDIOS -->
@@ -22,19 +50,19 @@
 		<extension class-name="es.icarto.gvsig.catastro.CatastroPredioFusionExtension" description="Join Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Fusionar"
-					action-command="_selection" position="20006"/>
+					action-command="_selection" position="100003"/>
 			</tool-bar>-->
 			<menu text="Catastro/Predios/Fusionar" action-command="_selection"
-				icon="images/join.png" position="20006"/> 
+				icon="images/join.png" position="100003"/> 
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.catastro.CatastroPredioDivideExtension" description="Split Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Dividir"
-					action-command="_cut_polygon" position="30009"/>
+					action-command="_cut_polygon" position="200006"/>
 			</tool-bar>-->
 			<menu text="Catastro/Predios/Dividir" action-command="_cut_polygon"
-				icon="images/split.png" position="30009"/> 
+				icon="images/split.png" position="200006"/> 
 		</extension>
 	
 	<!-- USER FUNCTIONALITIES MENU CONSTRUCCIONES -->
@@ -42,30 +70,30 @@
 		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionNewExtension" description="New Feature" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Alta"
-					action-command="_area" position="100003"/>
+					action-command="_area" position="1000003"/>
 			</tool-bar>-->
 			<menu text="Catastro/Construcciones/Alta" action-command="_area"
-				icon="images/new.png" position="100003"/> 
+				icon="images/new.png" position="1000003"/> 
 		</extension>
 	
 		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionFusionExtension" description="Join Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Fusionar"
-					action-command="_selection" position="200003"/>
+					action-command="_selection" position="2000006"/>
 			</tool-bar>-->
 			<menu text="Catastro/Construcciones/Fusionar" action-command="_selection"
-				icon="images/join.png" position="200006"/> 
+				icon="images/join.png" position="2000006"/> 
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionDivideExtension" description="Split Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Dividir"
-					action-command="_cut_polygon" position="30009"/>
+					action-command="_cut_polygon" position="300009"/>
 			</tool-bar>-->
 			<menu text="Catastro/Construcciones/Dividir" action-command="_cut_polygon"
-				icon="images/split.png" position="300009"/> 
+				icon="images/split.png" position="3000009"/> 
 		</extension>
-		
+				
 	<!-- UTILITIES EXTENSIONS -->	
 		
 		<extension class-name="es.icarto.gvsig.catastro.ActionDispatcherExtension" description="FORMS_PANEL" active="true">
