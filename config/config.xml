@@ -4,6 +4,16 @@
 	<depends plugin-name="com.iver.cit.gvsig.cad"/>
 	<libraries library-dir="lib"/>
 	<resourceBundle name="text"/>
+		<label-set class-name="com.iver.cit.gvsig.project.documents.view.gui.View">
+		<label id="units" size="75"/>
+		<label id="x" size="120"/>
+		<label id="y" size="120"/>
+		<label id="4" size="110"/>
+		<label id="5" size="110"/>
+		<label id="distancearea" size="30"/>
+		<label id="projection" size="110"/>
+		<label id="constants" size="140"/>
+	</label-set>
 	<extensions>
 	
 		<!-- SELECT ARE TO WORK OVER: DEFINE CONSTANTS -->

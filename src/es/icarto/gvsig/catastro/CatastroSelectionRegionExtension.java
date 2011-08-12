@@ -10,37 +10,39 @@ import es.icarto.gvsig.catastro.constants.ConstantsSelectionListener;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
-
 public class CatastroSelectionRegionExtension extends Extension {
 
-    TOCLayerManager tocLayerManager;
+	TOCLayerManager tocLayerManager;
 
-    @Override
-    public void initialize() {
-	// TODO Auto-generated method stub
-    }
-
-    @Override
-    public void execute(String actionCommand) {
-	tocLayerManager = new TOCLayerManager();
-	tocLayerManager.setActiveAndVisibleLayer(Preferences.REGIONES_LAYER_NAME);
-	View view = (View) PluginServices.getMDIManager().getActiveWindow();
-	MapControl mc = view.getMapControl();
-	if (!mc.getNamesMapTools().containsKey("constantsSelectionRegion")) {
-	    ConstantsSelectionListener csl = new ConstantsSelectionListener(mc);
-	    mc.addMapTool("constantsSelectionRegion", new PointBehavior(csl));
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
 	}
-	mc.setTool("constantsSelectionRegion");
-    }
 
-    @Override
-    public boolean isEnabled() {
-	return true;
-    }
+	@Override
+	public void execute(String actionCommand) {
+		tocLayerManager = new TOCLayerManager();
+		tocLayerManager
+				.setActiveAndVisibleLayer(Preferences.REGIONES_LAYER_NAME);
+		View view = (View) PluginServices.getMDIManager().getActiveWindow();
+		MapControl mc = view.getMapControl();
+		if (!mc.getNamesMapTools().containsKey("constantsSelectionRegion")) {
+			ConstantsSelectionListener csl = new ConstantsSelectionListener(mc);
+			mc.addMapTool("constantsSelectionRegion", new PointBehavior(csl));
+		}
+		mc.setTool("constantsSelectionRegion");
+	}
 
-    @Override
-    public boolean isVisible() {
-	return true;
-    }
+	@Override
+	public boolean isEnabled() {
+		PluginServices.getMainFrame().getStatusBar().setMessage("constants",
+				"R:- M:- P:-");
+		return true;
+	}
+
+	@Override
+	public boolean isVisible() {
+		return true;
+	}
 
 }

@@ -1,7 +1,5 @@
 package es.icarto.gvsig.catastro.constants;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.HashMap;
 
 import javax.swing.JLabel;
@@ -127,7 +125,6 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 	}
 
 	private void updateConstantsStatusBar() {
-		removeConstantsFromStatusBar();
 		addConstantsToStatusBar();
 	}
 
@@ -135,25 +132,10 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 		MDIFrame mF = (MDIFrame) PluginServices.getMainFrame();
 		NewStatusBar footerStatusBar = mF.getStatusBar();
 
-		Font font = new Font("Arial", Font.BOLD, 11);
-
 		Constants constants = constantManager.getConstants();
 		if (constants != null) {
 			String constantsInfo = getConstantsInfo(constants);
-			constantsLabel = new JLabel(constantsInfo);
-			constantsLabel.setFont(font);
-			constantsLabel.setForeground(Color.blue);
-			footerStatusBar.add(constantsLabel);
-			footerStatusBar.repaint();
-		}
-	}
-
-	private void removeConstantsFromStatusBar() {
-		MDIFrame mF = (MDIFrame) PluginServices.getMainFrame();
-		NewStatusBar footerStatusBar = mF.getStatusBar();
-
-		if ((footerStatusBar != null) && (constantsLabel != null)) {
-			footerStatusBar.remove(constantsLabel);
+			footerStatusBar.setMessage("constants", constantsInfo);
 		}
 	}
 
@@ -167,7 +149,7 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 
 	private String nullToString(String s) {
 		if (s == null)
-			return "_";
+			return "-";
 		else
 			return s;
 	}
