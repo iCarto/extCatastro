@@ -2,41 +2,41 @@ package es.icarto.gvsig.catastro.actions.rules;
 
 import java.util.ArrayList;
 
-import com.iver.cit.gvsig.fmap.edition.IRowEdited;
+import com.iver.cit.gvsig.fmap.core.IGeometry;
 
 public class PredioRulesEvaluator {
 
-	IRowEdited selectedRow;
-	ArrayList<ITopologicalRule> topologicalRules;
-	ArrayList<IBusinessRule> businessRules;
+    ArrayList<IGeometry> geoms;
+    ArrayList<ITopologicalRule> topologicalRules;
+    ArrayList<IBusinessRule> businessRules;
 
-	public PredioRulesEvaluator(IRowEdited selectedRow) {
-		this.selectedRow = selectedRow;
-		topologicalRules = new ArrayList<ITopologicalRule>();
-		businessRules = new ArrayList<IBusinessRule>();
-		init();
-	}
+    public PredioRulesEvaluator(ArrayList<IGeometry> geoms) {
+	this.geoms = geoms;
+	topologicalRules = new ArrayList<ITopologicalRule>();
+	businessRules = new ArrayList<IBusinessRule>();
+	init();
+    }
 
-	private void init() {
-		topologicalRules.add(new CheckPredioIsWithinOneManzana(selectedRow));
-		topologicalRules.add(new CheckAllAreaPrediosEqualsAreaManzana());
-		businessRules.add(new UpdateConstructionsGeom());
-		businessRules.add(new UpdateConstructionsFather());
-		businessRules.add(new UpdateAreaPredioInDB());
-	}
+    private void init() {
+	topologicalRules.add(new CheckPredioIsWithinOneManzana(geoms));
+	topologicalRules.add(new CheckAllAreaPrediosEqualsAreaManzana());
+	businessRules.add(new UpdateConstructionsGeom());
+	businessRules.add(new UpdateConstructionsFather());
+	businessRules.add(new UpdateAreaPredioInDB());
+    }
 
-	public boolean isOK() {
-		for (ITopologicalRule topologicalRule : topologicalRules) {
-			if (!topologicalRule.isObey()) {
-				return false;
-			}
-		}
-		for (IBusinessRule businessRule : businessRules) {
-			if (!businessRule.launchRule()) {
-				return false;
-			}
-		}
-		return true;
+    public boolean isOK() {
+	for (ITopologicalRule topologicalRule : topologicalRules) {
+	    if (!topologicalRule.isObey()) {
+		return false;
+	    }
 	}
+	for (IBusinessRule businessRule : businessRules) {
+	    if (!businessRule.launchRule()) {
+		return false;
+	    }
+	}
+	return true;
+    }
 
 }

@@ -1,5 +1,7 @@
 package es.icarto.gvsig.catastro;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import com.hardcode.gdbms.engine.values.Value;
@@ -63,10 +65,8 @@ public class ActionDispatcherExtension extends Extension implements EndGeometryL
 	    Value[] values = newPredio.getAttributes();
 	    ((CutPolygonCADTool) cadTool).setParametrizableValues(values);
 	} else if (action == ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO) {
-	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
-		    .getSelectedRow();
-	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(
-		    selectedRow);
+	    ArrayList<IGeometry> geoms = ((CutPolygonCADTool) cadTool).getGeometriesCreated();
+	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(geoms);
 	    if (predioRulesEvaluator.isOK()) {
 		// TODO: launch padron form for the user to update
 		System.out.println(" -------- Launch form");

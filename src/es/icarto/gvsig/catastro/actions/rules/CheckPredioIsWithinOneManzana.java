@@ -1,33 +1,38 @@
 package es.icarto.gvsig.catastro.actions.rules;
 
+import java.util.ArrayList;
+
 import org.gvsig.fmap.core.NewFConverter;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
-import com.iver.cit.gvsig.fmap.edition.IRowEdited;
+import com.iver.cit.gvsig.fmap.drivers.IFeatureIterator;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.vividsolutions.jts.geom.Geometry;
 
+import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
 public class CheckPredioIsWithinOneManzana implements ITopologicalRule {
 
-    IRowEdited selectedRow;
+    ArrayList<IGeometry> geoms;
 
-    public CheckPredioIsWithinOneManzana(IRowEdited selectedRow) {
-	this.selectedRow = selectedRow;
+    public CheckPredioIsWithinOneManzana(ArrayList<IGeometry> geoms) {
+	this.geoms = geoms;
     }
 
     @Override
     public boolean isObey() {
+	Geometry manzanaJTSGeom = getManzanaGeom();
+	for (IGeometry geom : geoms){
+	    Geometry predioJTSGeom = NewFConverter.toJtsGeometry(geom);
+	    if(!predioJTSGeom.within(manzanaJTSGeom)){
+		return false;
+	    }
+	}
 	return true;
-	// TODO
-	// * check the predio is within the manzana we are working on
-	//	IGeometry predioGeom = ((IFeature) selectedRow.getLinkedRow())
-	//		.getGeometry();
-	//	Geometry predioJTSGeom = NewFConverter.toJtsGeometry(predioGeom);
-	//	Geometry manzanaJTSGeom = getManzanaGeom();
-	//	predioJTSGeom.within(manzanaJTSGeom);
     }
 
     private Geometry getManzanaGeom() {
@@ -39,14 +44,22 @@ public class CheckPredioIsWithinOneManzana implements ITopologicalRule {
     }
 
     private IGeometry getGeomFromFLyrVect(FLyrVect layer) {
-	return null;
-	// TODO: coller dende capa
+	ConstantManager constantManager = new ConstantManager();
+	try {
+	    String sqlQuery = "select * from '" + layer.getRecordset().getName() + "'" +
+		    " where " + Preferences.MANZANA_NAME_IN_DB + " ='" + constantManager.getConstants().getManzana() + "' "+
+		    " and " + Preferences.REGION_NAME_IN_DB + " = '" + constantManager.getConstants().getRegion() +"';";
+	    IFeatureIterator featureIterator = layer.getSource().getFeatureIterator(sqlQuery, null);
+	    return featureIterator.next().getGeometry();
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return null;
+	}
     }
 
     @Override
     public String getMessage() {
-	// TODO Auto-generated method stub
-	return null;
+	return PluginServices.getText(this, "rule_predio_is_not_within_manzana");
     }
 
 }
