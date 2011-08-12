@@ -28,7 +28,8 @@ public class CheckPredioIsWithinOneManzana implements ITopologicalRule {
 	Geometry manzanaJTSGeom = getManzanaGeom();
 	for (IGeometry geom : geoms){
 	    Geometry predioJTSGeom = NewFConverter.toJtsGeometry(geom);
-	    if(!predioJTSGeom.within(manzanaJTSGeom)){
+	    Geometry manzanaJTSGeomWithBuffer = manzanaJTSGeom.buffer(0.5);
+	    if(!predioJTSGeom.coveredBy(manzanaJTSGeomWithBuffer)){
 		return false;
 	    }
 	}
