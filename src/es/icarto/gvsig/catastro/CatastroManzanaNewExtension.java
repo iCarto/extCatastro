@@ -4,10 +4,7 @@ import javax.swing.JOptionPane;
 
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
-
 import es.icarto.gvsig.catastro.constants.ConstantManager;
-import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
 import es.icarto.gvsig.catastro.wrappers.InsertAreaWrapper;
@@ -15,7 +12,6 @@ import es.icarto.gvsig.catastro.wrappers.InsertAreaWrapper;
 public class CatastroManzanaNewExtension extends Extension {
 
     private InsertAreaWrapper insertAreaWrapper;
-    private FLayer layer;
     private ConstantManager constantManager;
     private TOCLayerManager tocLayerManager;
 
@@ -30,8 +26,7 @@ public class CatastroManzanaNewExtension extends Extension {
     public void execute(String actionCommand) {
 	tocLayerManager = new TOCLayerManager();
 	if(constantManager.areConstantsSetForManzana()){
-	    layer = tocLayerManager.getLayerByName(Preferences.MANZANAS_LAYER_NAME);
-	    layer.setActive(true);
+	    tocLayerManager.setActiveAndVisibleLayersForManzanas();
 	    insertAreaWrapper.execute(actionCommand);
 	} else{
 	    Object[] options = { "OK" };
