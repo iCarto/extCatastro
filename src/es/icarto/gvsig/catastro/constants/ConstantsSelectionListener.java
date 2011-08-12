@@ -138,12 +138,14 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 		Font font = new Font("Arial", Font.BOLD, 11);
 
 		Constants constants = constantManager.getConstants();
-		String constantsInfo = getConstantsInfo(constants);
-		constantsLabel = new JLabel(constantsInfo);
-		constantsLabel.setFont(font);
-		constantsLabel.setForeground(Color.blue);
-		footerStatusBar.add(constantsLabel);
-		footerStatusBar.repaint();
+		if (constants != null) {
+			String constantsInfo = getConstantsInfo(constants);
+			constantsLabel = new JLabel(constantsInfo);
+			constantsLabel.setFont(font);
+			constantsLabel.setForeground(Color.blue);
+			footerStatusBar.add(constantsLabel);
+			footerStatusBar.repaint();
+		}
 	}
 
 	private void removeConstantsFromStatusBar() {
