@@ -6,13 +6,13 @@ import com.iver.cit.gvsig.fmap.core.IGeometry;
 
 public class ManzanaRulesEvaluator {
 
-	IGeometry geometryInserted;
+	IGeometry insertedGeometry;
 	ArrayList<ITopologicalRule> topologicalRules;
 	ArrayList<IBusinessRule> businessRules;
 	String errorMessage = null;
 
-	public ManzanaRulesEvaluator(IGeometry geometryInserted) {
-		this.geometryInserted = geometryInserted;
+	public ManzanaRulesEvaluator(IGeometry insertedGeometry) {
+		this.insertedGeometry = insertedGeometry;
 		topologicalRules = new ArrayList<ITopologicalRule>();
 		businessRules = new ArrayList<IBusinessRule>();
 		init();
@@ -20,7 +20,9 @@ public class ManzanaRulesEvaluator {
 
 	private void init() {
 		topologicalRules.add(new CheckManzanaIsOverlapingAnotherOne(
-				geometryInserted));
+				insertedGeometry));
+		topologicalRules
+				.add(new CheckManzanaIsWithinOneRegion(insertedGeometry));
 	}
 
 	public boolean isOK() {
