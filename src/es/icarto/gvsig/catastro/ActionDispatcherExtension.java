@@ -27,7 +27,7 @@ import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements
-	EndGeometryListener {
+EndGeometryListener {
 
     private static final int NO_ACTION = -1;
     private final int ACTION_CALCULATE_NEW_PREDIO_ID = 0;
@@ -90,11 +90,13 @@ public class ActionDispatcherExtension extends Extension implements
 			.getText(this, "save_predio_confirm"), "Divide predio",
 			JOptionPane.YES_NO_OPTION, JOptionPane.YES_NO_OPTION,
 			null);
-		if (option == JOptionPane.OK_OPTION) {
-		    PredioActionsEvaluator predioActions = new PredioActionsEvaluator();
-		    predioActions.execute();
+		if(option == JOptionPane.OK_OPTION){
+		    PredioActionsEvaluator predioActionsEvaluator = new PredioActionsEvaluator(geoms);
+		    predioActionsEvaluator.execute();
 		}
-		if (tocLayerManager.isPrediosLayerInEdition()) {
+		if(tocLayerManager.isPrediosLayerInEdition()){
+		    //TODO: save previous actions
+		    //te.stopEditing(layer, false);
 		    te.stopEditing(layer, true);
 		}
 	    }
@@ -117,11 +119,12 @@ public class ActionDispatcherExtension extends Extension implements
 			"Crear Manzana", JOptionPane.YES_NO_OPTION,
 			JOptionPane.YES_NO_OPTION, null);
 		if (option == JOptionPane.OK_OPTION) {
-		    ManzanaActionsEvaluator manzanaActionsEvaluator = new ManzanaActionsEvaluator(
-			    (FLyrVect) layer, rowIndex);
+		    ManzanaActionsEvaluator manzanaActionsEvaluator = new ManzanaActionsEvaluator((FLyrVect) layer, rowIndex);
 		    manzanaActionsEvaluator.execute();
 		}
-		if (tocLayerManager.isManzanaLayerInEdition()) {
+		if(tocLayerManager.isManzanaLayerInEdition()){
+		    //TODO: save previous actions
+		    //te.stopEditing(layer, false);
 		    te.stopEditing(layer, true);
 		}
 	    }
