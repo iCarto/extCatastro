@@ -13,7 +13,7 @@ import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
-public class CheckManzanaIsWithinOneRegion implements ITopologicalRule {
+public class CheckManzanaIsWithinOneRegion implements IRule {
 
 	IGeometry insertedGeometry;
 

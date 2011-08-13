@@ -17,7 +17,7 @@ import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
-public class CheckAllAreaPrediosEqualsAreaManzana implements ITopologicalRule {
+public class CheckAllAreaPrediosEqualsAreaManzana implements IRule {
 
     ConstantManager constantManager;
     public CheckAllAreaPrediosEqualsAreaManzana(){

@@ -4,32 +4,19 @@ import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 
-public class PredioRulesEvaluator {
+public class PredioRulesEvaluator extends AbstractEvaluator {
 
     ArrayList<IGeometry> geoms;
-    ArrayList<ITopologicalRule> topologicalRules;
 
     public PredioRulesEvaluator(ArrayList<IGeometry> geoms) {
+	super();
 	this.geoms = geoms;
-	topologicalRules = new ArrayList<ITopologicalRule>();
 	init();
     }
 
     private void init() {
-	topologicalRules.add(new CheckPredioIsWithinOneManzana(geoms));
-	topologicalRules.add(new CheckAllAreaPrediosEqualsAreaManzana());
-	topologicalRules.add(new UpdateConstructionsGeom());
-	topologicalRules.add(new UpdateConstructionsFather());
-	topologicalRules.add(new UpdateAreaPredioInDB());
-    }
-
-    public boolean isOK() {
-	for (ITopologicalRule topologicalRule : topologicalRules) {
-	    if (!topologicalRule.isObey()) {
-		return false;
-	    }
-	}
-	return true;
+	rules.add(new CheckPredioIsWithinOneManzana(geoms));
+	rules.add(new CheckAllAreaPrediosEqualsAreaManzana());
     }
 
 }

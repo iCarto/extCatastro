@@ -4,36 +4,21 @@ import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 
-public class ManzanaRulesEvaluator {
+public class ManzanaRulesEvaluator extends AbstractEvaluator {
 
     IGeometry insertedGeometry;
-    ArrayList<ITopologicalRule> topologicalRules;
-    String errorMessage = null;
 
     public ManzanaRulesEvaluator(IGeometry insertedGeometry) {
 	this.insertedGeometry = insertedGeometry;
-	topologicalRules = new ArrayList<ITopologicalRule>();
+	rules = new ArrayList<IRule>();
 	init();
     }
 
     private void init() {
-	topologicalRules.add(new CheckManzanaIsOverlapingAnotherOne(
+	rules.add(new CheckManzanaIsOverlapingAnotherOne(
 		insertedGeometry));
-	topologicalRules.add(new CheckManzanaIsWithinOneRegion(
+	rules.add(new CheckManzanaIsWithinOneRegion(
 		insertedGeometry));
     }
 
-    public boolean isOK() {
-	for (ITopologicalRule topologicalRule : topologicalRules) {
-	    if (!topologicalRule.isObey()) {
-		errorMessage = topologicalRule.getMessage();
-		return false;
-	    }
-	}
-	return true;
-    }
-
-    public String getErrorMessage() {
-	return errorMessage;
-    }
 }

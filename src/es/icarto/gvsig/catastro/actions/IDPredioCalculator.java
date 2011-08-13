@@ -17,10 +17,11 @@ import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
+import es.icarto.gvsig.catastro.IAction;
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
-public class IDPredioCalculator {
+public class IDPredioCalculator implements IAction {
 
     FLyrVect layer = null;
     IRowEdited selectedRow = null;
@@ -107,6 +108,24 @@ public class IDPredioCalculator {
 	    e.printStackTrace();
 	    return predioIndex;
 	}
+    }
+
+    @Override
+    public boolean execute() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
+    @Override
+    public String getName() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    public String getMessage() {
+	// TODO Auto-generated method stub
+	return null;
     }
 
 }

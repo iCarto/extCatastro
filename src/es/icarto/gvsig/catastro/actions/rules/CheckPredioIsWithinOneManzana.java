@@ -15,7 +15,7 @@ import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
-public class CheckPredioIsWithinOneManzana implements ITopologicalRule {
+public class CheckPredioIsWithinOneManzana implements IRule {
 
     ArrayList<IGeometry> geoms;
 

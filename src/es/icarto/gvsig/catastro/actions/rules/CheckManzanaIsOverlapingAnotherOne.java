@@ -13,7 +13,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
-public class CheckManzanaIsOverlapingAnotherOne implements ITopologicalRule {
+public class CheckManzanaIsOverlapingAnotherOne implements IRule {
 
 	IGeometry insertedGeometry;
 
