@@ -101,9 +101,13 @@ public class ActionDispatcherExtension extends Extension implements EndGeometryL
     }
 
     private int getAction(FLayer layer, String cadToolKey, CADTool cadTool) {
-	if (isDividingPredio(layer, cadToolKey, cadTool)) {
+	if ((cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END_FIRST_POLYGON))
+		&& (cadTool instanceof CutPolygonCADTool)
+		&& (layer instanceof FLyrVect)) {
 	    return ACTION_CALCULATE_NEW_PREDIO_ID;
-	} else if (isDividingPredioEnded(layer, cadToolKey, cadTool)) {
+	} else if ((cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END))
+		&& (cadTool instanceof CutPolygonCADTool)
+		&& (layer instanceof FLyrVect)) {
 	    return ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO;
 	} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
 		&& (cadTool instanceof AreaCADTool)
@@ -111,21 +115,6 @@ public class ActionDispatcherExtension extends Extension implements EndGeometryL
 	    return ACTION_CHECK_RULES_FOR_NEW_MANZANA;
 	}
 	return NO_ACTION;
-    }
-
-    private boolean isDividingPredioEnded(FLayer layer, String cadToolKey,
-	    CADTool cadTool) {
-	return (cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END))
-		&& (cadTool instanceof CutPolygonCADTool)
-		&& (layer instanceof FLyrVect);
-    }
-
-    private boolean isDividingPredio(FLayer layer, String cadToolKey,
-	    CADTool cadTool) {
-	return (cadToolKey
-		.equalsIgnoreCase(CutPolygonCADTool.CUT_END_FIRST_POLYGON))
-		&& (cadTool instanceof CutPolygonCADTool)
-		&& (layer instanceof FLyrVect);
     }
 
 }
