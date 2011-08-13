@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro.rules;
+package es.icarto.gvsig.catastro.evaluator.rules;
 
 public interface IRule {
 

@@ -1,7 +1,7 @@
-package es.icarto.gvsig.catastro.actions;
+package es.icarto.gvsig.catastro.evaluator.actions;
 
 
-public class UpdateConstructionsGeom implements IAction {
+public class UpdateAreaPredioInDB implements IAction {
 
     @Override
     public boolean execute() {

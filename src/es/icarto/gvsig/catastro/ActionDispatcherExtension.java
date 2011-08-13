@@ -18,11 +18,11 @@ import com.iver.cit.gvsig.gui.cad.tools.CutPolygonCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
-import es.icarto.gvsig.catastro.actions.CreatePredioWhenAddNewManzana;
-import es.icarto.gvsig.catastro.actions.UpdateIDNewPredio;
-import es.icarto.gvsig.catastro.actions.PredioActionsEvaluator;
-import es.icarto.gvsig.catastro.rules.ManzanaRulesEvaluator;
-import es.icarto.gvsig.catastro.rules.PredioRulesEvaluator;
+import es.icarto.gvsig.catastro.evaluator.actions.CreatePredioWhenAddNewManzana;
+import es.icarto.gvsig.catastro.evaluator.actions.PredioActionsEvaluator;
+import es.icarto.gvsig.catastro.evaluator.actions.UpdateIDNewPredio;
+import es.icarto.gvsig.catastro.evaluator.rules.ManzanaRulesEvaluator;
+import es.icarto.gvsig.catastro.evaluator.rules.PredioRulesEvaluator;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements EndGeometryListener {
