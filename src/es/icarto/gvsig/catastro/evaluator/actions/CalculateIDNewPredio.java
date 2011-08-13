@@ -12,6 +12,7 @@ import com.hardcode.gdbms.engine.instruction.SemanticException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.hardcode.gdbms.parser.ParseException;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.edition.EditionEvent;
 import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
@@ -20,16 +21,25 @@ import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
-public class UpdateIDNewPredio implements IAction {
+public class CalculateIDNewPredio implements IAction {
 
     FLyrVect layer = null;
     IRowEdited selectedRow = null;
     ConstantManager constantManager = null;
+    private String[] prediosIDs;
 
-    public UpdateIDNewPredio(FLyrVect l, IRowEdited row) {
+    public CalculateIDNewPredio(FLyrVect l, IRowEdited row) {
 	layer = l;
 	selectedRow = row;
 	constantManager = new ConstantManager();
+    }
+
+    public boolean execute() {
+	prediosIDs = getAllPrediosIDInRecordset();
+	if(prediosIDs != null){
+	    return true;
+	}
+	return false;
     }
 
     public Value[] getAttributes() {
@@ -47,11 +57,9 @@ public class UpdateIDNewPredio implements IAction {
 	}
     }
 
-    private Value getNewPredioID() {
-	//TODO: get a set of predios taking into account the constants
-	String[] prediosID = getAllPrediosIDInRecordset();
-	Arrays.sort(prediosID);
-	int biggerPredioID = Integer.parseInt(prediosID[prediosID.length-1]);
+    public Value getNewPredioID(){
+	Arrays.sort(prediosIDs);
+	int biggerPredioID = Integer.parseInt(prediosIDs[prediosIDs.length-1]);
 	String newPredioID = String.format("%1$03d", (biggerPredioID+1));
 	return ValueFactory.createValue(newPredioID);
     }
@@ -110,21 +118,8 @@ public class UpdateIDNewPredio implements IAction {
     }
 
     @Override
-    public boolean execute() {
-	// TODO Auto-generated method stub
-	return false;
-    }
-
-    @Override
-    public String getName() {
-	// TODO Auto-generated method stub
-	return null;
-    }
-
-    @Override
     public String getMessage() {
-	// TODO Auto-generated method stub
-	return null;
+	return PluginServices.getText(this, "action_update_id_new_predio_was_not_performed");
     }
 
 }

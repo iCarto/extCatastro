@@ -1,7 +1,7 @@
 package es.icarto.gvsig.catastro.evaluator.actions;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
-import com.iver.cit.gvsig.fmap.layers.FLayer;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
 import es.icarto.gvsig.catastro.utils.CopyFeaturesUtils;
@@ -9,33 +9,52 @@ import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class CreatePredioWhenAddNewManzana {
+public class CreatePredioWhenAddNewManzana implements IAction{
 
     private static FLyrVect sourceLayer;
+    private FLyrVect destinationLayer;
     private TOCLayerManager tocLayerManager;
 
     public CreatePredioWhenAddNewManzana(FLyrVect layer) {
 	tocLayerManager = new TOCLayerManager();
 	this.sourceLayer = layer;
+	destinationLayer = getDestinationLayer();
     }
 
-    public void execute(){
+    public boolean execute(){
 	try {
 	    CopyFeaturesUtils.copyFeatures(sourceLayer);
 	    ToggleEditing te = new ToggleEditing();
-	    te.stopEditing(sourceLayer, false);
-	    getDestinationLayer().setActive(true);
-	    te.startEditing(getDestinationLayer());
-	    CopyFeaturesUtils.pasteFeatures((FLyrVect) getDestinationLayer());
-	    te.stopEditing(getDestinationLayer(), false);
+	    boolean wasEditingManzanas = false;
+	    if(tocLayerManager.isManzanaLayerInEdition()){
+		te.stopEditing(sourceLayer, false);
+		wasEditingManzanas = true;
+	    }
+	    destinationLayer.setActive(true);
+	    te.startEditing(destinationLayer);
+	    CopyFeaturesUtils.pasteFeatures((FLyrVect) destinationLayer);
+	    te.stopEditing(destinationLayer, false);
+	    destinationLayer.setActive(false);
+	    if(wasEditingManzanas){
+		te.startEditing(sourceLayer);
+	    }
+	    return true;
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
+	    return false;
 	} catch (Exception e) {
 	    e.printStackTrace();
+	    return false;
 	}
     }
 
-    private FLayer getDestinationLayer() {
-	return tocLayerManager.getLayerByName(Preferences.PREDIOS_LAYER_NAME);
+    private FLyrVect getDestinationLayer() {
+	destinationLayer = tocLayerManager.getLayerByName(Preferences.PREDIOS_LAYER_NAME);
+	return destinationLayer;
+    }
+
+    @Override
+    public String getMessage() {
+	return PluginServices.getText(this, "action_create_predio_was_not_possible");
     }
 }

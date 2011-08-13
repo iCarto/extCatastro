@@ -18,11 +18,11 @@ import com.iver.cit.gvsig.gui.cad.tools.CutPolygonCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
-import es.icarto.gvsig.catastro.evaluator.actions.CreatePredioWhenAddNewManzana;
 import es.icarto.gvsig.catastro.evaluator.actions.PredioActionsEvaluator;
-import es.icarto.gvsig.catastro.evaluator.actions.UpdateIDNewPredio;
+import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
 import es.icarto.gvsig.catastro.evaluator.rules.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.PredioRulesEvaluator;
+import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements EndGeometryListener {
@@ -58,43 +58,70 @@ public class ActionDispatcherExtension extends Extension implements EndGeometryL
 
 	CADTool cadTool = CADExtension.getCADTool();
 	int action = getAction(layer, cadToolKey, cadTool);
+	ToggleEditing te = new ToggleEditing();
+	TOCLayerManager tocLayerManager = new TOCLayerManager();
 
 	if (action == ACTION_CALCULATE_NEW_PREDIO_ID) {
 	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
 		    .getSelectedRow();
-	    UpdateIDNewPredio newPredio = new UpdateIDNewPredio(
+	    CalculateIDNewPredio calculator = new CalculateIDNewPredio(
 		    (FLyrVect) layer, selectedRow);
-	    Value[] values = newPredio.getAttributes();
+	    Value[] values = null;
+	    if(calculator.execute()){
+		values = calculator.getAttributes();
+	    }
 	    ((CutPolygonCADTool) cadTool).setParametrizableValues(values);
 	} else if (action == ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO) {
 	    ArrayList<IGeometry> geoms = ((CutPolygonCADTool) cadTool).getGeometriesCreated();
 	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(geoms);
-	    if (predioRulesEvaluator.isOK()) {
-		PredioActionsEvaluator predioActions = new PredioActionsEvaluator();
-		predioActions.execute();
-		System.out.println(" -------- Launch form");
+	    if (!predioRulesEvaluator.isOK()) {
+		if(tocLayerManager.isPrediosLayerInEdition()){
+		    te.stopEditing(layer, true);
+		}
+		JOptionPane.showMessageDialog(null,
+			predioRulesEvaluator.getErrorMessage(),
+			"Divide predio",
+			JOptionPane.WARNING_MESSAGE);
+	    } else {
+		int option = JOptionPane.showConfirmDialog(null,
+			PluginServices.getText(this, "save_predio_confirm"),
+			"Divide predio",
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.YES_NO_OPTION,
+			null);
+		if(option == JOptionPane.OK_OPTION){
+		    PredioActionsEvaluator predioActions = new PredioActionsEvaluator();
+		    predioActions.execute();
+		}
+		if(tocLayerManager.isPrediosLayerInEdition()){
+		    te.stopEditing(layer, true);
+		}
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
-	    ToggleEditing te = new ToggleEditing();
-	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
-		    .getInsertedGeometry();
+	    IGeometry insertedGeometry = ((AreaCADTool) cadTool).getInsertedGeometry();
 	    ManzanaRulesEvaluator manzanaRulesEvaluator = new ManzanaRulesEvaluator(
 		    insertedGeometry);
 	    if (!manzanaRulesEvaluator.isOK()) {
-		te.stopEditing(layer, true);
-		JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
-			.getErrorMessage(), "Alta Manzana",
+		if(tocLayerManager.isManzanaLayerInEdition()){
+		    te.stopEditing(layer, true);
+		}
+		JOptionPane.showMessageDialog(null,
+			manzanaRulesEvaluator.getErrorMessage(),
+			"Alta Manzana",
 			JOptionPane.WARNING_MESSAGE);
 	    } else {
-		int option = JOptionPane.showConfirmDialog(null, PluginServices
-			.getText(this, "save_manzana_confirm"),
-			"Crear Manzana", JOptionPane.YES_NO_OPTION,
-			JOptionPane.YES_NO_OPTION, null);
+		int option = JOptionPane.showConfirmDialog(null,
+			PluginServices.getText(this, "save_manzana_confirm"),
+			"Crear Manzana",
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.YES_NO_OPTION,
+			null);
 		if (option == JOptionPane.OK_OPTION) {
-		    CreatePredioWhenAddNewManzana createPredio = new CreatePredioWhenAddNewManzana(
-			    (FLyrVect) layer);
-		    createPredio.execute();
-		} else {
+		    ManzanaActionsEvaluator manzanaActionsEvaluator =
+			    new ManzanaActionsEvaluator((FLyrVect) layer);
+		    manzanaActionsEvaluator.execute();
+		}
+		if(tocLayerManager.isManzanaLayerInEdition()){
 		    te.stopEditing(layer, true);
 		}
 	    }
