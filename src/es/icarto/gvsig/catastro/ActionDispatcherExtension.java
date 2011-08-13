@@ -21,8 +21,8 @@ import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import es.icarto.gvsig.catastro.actions.CreatePredioWhenAddNewManzana;
 import es.icarto.gvsig.catastro.actions.UpdateIDNewPredio;
 import es.icarto.gvsig.catastro.actions.PredioActionsEvaluator;
-import es.icarto.gvsig.catastro.actions.rules.ManzanaRulesEvaluator;
-import es.icarto.gvsig.catastro.actions.rules.PredioRulesEvaluator;
+import es.icarto.gvsig.catastro.rules.ManzanaRulesEvaluator;
+import es.icarto.gvsig.catastro.rules.PredioRulesEvaluator;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements EndGeometryListener {

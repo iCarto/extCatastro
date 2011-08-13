@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro.actions.rules;
+package es.icarto.gvsig.catastro.rules;
 
 import org.gvsig.fmap.core.NewFConverter;
 
