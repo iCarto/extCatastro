@@ -42,38 +42,32 @@ public class UpdateConstructionsGeom implements IAction {
     }
 
     private boolean dividingPrediosAffectedConstrucciones() {
-	Geometry geom1 = predios.get(0).toJTSGeometry();
-	Geometry geom2 = predios.get(1).toJTSGeometry();
-	Geometry prediosIntersection = geom1.intersection(geom2);
+	Geometry prediosIntersection = getPrediosIntersection();
 	if(prediosIntersection.getGeometryType().equalsIgnoreCase("LineString") ||
 		prediosIntersection.getGeometryType().equalsIgnoreCase("MultiLineString")){
-	    Envelope envelope = prediosIntersection.getEnvelopeInternal();
-	    double delta = 10; //offset to get geometries touching the real envelope
-	    double minX = envelope.getMinX() - delta;
-	    double minY = envelope.getMinY() - delta;
-	    double maxX = envelope.getMaxX() + delta;
-	    double maxY = envelope.getMaxY() + delta;
-	    Rectangle2D boundingBox = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+
+	    Rectangle2D intersectionBoundingBox = getBoundingBoxOfIntersection(prediosIntersection);
 	    try {
-		IFeatureIterator neighboringGeometries = construccionesLayer.getSource().getFeatureIterator(boundingBox, null, null, false);
-		while (neighboringGeometries.hasNext()) {
-		    IFeature feature = neighboringGeometries.next();
-		    IGeometry geometry = feature.getGeometry();
-		    Rectangle2D boundingBoxOfConstruccionGeom = geometry.getBounds2D();
-		    if (boundingBox.intersects(boundingBoxOfConstruccionGeom)) {
-			Geometry construccionGeom = geometry.toJTSGeometry();
+		IFeatureIterator neighboringConstructions = construccionesLayer.getSource().getFeatureIterator(intersectionBoundingBox, null, null, false);
+		while (neighboringConstructions.hasNext()) {
+		    IFeature construccionIFeature = neighboringConstructions.next();
+		    IGeometry construccionIGeometry = construccionIFeature.getGeometry();
+		    Rectangle2D construccionBoundingBox = construccionIGeometry.getBounds2D();
+		    if (intersectionBoundingBox.intersects(construccionBoundingBox)) {
+			Geometry construccionGeom = construccionIGeometry.toJTSGeometry();
 			Polygon[] construccionPolygons = JtsUtil.extractPolygons(construccionGeom);
 			int numGeometries = construccionPolygons.length;
 			for (int j = 0; j < numGeometries; j++) {
 			    Polygon edificio = construccionPolygons[j];
-			    Geometry intersectionWithEdificio = prediosIntersection.intersection(edificio);
-			    String isIntersecting = intersectionWithEdificio.getGeometryType();
-			    if((intersectionWithEdificio.getNumGeometries() > 0) &&
+			    Geometry lineOfIntersection = prediosIntersection.intersection(edificio);
+			    String isIntersecting = lineOfIntersection.getGeometryType();
+			    if((lineOfIntersection.getNumGeometries() > 0) &&
 				    ((isIntersecting.equalsIgnoreCase("LineString")) || (isIntersecting.equalsIgnoreCase("MultiLineString")))){
-				System.out.println(" --- Area edificio toca: " + edificio.getArea());
-				System.out.println(" --- Length edificio toca: " + edificio.getLength());
-				//cutConstruccionesWithPrediosDivision();
-				return true;
+				ConstruccionesCutter construccionesCutter = new ConstruccionesCutter();
+				if(construccionesCutter.cut(construccionIFeature, prediosIntersection)){
+				    return true;
+				}
+				return false;
 			    }
 			}
 		    }
@@ -85,6 +79,24 @@ public class UpdateConstructionsGeom implements IAction {
 	    }
 	}
 	return false;
+    }
+
+    private Rectangle2D getBoundingBoxOfIntersection(
+	    Geometry prediosIntersection) {
+	Envelope envelope = prediosIntersection.getEnvelopeInternal();
+	double delta = 10; //offset to get geometries touching the real envelope
+	double minX = envelope.getMinX() - delta;
+	double minY = envelope.getMinY() - delta;
+	double maxX = envelope.getMaxX() + delta;
+	double maxY = envelope.getMaxY() + delta;
+	Rectangle2D boundingBox = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+	return boundingBox;
+    }
+
+    private Geometry getPrediosIntersection() {
+	Geometry geom1 = predios.get(0).toJTSGeometry();
+	Geometry geom2 = predios.get(1).toJTSGeometry();
+	return geom1.intersection(geom2);
     }
 
     @Override
