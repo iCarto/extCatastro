@@ -1,6 +1,7 @@
-package es.icarto.gvsig.catastro.actions;
+package es.icarto.gvsig.catastro.evaluator.actions;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
+import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
@@ -9,7 +10,7 @@ import es.icarto.gvsig.catastro.constants.Constants;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class AddValuesToNewManzana {
+public class AddValuesToNewManzana implements IAction {
 
     int rowIndex;
     FLyrVect layer = null;
@@ -25,7 +26,13 @@ public class AddValuesToNewManzana {
 	}
     }
 
-    public void addValues() {
+    @Override
+    public boolean execute() {
+	addValues();
+	return true;
+    }
+
+    private void addValues() {
 	try {
 	    int[] updatePositions = new int[recordset.getFieldCount()];
 	    String[] updateValues = new String[recordset.getFieldCount()];
@@ -64,5 +71,11 @@ public class AddValuesToNewManzana {
 
     private int getRegionIndex() throws ReadDriverException {
 	return recordset.getFieldIndexByName(Preferences.REGION_NAME_IN_DB);
+    }
+
+    @Override
+    public String getMessage() {
+	return PluginServices.getText(this,
+		"action_add_values_to_new_manzana_was_not_performed");
     }
 }
