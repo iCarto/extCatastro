@@ -1,6 +1,5 @@
 package es.icarto.gvsig.catastro.actions;
 
-import es.icarto.gvsig.catastro.IAction;
 
 public class UpdateConstructionsGeom implements IAction {
 

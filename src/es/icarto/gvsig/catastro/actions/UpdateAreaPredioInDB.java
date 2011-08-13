@@ -1,6 +1,5 @@
 package es.icarto.gvsig.catastro.actions;
 
-import es.icarto.gvsig.catastro.IAction;
 
 public class UpdateAreaPredioInDB implements IAction {
 

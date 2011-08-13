@@ -17,17 +17,16 @@ import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
-import es.icarto.gvsig.catastro.IAction;
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
-public class IDPredioCalculator implements IAction {
+public class UpdateIDNewPredio implements IAction {
 
     FLyrVect layer = null;
     IRowEdited selectedRow = null;
     ConstantManager constantManager = null;
 
-    public IDPredioCalculator(FLyrVect l, IRowEdited row) {
+    public UpdateIDNewPredio(FLyrVect l, IRowEdited row) {
 	layer = l;
 	selectedRow = row;
 	constantManager = new ConstantManager();

@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro;
+package es.icarto.gvsig.catastro.actions;
 
 public interface IAction {
 

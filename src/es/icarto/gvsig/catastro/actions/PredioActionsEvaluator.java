@@ -1,17 +1,14 @@
-package es.icarto.gvsig.catastro;
+package es.icarto.gvsig.catastro.actions;
 
 import java.util.ArrayList;
 
-import es.icarto.gvsig.catastro.actions.UpdateAreaPredioInDB;
-import es.icarto.gvsig.catastro.actions.UpdateConstructionsFather;
-import es.icarto.gvsig.catastro.actions.UpdateConstructionsGeom;
 
-public class PredioActions {
+public class PredioActionsEvaluator {
 
     private ArrayList<IAction> actions = null;
     private ArrayList<String> messages = null;
 
-    public PredioActions(){
+    public PredioActionsEvaluator(){
 	actions = new ArrayList<IAction>();
 	messages = new ArrayList<String>();
 	init();

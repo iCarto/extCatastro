@@ -19,7 +19,8 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
 import es.icarto.gvsig.catastro.actions.CreatePredioWhenAddNewManzana;
-import es.icarto.gvsig.catastro.actions.IDPredioCalculator;
+import es.icarto.gvsig.catastro.actions.UpdateIDNewPredio;
+import es.icarto.gvsig.catastro.actions.PredioActionsEvaluator;
 import es.icarto.gvsig.catastro.actions.rules.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.actions.rules.PredioRulesEvaluator;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
@@ -61,7 +62,7 @@ public class ActionDispatcherExtension extends Extension implements EndGeometryL
 	if (action == ACTION_CALCULATE_NEW_PREDIO_ID) {
 	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
 		    .getSelectedRow();
-	    IDPredioCalculator newPredio = new IDPredioCalculator(
+	    UpdateIDNewPredio newPredio = new UpdateIDNewPredio(
 		    (FLyrVect) layer, selectedRow);
 	    Value[] values = newPredio.getAttributes();
 	    ((CutPolygonCADTool) cadTool).setParametrizableValues(values);
@@ -69,7 +70,7 @@ public class ActionDispatcherExtension extends Extension implements EndGeometryL
 	    ArrayList<IGeometry> geoms = ((CutPolygonCADTool) cadTool).getGeometriesCreated();
 	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(geoms);
 	    if (predioRulesEvaluator.isOK()) {
-		PredioActions predioActions = new PredioActions();
+		PredioActionsEvaluator predioActions = new PredioActionsEvaluator();
 		predioActions.execute();
 		System.out.println(" -------- Launch form");
 	    }
