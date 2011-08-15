@@ -34,14 +34,14 @@ public class UpdateConstructionsGeom implements IAction {
 
     @Override
     public boolean execute() {
-	if(dividingPrediosAffectedConstrucciones()){
+	if(dividingConstruccionesAffectedByDividingPredios()){
 	    return true;
 	} else{
 	    return true;
 	}
     }
 
-    private boolean dividingPrediosAffectedConstrucciones() {
+    private boolean dividingConstruccionesAffectedByDividingPredios() {
 	Geometry prediosIntersection = getPrediosIntersection();
 	if(prediosIntersection.getGeometryType().equalsIgnoreCase("LineString") ||
 		prediosIntersection.getGeometryType().equalsIgnoreCase("MultiLineString")){
@@ -63,22 +63,23 @@ public class UpdateConstructionsGeom implements IAction {
 			    String isIntersecting = lineOfIntersection.getGeometryType();
 			    if((lineOfIntersection.getNumGeometries() > 0) &&
 				    ((isIntersecting.equalsIgnoreCase("LineString")) || (isIntersecting.equalsIgnoreCase("MultiLineString")))){
-				ConstruccionesCutter construccionesCutter = new ConstruccionesCutter();
-				if(construccionesCutter.cut(construccionIFeature, prediosIntersection)){
-				    return true;
+				ConstruccionesCutter construccionesCutter = new ConstruccionesCutter(construccionesLayer);
+				//Clip each intersecting construccion by means of the first predio
+				//This predio will contain the old ID, so do construcciones clipped by it
+				if(!construccionesCutter.clip(construccionIFeature, Integer.parseInt(construccionIFeature.getID()), predios.get(0))){
+				    //end the process if some construction was impossible to cut
+				    return false;
 				}
-				return false;
 			    }
 			}
 		    }
 		}
-		return false;
 	    } catch (ReadDriverException e) {
 		e.printStackTrace();
 		return false;
 	    }
 	}
-	return false;
+	return true; //there is no construction to divide or all were divided well
     }
 
     private Rectangle2D getBoundingBoxOfIntersection(

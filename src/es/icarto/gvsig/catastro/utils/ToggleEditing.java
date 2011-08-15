@@ -17,15 +17,19 @@
  * 
  * 
  * Authors:
- *   Juan Ignacio Varela García <nachouve (at) gmail (dot) com>
+ *   Juan Ignacio Varela Garcï¿½a <nachouve (at) gmail (dot) com>
  *   Pablo Sanxiao Roca <psanxiao (at) gmail (dot) com>
- *   Javier Estévez Valiñas <valdaris (at) gmail (dot) com>
+ *   Javier Estï¿½vez Valiï¿½as <valdaris (at) gmail (dot) com>
  */
 package es.icarto.gvsig.catastro.utils;
 
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.Types;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -41,6 +45,7 @@ import com.iver.cit.gvsig.EditionManager;
 import com.iver.cit.gvsig.EditionUtilities;
 import com.iver.cit.gvsig.ProjectExtension;
 import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileReadException;
+import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileWriteException;
 import com.iver.cit.gvsig.exceptions.layers.CancelEditingLayerException;
 import com.iver.cit.gvsig.exceptions.layers.LegendLayerException;
 import com.iver.cit.gvsig.exceptions.layers.StartEditionLayerException;
@@ -49,6 +54,7 @@ import com.iver.cit.gvsig.exceptions.validate.ValidateRowException;
 import com.iver.cit.gvsig.exceptions.visitors.StartWriterVisitorException;
 import com.iver.cit.gvsig.exceptions.visitors.StopWriterVisitorException;
 import com.iver.cit.gvsig.fmap.MapControl;
+import com.iver.cit.gvsig.fmap.ViewPort;
 import com.iver.cit.gvsig.fmap.core.DefaultFeature;
 import com.iver.cit.gvsig.fmap.core.DefaultRow;
 import com.iver.cit.gvsig.fmap.core.FShape;
@@ -59,6 +65,7 @@ import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
 import com.iver.cit.gvsig.fmap.drivers.ILayerDefinition;
 import com.iver.cit.gvsig.fmap.drivers.ITableDefinition;
 import com.iver.cit.gvsig.fmap.drivers.shp.IndexedShpDriver;
+import com.iver.cit.gvsig.fmap.edition.DefaultRowEdited;
 import com.iver.cit.gvsig.fmap.edition.EditionEvent;
 import com.iver.cit.gvsig.fmap.edition.EditionExceptionOld;
 import com.iver.cit.gvsig.fmap.edition.IEditableSource;
@@ -69,11 +76,14 @@ import com.iver.cit.gvsig.fmap.edition.IWriter;
 import com.iver.cit.gvsig.fmap.edition.VectorialEditableAdapter;
 import com.iver.cit.gvsig.fmap.edition.rules.IRule;
 import com.iver.cit.gvsig.fmap.edition.rules.RulePolygon;
+import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SpatialCache;
 import com.iver.cit.gvsig.fmap.rendering.ILegend;
 import com.iver.cit.gvsig.fmap.rendering.IVectorLegend;
+import com.iver.cit.gvsig.gui.cad.DefaultCADTool;
 import com.iver.cit.gvsig.layers.VectorialLayerEdited;
 import com.iver.cit.gvsig.project.documents.table.ProjectTable;
 import com.iver.cit.gvsig.project.documents.table.gui.Table;
@@ -94,6 +104,9 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 public class ToggleEditing {
 
     protected static Logger logger = Logger.getLogger("ToggleEditing");
+    private FLyrVect layerVectorial = null;
+    private VectorialEditableAdapter vea = null;
+    private VectorialLayerEdited vle = null;
 
     public boolean toggle(FLayer layer) {
 	return true;
@@ -122,20 +135,17 @@ public class ToggleEditing {
 		EditionManager editionManager = CADExtension
 			.getEditionManager();
 		editionManager.setMapControl(mapControl);
+		layerVectorial = (FLyrVect) layer;
 
-		FLyrVect lv = (FLyrVect) layer;
-
-		lv.addLayerListener(editionManager);
-		ILegend legendOriginal = lv.getLegend();
+		layerVectorial.addLayerListener(editionManager);
+		ILegend legendOriginal = layerVectorial.getLegend();
 
 		try {
-		    lv.setEditing(true);
+		    layerVectorial.setEditing(true);
 		} catch (StartEditionLayerException e) {
 		    logger.error(e.getMessage(), e);
 		}
-		VectorialEditableAdapter vea = (VectorialEditableAdapter) lv
-			.getSource();
-
+		vea = (VectorialEditableAdapter) layerVectorial.getSource();
 		vea.getRules().clear();
 		try {
 		    if (vea.getShapeType() == FShape.POLYGON) {
@@ -146,17 +156,17 @@ public class ToggleEditing {
 		    logger.error(e.getMessage(), e);
 		}
 
-		if (!(lv.getSource().getDriver() instanceof IndexedShpDriver)) {
-		    VectorialLayerEdited vle = (VectorialLayerEdited) editionManager
-			    .getLayerEdited(lv);
-		    vle.setLegend(legendOriginal);
-		}
+		//		if (!(layerVectorial.getSource().getDriver() instanceof IndexedShpDriver)) {
+		//		    vle = (VectorialLayerEdited) editionManager.getLayerEdited(layerVectorial);
+		//		    vle.setLegend(legendOriginal);
+		//		}
+		vle = (VectorialLayerEdited) editionManager.getLayerEdited(layerVectorial);
 		vea.getCommandRecord().addCommandListener(mapControl);
 		// If there's a table linked to this layer, its model is changed
 		// to VectorialEditableAdapter.
 		ProjectExtension pe = (ProjectExtension) PluginServices
 			.getExtension(ProjectExtension.class);
-		ProjectTable pt = pe.getProject().getTable(lv);
+		ProjectTable pt = pe.getProject().getTable(layerVectorial);
 		if (pt != null) {
 		    pt.setModel(vea);
 		    changeModelTable(pt, vea);
@@ -205,6 +215,7 @@ public class ToggleEditing {
     public void stopEditing(FLayer layer, boolean cancel) {
 
 	EditionManager edMan = CADExtension.getEditionManager();
+	vle = (VectorialLayerEdited) edMan.getActiveLayerEdited();
 	com.iver.andami.ui.mdiManager.IWindow f = PluginServices
 		.getMDIManager().getActiveWindow();
 
@@ -632,6 +643,76 @@ public class ToggleEditing {
 	    logger.error(e.getMessage(), e);
 	} catch (ValidateRowException e) {
 	    logger.error(e.getMessage(), e);
+	}
+    }
+
+    public void modifyFeature(int index, IFeature row, String nameOfCADToolUsed) {
+	try {
+	    vea.modifyRow(index, row, nameOfCADToolUsed, EditionEvent.GRAPHIC);
+	} catch (ValidateRowException e) {
+	    NotificationManager.addError(e.getMessage(),e);
+	} catch (ExpansionFileWriteException e) {
+	    NotificationManager.addError(e.getMessage(),e);
+	} catch (ReadDriverException e) {
+	    NotificationManager.addError(e.getMessage(),e);
+	}
+	//draw(row.getGeometry().cloneGeometry());
+    }
+
+    public void addGeometryWithParametrizedValues(IGeometry geometry, Value[] values, String nameOfCADToolUsed) {
+	try {
+	    String newFID = vea.getNewFID();
+	    DefaultFeature df = new DefaultFeature(geometry, values, newFID);
+	    int index = vea.addRow(df, nameOfCADToolUsed, EditionEvent.GRAPHIC);
+	    clearSelection();
+	    //ArrayList selectedRow = vle.getSelectedRow();
+
+	    ViewPort vp = vle.getLayer().getMapContext().getViewPort();
+	    BufferedImage selectionImage = new BufferedImage(vp
+		    .getImageWidth(), vp.getImageHeight(),
+		    BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D gs = selectionImage.createGraphics();
+	    int inversedIndex=vea.getInversedIndex(index);
+	    vle.addSelectionCache(new DefaultRowEdited(df,
+		    IRowEdited.STATUS_ADDED, inversedIndex ));
+	    vea.getSelection().set(inversedIndex);
+	    IGeometry geom = df.getGeometry();
+	    geom.cloneGeometry().draw(gs, vp, DefaultCADTool.selectionSymbol);
+	    vle.drawHandlers(geom.cloneGeometry(), gs, vp);
+	    vea.setSelectionImage(selectionImage);
+	    insertSpatialCache(geom);
+	} catch (ReadDriverException e) {
+	    NotificationManager.addError(e.getMessage(),e);
+	    return;
+	} catch (ValidateRowException e) {
+	    NotificationManager.addError(e.getMessage(),e);
+	    return;
+	}
+	//draw(geometry.cloneGeometry());
+    }
+
+    protected void insertSpatialCache(IGeometry geom) {
+	SpatialCache spatialCache=((FLyrVect)vle.getLayer()).getSpatialCache();
+	Rectangle2D r=geom.getBounds2D();
+	if (geom.getGeometryType()==FShape.POINT) {
+	    r = new Rectangle2D.Double(r.getX(),r.getY(),1,1);
+	}
+	spatialCache.insert(r,geom);
+
+    }
+
+    public void clearSelection() throws ReadDriverException {
+	if(vle != null){
+	    ArrayList selectedRow = vle.getSelectedRow();
+	    ArrayList selectedHandlers = vle.getSelectedHandler();
+	    selectedRow.clear();
+	    selectedHandlers.clear();
+	}
+	if (vea != null){
+	    FBitSet selection = vea.getSelection();
+	    selection.clear();
+	    vea.setSelectionImage(null);
+	    vea.setHandlersImage(null);
 	}
     }
 
