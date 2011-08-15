@@ -6,11 +6,11 @@ import com.iver.cit.gvsig.fmap.core.IGeometry;
 
 import es.icarto.gvsig.catastro.utils.Preferences;
 
-public class ManzanaRulesEvaluator extends AbstractEvaluator {
+public class ConstruccionRulesEvaluator extends AbstractEvaluator {
 
     IGeometry insertedGeometry;
 
-    public ManzanaRulesEvaluator(IGeometry insertedGeometry) {
+    public ConstruccionRulesEvaluator(IGeometry insertedGeometry) {
 	this.insertedGeometry = insertedGeometry;
 	rules = new ArrayList<IRule>();
 	init();
@@ -18,8 +18,7 @@ public class ManzanaRulesEvaluator extends AbstractEvaluator {
 
     private void init() {
 	rules.add(new CheckGeometryIsOverlapingAnotherOne(insertedGeometry,
-		Preferences.MANZANAS_LAYER_NAME));
-	rules.add(new CheckManzanaIsWithinOneRegion(insertedGeometry));
+		Preferences.CONSTRUCCIONES_LAYER_NAME));
     }
 
 }

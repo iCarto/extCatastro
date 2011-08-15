@@ -22,9 +22,11 @@ import com.iver.cit.gvsig.listeners.EndGeometryListener;
 import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
 import es.icarto.gvsig.catastro.evaluator.actions.ManzanaActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.PredioActionsEvaluator;
+import es.icarto.gvsig.catastro.evaluator.rules.ConstruccionRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.FusionPrediosRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.PredioRulesEvaluator;
+import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
@@ -36,6 +38,7 @@ public class ActionDispatcherExtension extends Extension implements
     private final int ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO = 1;
     private final int ACTION_CHECK_RULES_FOR_MERGING_PREDIO = 2;
     private static final int ACTION_CHECK_RULES_FOR_NEW_MANZANA = 3;
+    private static final int ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION = 4;
 
     @Override
     public void initialize() {
@@ -148,6 +151,32 @@ public class ActionDispatcherExtension extends Extension implements
 		    te.stopEditing(layer, true);
 		}
 	    }
+	} else if (action == ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION) {
+	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
+		    .getInsertedGeometry();
+	    ConstruccionRulesEvaluator construccionRulesEvaluator = new ConstruccionRulesEvaluator(
+		    insertedGeometry);
+	    if (!construccionRulesEvaluator.isOK()) {
+		if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    te.stopEditing(layer, true);
+		}
+		JOptionPane.showMessageDialog(null, construccionRulesEvaluator
+			.getErrorMessage(), "Alta Construccion",
+			JOptionPane.WARNING_MESSAGE);
+	    } else {
+		int option = JOptionPane.showConfirmDialog(null, PluginServices
+			.getText(this, "save_construccion_confirm"),
+			"Crear Manzana", JOptionPane.YES_NO_OPTION,
+			JOptionPane.QUESTION_MESSAGE, null);
+		if (option == JOptionPane.OK_OPTION) {
+		    // TODO: Launch Form
+		}
+		if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    // TODO: save previous actions
+		    // te.stopEditing(layer, false);
+		    te.stopEditing(layer, true);
+		}
+	    }
 	}
     }
 
@@ -167,8 +196,16 @@ public class ActionDispatcherExtension extends Extension implements
 	    return ACTION_CHECK_RULES_FOR_MERGING_PREDIO;
 	} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
 		&& (cadTool instanceof AreaCADTool)
-		&& (layer instanceof FLyrVect)) {
+		&& (layer instanceof FLyrVect)
+		&& layer.getName().compareToIgnoreCase(
+			Preferences.MANZANAS_LAYER_NAME) == 0) {
 	    return ACTION_CHECK_RULES_FOR_NEW_MANZANA;
+	} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
+		&& (cadTool instanceof AreaCADTool)
+		&& (layer instanceof FLyrVect)
+		&& layer.getName().compareToIgnoreCase(
+			Preferences.CONSTRUCCIONES_LAYER_NAME) == 0) {
+	    return ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION;
 	}
 	return NO_ACTION;
     }

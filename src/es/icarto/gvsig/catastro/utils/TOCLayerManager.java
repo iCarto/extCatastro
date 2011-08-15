@@ -111,4 +111,9 @@ public class TOCLayerManager {
 	FLyrVect predios = getLayerByName(Preferences.PREDIOS_LAYER_NAME);
 	return predios.isEditing();
     }
+
+    public boolean isConstruccionesLayerInEdition() {
+	FLyrVect construcciones = getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
+	return construcciones.isEditing();
+    }
 }
