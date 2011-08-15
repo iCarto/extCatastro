@@ -19,9 +19,8 @@ public class PredioActionsEvaluator {
     }
 
     private void init(){
-	actions.add(new UpdateAreaPredioInDB());
 	actions.add(new UpdateConstructionsGeom(prediosGeoms));
-	actions.add(new UpdateConstructionsFather());
+	actions.add(new UpdateConstructionsFather(prediosGeoms));
     }
 
     public ArrayList<String> execute(){
