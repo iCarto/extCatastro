@@ -19,6 +19,7 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
 import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
+import es.icarto.gvsig.catastro.evaluator.actions.ManzanaActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.PredioActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.PredioRulesEvaluator;

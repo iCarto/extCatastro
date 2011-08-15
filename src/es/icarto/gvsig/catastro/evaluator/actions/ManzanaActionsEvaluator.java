@@ -1,12 +1,9 @@
-package es.icarto.gvsig.catastro;
+package es.icarto.gvsig.catastro.evaluator.actions;
 
 import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.catastro.evaluator.actions.AddValuesToNewManzana;
-import es.icarto.gvsig.catastro.evaluator.actions.CreatePredioWhenAddNewManzana;
-import es.icarto.gvsig.catastro.evaluator.actions.IAction;
 
 public class ManzanaActionsEvaluator {
 
