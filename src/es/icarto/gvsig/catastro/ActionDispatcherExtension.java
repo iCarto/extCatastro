@@ -136,7 +136,7 @@ public class ActionDispatcherExtension extends Extension implements
 		int option = JOptionPane.showConfirmDialog(null, PluginServices
 			.getText(this, "save_manzana_confirm"),
 			"Crear Manzana", JOptionPane.YES_NO_OPTION,
-			JOptionPane.YES_NO_OPTION, null);
+			JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
 		    ManzanaActionsEvaluator manzanaActionsEvaluator = new ManzanaActionsEvaluator(
 			    (FLyrVect) layer, rowIndex);
