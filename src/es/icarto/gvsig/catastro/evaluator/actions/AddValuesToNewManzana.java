@@ -48,6 +48,7 @@ public class AddValuesToNewManzana implements IAction {
 	}
 	manzanasIDs = getAllManzanasIDInRecordset();
 	if (manzanasIDs != null && addValues()) {
+	    constantManager.getConstants().setManzana(getNewManzanaID());
 	    return true;
 	} else {
 	    return false;
@@ -72,7 +73,7 @@ public class AddValuesToNewManzana implements IAction {
 	    updateValues[2] = Preferences.MUNICIPIO;
 	    updateValues[3] = Preferences.LIMITE;
 	    updateValues[4] = constantManager.getConstants().getRegion();
-	    updateValues[4] = getNewManzanaID();
+	    updateValues[5] = getNewManzanaID();
 	    updateValues[6] = Double.toString(getAreaOfNewManzana());
 
 	    ToggleEditing te = new ToggleEditing();

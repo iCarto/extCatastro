@@ -29,6 +29,7 @@ import com.iver.cit.gvsig.layers.VectorialLayerEdited;
 import com.iver.cit.gvsig.project.documents.view.gui.View;
 import com.iver.utiles.NotExistInXMLEntity;
 import com.iver.utiles.XMLEntity;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 
@@ -196,7 +197,7 @@ public class CopyFeaturesUtils {
 			    // los
 			    // campos de
 			    // myRs para
-			    // rellenarlos
+			    // rellenarlo
 			    String name = myRs.getFieldName(j);
 			    int type = myRs.getFieldType(j);
 			    values[j] = ValueFactory.createNullValue();
@@ -214,6 +215,32 @@ public class CopyFeaturesUtils {
 					    .getStringProperty(name);
 				    values[j] = ValueFactory.createValueByType(
 					    stringValue, type);
+				}
+				// Add predioID by default (001)
+				if (name
+					.compareTo(Preferences.PREDIO_NAME_IN_DB) == 0) {
+				    values[j] = ValueFactory.createValueByType(
+					    "001", type);
+				}
+				// Add calculated area
+				if (name
+					.compareToIgnoreCase(Preferences.PREDIO_AREA_NAME_IN_DB) == 0) {
+				    child = featureXML.firstIndexOfChild(
+					    "name", "geometry");
+				    if (child == -1) {
+					continue;
+				    }
+				    XMLEntity geometryXML = featureXML
+					    .getChild(child);
+				    if (geometryXML == null) {
+					return;
+				    }
+				    Geometry geom = geometryReader
+					    .read(geometryXML
+						    .getStringProperty("geometry"));
+				    values[j] = ValueFactory.createValueByType(
+					    Double.toString(geom.getArea()),
+					    type);
 				}
 			    }
 			}
@@ -247,7 +274,7 @@ public class CopyFeaturesUtils {
 			    spatialCache.insert(r, geom);
 
 			    CADExtension.getCADToolAdapter().getMapControl()
-			    .rePaintDirtyLayers();
+				    .rePaintDirtyLayers();
 
 			}
 		    }
