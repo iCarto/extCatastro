@@ -22,8 +22,7 @@
 				<action-tool icon="" tooltip="SeleccionarRegion"
 					action-command="_select_region" position="1003"/>
 			</tool-bar>-->
-			<menu text="Catastro/Selección/Región" action-command="_select_region"
-				icon="" position="1003"/> 
+			<menu text="Catastro/Selección/Región" action-command="_select_region" position="1003"/> 
 		</extension>
 
 		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionManzanaExtension" description="Select manzana" active="true">
@@ -31,8 +30,7 @@
 				<action-tool icon="" tooltip="SeleccionarManzana"
 					action-command="_select_manzana" position="2006"/>
 			</tool-bar>-->
-			<menu text="Catastro/Selección/Manzana" action-command="_select_manzana"
-				icon="" position="2006"/> 
+			<menu text="Catastro/Selección/Manzana" action-command="_select_manzana" position="2006"/> 
 		</extension>
 
 		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionPredioExtension" description="Select predio" active="true">
@@ -40,8 +38,7 @@
 				<action-tool icon="" tooltip="SeleccionarPredio"
 					action-command="_select_predio" position="3009"/>
 			</tool-bar>-->
-			<menu text="Catastro/Selección/Predio" action-command="_select_predio"
-				icon="" position="3009"/> 
+			<menu text="Catastro/Selección/Predio" action-command="_select_predio" position="3009"/> 
 		</extension>
 		
 		<extension class-name="es.icarto.gvsig.catastro.CleanAllConstantsExtension" description="Clean constants" active="true">
@@ -49,8 +46,7 @@
 				<action-tool icon="" tooltip="Limpiar selección de constantes"
 					action-command="_clean_constants" position="4012"/>
 			</tool-bar>-->
-			<menu text="Catastro/Selección/Limpiar selección" action-command="_clean_constants"
-				icon="" position="4012"/> 
+			<menu text="Catastro/Selección/Limpiar selección" action-command="_clean_constants" position="4012"/> 
 		</extension>
 	
 		<!-- USER FUNCTIONALITIES MENU MANZANAS -->
