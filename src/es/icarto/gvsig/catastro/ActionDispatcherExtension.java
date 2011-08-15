@@ -15,24 +15,27 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.gui.cad.CADTool;
 import com.iver.cit.gvsig.gui.cad.tools.AreaCADTool;
 import com.iver.cit.gvsig.gui.cad.tools.CutPolygonCADTool;
+import com.iver.cit.gvsig.gui.cad.tools.JoinCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
 import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
 import es.icarto.gvsig.catastro.evaluator.actions.ManzanaActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.PredioActionsEvaluator;
+import es.icarto.gvsig.catastro.evaluator.rules.FusionPrediosRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.PredioRulesEvaluator;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements
-EndGeometryListener {
+	EndGeometryListener {
 
     private static final int NO_ACTION = -1;
     private final int ACTION_CALCULATE_NEW_PREDIO_ID = 0;
     private final int ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO = 1;
-    private static final int ACTION_CHECK_RULES_FOR_NEW_MANZANA = 2;
+    private final int ACTION_CHECK_RULES_FOR_MERGING_PREDIO = 2;
+    private static final int ACTION_CHECK_RULES_FOR_NEW_MANZANA = 3;
 
     @Override
     public void initialize() {
@@ -90,15 +93,31 @@ EndGeometryListener {
 			.getText(this, "save_predio_confirm"), "Divide predio",
 			JOptionPane.YES_NO_OPTION, JOptionPane.YES_NO_OPTION,
 			null);
-		if(option == JOptionPane.OK_OPTION){
-		    PredioActionsEvaluator predioActionsEvaluator = new PredioActionsEvaluator(geoms);
+		if (option == JOptionPane.OK_OPTION) {
+		    PredioActionsEvaluator predioActionsEvaluator = new PredioActionsEvaluator(
+			    geoms);
 		    predioActionsEvaluator.execute();
 		}
-		if(tocLayerManager.isPrediosLayerInEdition()){
-		    //TODO: save previous actions
-		    //te.stopEditing(layer, false);
+		if (tocLayerManager.isPrediosLayerInEdition()) {
+		    // TODO: save previous actions
+		    // te.stopEditing(layer, false);
 		    te.stopEditing(layer, true);
 		}
+	    }
+	} else if (action == ACTION_CHECK_RULES_FOR_MERGING_PREDIO) {
+	    ArrayList<IGeometry> geoms = new ArrayList<IGeometry>();
+	    IGeometry finalGeometry = ((JoinCADTool) cadTool)
+		    .getJoinedGeometry();
+	    geoms.add(finalGeometry);
+	    FusionPrediosRulesEvaluator fusionPrediosRulesEvaluator = new FusionPrediosRulesEvaluator(
+		    geoms);
+	    if (fusionPrediosRulesEvaluator.isOK()) {
+		te.stopEditing(layer, false);
+	    } else {
+		te.stopEditing(layer, true);
+		JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
+			.getErrorMessage(), "Fusión Predios",
+			JOptionPane.WARNING_MESSAGE);
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
 	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
@@ -119,12 +138,13 @@ EndGeometryListener {
 			"Crear Manzana", JOptionPane.YES_NO_OPTION,
 			JOptionPane.YES_NO_OPTION, null);
 		if (option == JOptionPane.OK_OPTION) {
-		    ManzanaActionsEvaluator manzanaActionsEvaluator = new ManzanaActionsEvaluator((FLyrVect) layer, rowIndex);
+		    ManzanaActionsEvaluator manzanaActionsEvaluator = new ManzanaActionsEvaluator(
+			    (FLyrVect) layer, rowIndex);
 		    manzanaActionsEvaluator.execute();
 		}
-		if(tocLayerManager.isManzanaLayerInEdition()){
-		    //TODO: save previous actions
-		    //te.stopEditing(layer, false);
+		if (tocLayerManager.isManzanaLayerInEdition()) {
+		    // TODO: save previous actions
+		    // te.stopEditing(layer, false);
 		    te.stopEditing(layer, true);
 		}
 	    }
@@ -141,6 +161,10 @@ EndGeometryListener {
 		&& (cadTool instanceof CutPolygonCADTool)
 		&& (layer instanceof FLyrVect)) {
 	    return ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO;
+	} else if (cadToolKey.equalsIgnoreCase(JoinCADTool.JOIN_ACTION_COMMAND)
+		&& (cadTool instanceof JoinCADTool)
+		&& (layer instanceof FLyrVect)) {
+	    return ACTION_CHECK_RULES_FOR_MERGING_PREDIO;
 	} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
 		&& (cadTool instanceof AreaCADTool)
 		&& (layer instanceof FLyrVect)) {

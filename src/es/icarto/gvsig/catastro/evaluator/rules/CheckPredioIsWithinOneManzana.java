@@ -26,10 +26,10 @@ public class CheckPredioIsWithinOneManzana implements IRule {
     @Override
     public boolean isObey() {
 	Geometry manzanaJTSGeom = getManzanaGeom();
-	for (IGeometry geom : geoms){
+	for (IGeometry geom : geoms) {
 	    Geometry predioJTSGeom = NewFConverter.toJtsGeometry(geom);
 	    Geometry manzanaJTSGeomWithBuffer = manzanaJTSGeom.buffer(0.5);
-	    if(!predioJTSGeom.coveredBy(manzanaJTSGeomWithBuffer)){
+	    if (!predioJTSGeom.coveredBy(manzanaJTSGeomWithBuffer)) {
 		return false;
 	    }
 	}
@@ -38,7 +38,8 @@ public class CheckPredioIsWithinOneManzana implements IRule {
 
     private Geometry getManzanaGeom() {
 	TOCLayerManager tocLayerManager = new TOCLayerManager();
-	FLyrVect manzana = tocLayerManager.getLayerByName(Preferences.MANZANAS_LAYER_NAME);
+	FLyrVect manzana = tocLayerManager
+		.getLayerByName(Preferences.MANZANAS_LAYER_NAME);
 	IGeometry manzanaGeom = getGeomFromFLyrVect(manzana);
 	Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(manzanaGeom);
 	return manzanaJTSGeom;
@@ -47,10 +48,14 @@ public class CheckPredioIsWithinOneManzana implements IRule {
     private IGeometry getGeomFromFLyrVect(FLyrVect layer) {
 	ConstantManager constantManager = new ConstantManager();
 	try {
-	    String sqlQuery = "select * from '" + layer.getRecordset().getName() + "'" +
-		    " where " + Preferences.MANZANA_NAME_IN_DB + " ='" + constantManager.getConstants().getManzana() + "' "+
-		    " and " + Preferences.REGION_NAME_IN_DB + " = '" + constantManager.getConstants().getRegion() +"';";
-	    IFeatureIterator featureIterator = layer.getSource().getFeatureIterator(sqlQuery, null);
+	    String sqlQuery = "select * from '"
+		    + layer.getRecordset().getName() + "'" + " where "
+		    + Preferences.MANZANA_NAME_IN_DB + " ='"
+		    + constantManager.getConstants().getManzana() + "' "
+		    + " and " + Preferences.REGION_NAME_IN_DB + " = '"
+		    + constantManager.getConstants().getRegion() + "';";
+	    IFeatureIterator featureIterator = layer.getSource()
+		    .getFeatureIterator(sqlQuery, null);
 	    return featureIterator.next().getGeometry();
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
@@ -60,7 +65,13 @@ public class CheckPredioIsWithinOneManzana implements IRule {
 
     @Override
     public String getMessage() {
-	return PluginServices.getText(this, "rule_predio_is_not_within_manzana");
+	if (geoms.size() == 1) {
+	    return PluginServices.getText(this,
+		    "rule_merged_predio_is_not_within_selected_manzana");
+	} else {
+	    return PluginServices.getText(this,
+		    "rule_predio_is_not_within_manzana");
+	}
     }
 
 }
