@@ -68,10 +68,10 @@ public class AddValuesToNewManzana implements IAction {
 	    updatePositions[5] = getManzanaIndex();
 	    updatePositions[6] = getManzanaAreaIndex();
 
-	    updateValues[0] = Preferences.PAIS;
-	    updateValues[1] = Preferences.ESTADO;
-	    updateValues[2] = Preferences.MUNICIPIO;
-	    updateValues[3] = Preferences.LIMITE;
+	    updateValues[0] = constantManager.getConstants().getPais();
+	    updateValues[1] = constantManager.getConstants().getEstado();
+	    updateValues[2] = constantManager.getConstants().getMunicipio();
+	    updateValues[3] = constantManager.getConstants().getLimiteMunicipal();
 	    updateValues[4] = constantManager.getConstants().getRegion();
 	    updateValues[5] = getNewManzanaID();
 	    updateValues[6] = Double.toString(getAreaOfNewManzana());

@@ -58,8 +58,12 @@ public class CheckAllAreaPrediosEqualsAreaManzana implements IRule {
 	ConstantManager constantManager = new ConstantManager();
 	try {
 	    String sqlQuery = "select * from '" + layer.getRecordset().getName() + "'" +
-		    " where " + Preferences.MANZANA_NAME_IN_DB + " ='" + constantManager.getConstants().getManzana() + "' "+
-		    " and " + Preferences.REGION_NAME_IN_DB + " = '" + constantManager.getConstants().getRegion() +"';";
+		    " where " + Preferences.PAIS_NAME_IN_DB + " = " + constantManager.getConstants().getPais() + " "+
+		    " and " + Preferences.ESTADO_NAME_IN_DB + " = " + constantManager.getConstants().getEstado() + " "+
+		    " and " + Preferences.MUNICIPIO_NAME_IN_DB + " = " + constantManager.getConstants().getMunicipio() + " "+
+		    " and " + Preferences.LIMITE_NAME_IN_DB + " = " + constantManager.getConstants().getLimiteMunicipal() + " "+
+		    " and " + Preferences.MANZANA_NAME_IN_DB + " = " + constantManager.getConstants().getManzana() + " "+
+		    " and " + Preferences.REGION_NAME_IN_DB + " = " + constantManager.getConstants().getRegion() +";";
 	    return layer.getSource().getFeatureIterator(sqlQuery, null);
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
@@ -79,8 +83,12 @@ public class CheckAllAreaPrediosEqualsAreaManzana implements IRule {
 	ConstantManager constantManager = new ConstantManager();
 	try {
 	    String sqlQuery = "select * from '" + layer.getRecordset().getName() + "'" +
-		    " where " + Preferences.MANZANA_NAME_IN_DB + " ='" + constantManager.getConstants().getManzana() + "' "+
-		    " and " + Preferences.REGION_NAME_IN_DB + " = '" + constantManager.getConstants().getRegion() +"';";
+		    " where " + Preferences.PAIS_NAME_IN_DB + " = " + constantManager.getConstants().getPais() + " "+
+		    " and " + Preferences.ESTADO_NAME_IN_DB + " = " + constantManager.getConstants().getEstado() + " "+
+		    " and " + Preferences.MUNICIPIO_NAME_IN_DB + " = " + constantManager.getConstants().getMunicipio() + " "+
+		    " and " + Preferences.LIMITE_NAME_IN_DB + " = " + constantManager.getConstants().getLimiteMunicipal() + " "+
+		    " and " + Preferences.MANZANA_NAME_IN_DB + " = " + constantManager.getConstants().getManzana() + " "+
+		    " and " + Preferences.REGION_NAME_IN_DB + " = " + constantManager.getConstants().getRegion() +";";
 	    IFeatureIterator featureIterator = layer.getSource().getFeatureIterator(sqlQuery, null);
 	    return featureIterator.next().getGeometry();
 	} catch (ReadDriverException e) {

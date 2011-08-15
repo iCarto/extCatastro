@@ -1,5 +1,7 @@
 package es.icarto.gvsig.catastro.constants;
 
+import es.icarto.gvsig.catastro.utils.Preferences;
+
 public class Constants {
 
     private String region;
@@ -39,4 +41,25 @@ public class Constants {
 	manzana = null;
 	predio = null;
     }
+
+    public String getPais() {
+	//TODO: este campo se debe recuperar de una tabla de la BD
+	return Preferences.PAIS;
+    }
+
+    public String getEstado() {
+	//TODO: este campo se debe recuperar de una tabla de la BD
+	return Preferences.ESTADO;
+    }
+
+    public String getMunicipio() {
+	//TODO: este campo se debe recuperar de una tabla de la BD
+	return Preferences.MUNICIPIO;
+    }
+
+    public String getLimiteMunicipal() {
+	//TODO: este campo se debe recuperar de una tabla de la BD
+	return Preferences.LIMITE;
+    }
+
 }
