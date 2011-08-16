@@ -14,7 +14,6 @@ import com.hardcode.gdbms.engine.values.ValueFactory;
 import com.hardcode.gdbms.parser.ParseException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.edition.EditionEvent;
-import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
@@ -23,14 +22,12 @@ import es.icarto.gvsig.catastro.utils.Preferences;
 
 public class CalculateIDNewConstruccion implements IAction {
 
-    FLyrVect layer = null;
-    IRowEdited selectedRow = null;
+    FLyrVect construccionesLayer = null;
     ConstantManager constantManager = null;
-    private String[] construccionesIDs;
+    private Integer[] construccionesIDs;
 
-    public CalculateIDNewConstruccion(FLyrVect l, IRowEdited row) {
-	layer = l;
-	selectedRow = row;
+    public CalculateIDNewConstruccion(FLyrVect l) {
+	construccionesLayer = l;
 	constantManager = new ConstantManager();
     }
 
@@ -42,34 +39,19 @@ public class CalculateIDNewConstruccion implements IAction {
 	return false;
     }
 
-    public Value[] getAttributes() {
-	int numAttr;
-	try {
-	    numAttr = layer.getRecordset().getFieldCount();
-	    Value[] values = new Value[numAttr];
-	    values = selectedRow.getAttributes().clone();
-	    int construccionIDIndex = getConstruccionIDIndex();
-	    values[construccionIDIndex] = getNewConstruccionID();
-	    return values;
-	} catch (ReadDriverException e) {
-	    e.printStackTrace();
-	    return null;
-	}
-    }
-
     public Value getNewConstruccionID(){
 	Arrays.sort(construccionesIDs);
-	int biggerConstruccionID = Integer.parseInt(construccionesIDs[construccionesIDs.length-1]);
+	int biggerConstruccionID = construccionesIDs[construccionesIDs.length-1];
 	String newConstruccionID = String.format("%1$03d", (biggerConstruccionID+1));
 	return ValueFactory.createValue(newConstruccionID);
     }
 
-    private String[] getAllConstruccionesIDInRecordset() {
+    private Integer[] getAllConstruccionesIDInRecordset() {
 	SelectableDataSource originalRecordset;
 	int columnIndex = getConstruccionIDIndex();
-	ArrayList<String> construccionesID = new ArrayList<String>();
+	ArrayList<Integer> construccionesID = new ArrayList<Integer>();
 	try {
-	    originalRecordset = layer.getRecordset();
+	    originalRecordset = construccionesLayer.getRecordset();
 	    String sqlQuery = "select * from '" + originalRecordset.getName() + "'" +
 		    " where " + Preferences.PAIS_NAME_IN_DB + " = " + constantManager.getConstants().getPais() + " "+
 		    " and " + Preferences.ESTADO_NAME_IN_DB + " = " + constantManager.getConstants().getEstado() + " "+
@@ -83,9 +65,9 @@ public class CalculateIDNewConstruccion implements IAction {
 	    ds.setDataSourceFactory(dsf);
 	    SelectableDataSource filteredRecordset= new SelectableDataSource(ds);
 	    for (int rowIndex=0; rowIndex<filteredRecordset.getRowCount(); rowIndex++){
-		construccionesID.add(filteredRecordset.getFieldValue(rowIndex, columnIndex).toString());
+		construccionesID.add(Integer.parseInt(filteredRecordset.getFieldValue(rowIndex, columnIndex).toString()));
 	    }
-	    return construccionesID.toArray(new String[]{""});
+	    return construccionesID.toArray(new Integer[]{0});
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return null;
@@ -108,7 +90,7 @@ public class CalculateIDNewConstruccion implements IAction {
 	String[] fieldNames;
 	int construccionIndex = -1;
 	try {
-	    fieldNames = layer.getRecordset().getFieldNames();
+	    fieldNames = construccionesLayer.getRecordset().getFieldNames();
 	    for (int i=0; i<fieldNames.length; i++){
 		if (fieldNames[i].equalsIgnoreCase(Preferences.CONSTRUCCIONES_NAME_IN_DB)){
 		    construccionIndex = i;

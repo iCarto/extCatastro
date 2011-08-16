@@ -31,8 +31,12 @@ public class ConstantManager {
     }
 
     public boolean areConstantsSetForPredio(){
+	/*
+	 * The predio needs also to be selected,
+	 * as we will cut the construcciones, we need to know the predio ID.
+	 */
 	if(constants!=null){
-	    if((constants.getManzana() != null) && (constants.getRegion() != null)) {
+	    if((constants.getManzana() != null) && (constants.getRegion() != null) && (constants.getPredio() != null)) {
 		return true;
 	    }
 	    return false;

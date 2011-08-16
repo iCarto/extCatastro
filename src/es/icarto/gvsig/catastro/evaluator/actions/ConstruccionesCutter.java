@@ -36,7 +36,7 @@ public class ConstruccionesCutter {
 	    IGeometry edificioSecond = FConverter.jts_to_igeometry(edificioJTSSecond);
 	    try {
 		Value[] valuesEdificio1 = layer.getRecordset().getRow(index).clone();
-		//		Value[] valuesEdificio2 = layer.getRecordset().getRow(index).clone();
+		Value[] valuesEdificio2 = layer.getRecordset().getRow(index).clone();
 		DefaultFeature df = new DefaultFeature(edificioFirst, valuesEdificio1, Integer.toString(index));
 		ToggleEditing te = new ToggleEditing();
 		layer.setActive(true);
@@ -46,8 +46,8 @@ public class ConstruccionesCutter {
 		    te.startEditing(layer);
 		}
 		te.modifyFeature(index, df, "_cutConstrucciones");
-		//		valuesEdificio2[8] = getNewIDForConstrucciones();
-		te.addGeometryWithParametrizedValues(edificioSecond, valuesEdificio1, "_cutConstrucciones");
+		valuesEdificio2[8] = getNewIDForConstrucciones();
+		te.addGeometryWithParametrizedValues(edificioSecond, valuesEdificio2, "_cutConstrucciones");
 		//TODO: enable saving
 		//te.stopEditing(layer, false);
 		layer.setActive(false);
@@ -62,7 +62,7 @@ public class ConstruccionesCutter {
     }
 
     private Value getNewIDForConstrucciones() {
-	CalculateIDNewConstruccion calculateID = new CalculateIDNewConstruccion(layer, null);
+	CalculateIDNewConstruccion calculateID = new CalculateIDNewConstruccion(layer);
 	calculateID.execute();
 	return calculateID.getNewConstruccionID();
     }

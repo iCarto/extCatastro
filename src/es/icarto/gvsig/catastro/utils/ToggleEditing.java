@@ -269,7 +269,7 @@ public class ToggleEditing {
     }
 
     /**
-     * @param layer
+     * @param construccionesLayer
      *            The name of the layer wich edition will be stoped.
      * @param cancel
      *            false if we want to save the layer, true if we don't.

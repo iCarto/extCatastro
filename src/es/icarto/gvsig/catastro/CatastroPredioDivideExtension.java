@@ -30,7 +30,7 @@ public class CatastroPredioDivideExtension extends Extension {
 	    cutPolygonWrapper.execute(actionCommand);
 	} else {
 	    Object[] options = { "OK" };
-	    JOptionPane.showOptionDialog(null, PluginServices.getText(this, "select_manzana"), "Warning",
+	    JOptionPane.showOptionDialog(null, PluginServices.getText(this, "select_predio"), "Warning",
 		    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
 		    null, options, options[0]);
 	}
