@@ -2,9 +2,9 @@ package es.icarto.gvsig.catastro.evaluator.actions;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
+import com.iver.cit.gvsig.fmap.core.IFeature;
+import com.iver.cit.gvsig.fmap.layers.FBitSet;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-
-import es.icarto.gvsig.catastro.utils.CopyFeaturesUtils;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
@@ -23,20 +23,25 @@ public class CreatePredioWhenAddNewManzana implements IAction {
 
     public boolean execute() {
 	try {
-	    CopyFeaturesUtils.copyFeatures(sourceLayer);
 	    ToggleEditing te = new ToggleEditing();
 	    boolean wasEditingManzanas = false;
 	    if (tocLayerManager.isManzanaLayerInEdition()) {
-		te.stopEditing(sourceLayer, false);
+		//TODO: save layer
+		//te.stopEditing(sourceLayer, false);
+		sourceLayer.setActive(false);
 		wasEditingManzanas = true;
 	    }
 	    destinationLayer.setActive(true);
 	    te.startEditing(destinationLayer);
-	    CopyFeaturesUtils.pasteFeatures(destinationLayer);
-	    te.stopEditing(destinationLayer, false);
+	    FBitSet indexes = sourceLayer.getRecordset().getSelection();
+	    IFeature feature = sourceLayer.getSource().getFeature(indexes.nextSetBit(0));
+	    te.addGeometryWithParametrizedValues(feature.getGeometry(), feature.getAttributes().clone(), "_create_new_predio");
+	    //TODO: save layer
+	    //te.stopEditing(destinationLayer, false);
 	    destinationLayer.setActive(false);
 	    if (wasEditingManzanas) {
-		te.startEditing(sourceLayer);
+		//te.startEditing(sourceLayer);
+		sourceLayer.setActive(true);
 	    }
 	    return true;
 	} catch (ReadDriverException e) {

@@ -115,9 +115,13 @@ public class AddValuesToNewManzana implements IAction {
 	try {
 	    int columnIndex = getManzanaIndex();
 	    originalRecordset = layer.getRecordset();
-	    String sqlQuery = "select * from " + originalRecordset.getName()
-		    + " where " + Preferences.REGION_NAME_IN_DB + " = '"
-		    + constantManager.getConstants().getRegion() + "';";
+	    String sqlQuery = "select * from '" + layer.getRecordset().getName() + "'" +
+		    " where " + Preferences.PAIS_NAME_IN_DB + " = " + constantManager.getConstants().getPais() + " "+
+		    " and " + Preferences.ESTADO_NAME_IN_DB + " = " + constantManager.getConstants().getEstado() + " "+
+		    " and " + Preferences.MUNICIPIO_NAME_IN_DB + " = " + constantManager.getConstants().getMunicipio() + " "+
+		    " and " + Preferences.LIMITE_NAME_IN_DB + " = " + constantManager.getConstants().getLimiteMunicipal() + " "+
+		    " and " + Preferences.REGION_NAME_IN_DB + " = " + constantManager.getConstants().getRegion() + " " +
+		    ";";
 	    DataSourceFactory dsf = originalRecordset.getDataSourceFactory();
 	    DataSource ds = dsf.executeSQL(sqlQuery, EditionEvent.ALPHANUMERIC);
 	    ds.setDataSourceFactory(dsf);
