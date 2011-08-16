@@ -108,13 +108,13 @@ EndGeometryListener {
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_MERGING_PREDIO) {
 	    ArrayList<IGeometry> geoms = new ArrayList<IGeometry>();
-	    IGeometry finalGeometry = ((JoinCADTool) cadTool)
-		    .getJoinedGeometry();
+	    IGeometry finalGeometry = ((JoinCADTool) cadTool).getJoinedGeometry();
 	    geoms.add(finalGeometry);
 	    FusionPrediosRulesEvaluator fusionPrediosRulesEvaluator = new FusionPrediosRulesEvaluator(
 		    geoms);
 	    if (fusionPrediosRulesEvaluator.isOK()) {
-		te.stopEditing(layer, false);
+		//TODO: save previous actions
+		//te.stopEditing(layer, false);
 	    } else {
 		te.stopEditing(layer, true);
 		JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
@@ -147,7 +147,6 @@ EndGeometryListener {
 		if (tocLayerManager.isManzanaLayerInEdition()) {
 		    // TODO: save previous actions
 		    // te.stopEditing(layer, false);
-		    te.stopEditing(layer, true);
 		}
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION) {
