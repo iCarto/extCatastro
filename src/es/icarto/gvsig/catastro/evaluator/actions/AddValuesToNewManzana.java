@@ -28,7 +28,7 @@ public class AddValuesToNewManzana implements IAction {
     FLyrVect layer = null;
     SelectableDataSource recordset;
     ConstantManager constantManager;
-    private String[] manzanasIDs;
+    private Integer[] manzanasIDs;
 
     public AddValuesToNewManzana(FLyrVect layer, int rowIndex) {
 	this.layer = layer;
@@ -55,8 +55,8 @@ public class AddValuesToNewManzana implements IAction {
 
     private boolean addValues() {
 	try {
-	    int[] updatePositions = new int[7];
-	    String[] updateValues = new String[7];
+	    int[] updatePositions = new int[9];
+	    String[] updateValues = new String[9];
 
 	    updatePositions[0] = getPaisIndex();
 	    updatePositions[1] = getEstadoIndex();
@@ -65,6 +65,8 @@ public class AddValuesToNewManzana implements IAction {
 	    updatePositions[4] = getRegionIndex();
 	    updatePositions[5] = getManzanaIndex();
 	    updatePositions[6] = getManzanaAreaIndex();
+	    updatePositions[7] = getCatMetadatoIDIndex();
+	    updatePositions[8] = getGIDIndex();
 
 	    updateValues[0] = constantManager.getConstants().getPais();
 	    updateValues[1] = constantManager.getConstants().getEstado();
@@ -73,6 +75,8 @@ public class AddValuesToNewManzana implements IAction {
 	    updateValues[4] = constantManager.getConstants().getRegion();
 	    updateValues[5] = getNewManzanaID();
 	    updateValues[6] = Double.toString(getAreaOfNewManzana());
+	    updateValues[7] = "1";
+	    updateValues[8] = "";
 
 	    ToggleEditing te = new ToggleEditing();
 	    te.modifyValues(layer, rowIndex, updatePositions, updateValues);
@@ -101,15 +105,14 @@ public class AddValuesToNewManzana implements IAction {
 
     private String getNewManzanaID() {
 	Arrays.sort(manzanasIDs);
-	int biggerManzanaID = Integer
-		.parseInt(manzanasIDs[manzanasIDs.length - 1]);
+	int biggerManzanaID = manzanasIDs[manzanasIDs.length - 1];
 	String newManzanaID = String.format("%1$03d", (biggerManzanaID + 1));
 	return newManzanaID;
     }
 
-    private String[] getAllManzanasIDInRecordset() {
+    private Integer[] getAllManzanasIDInRecordset() {
 	SelectableDataSource originalRecordset;
-	ArrayList<String> manzanasID = new ArrayList<String>();
+	ArrayList<Integer> manzanasID = new ArrayList<Integer>();
 	try {
 	    int columnIndex = getManzanaIndex();
 	    originalRecordset = layer.getRecordset();
@@ -126,10 +129,10 @@ public class AddValuesToNewManzana implements IAction {
 	    SelectableDataSource filteredRecordset = new SelectableDataSource(
 		    ds);
 	    for (int rowIndex = 0; rowIndex < filteredRecordset.getRowCount(); rowIndex++) {
-		manzanasID.add(filteredRecordset.getFieldValue(rowIndex,
-			columnIndex).toString());
+		manzanasID.add(Integer.parseInt(filteredRecordset.getFieldValue(rowIndex,
+			columnIndex).toString()));
 	    }
-	    return manzanasID.toArray(new String[] { "" });
+	    return manzanasID.toArray(new Integer[] { 0 });
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return null;
@@ -175,6 +178,16 @@ public class AddValuesToNewManzana implements IAction {
     private int getManzanaAreaIndex() throws ReadDriverException {
 	return recordset
 		.getFieldIndexByName(Preferences.MANZANA_AREA_NAME_IN_DB);
+    }
+
+    private int getCatMetadatoIDIndex() throws ReadDriverException{
+	return recordset
+		.getFieldIndexByName(Preferences.CATMETADATO_IN_DB);
+    }
+
+    private int getGIDIndex() throws ReadDriverException{
+	return recordset
+		.getFieldIndexByName(Preferences.GID_IN_DB);
     }
 
     @Override

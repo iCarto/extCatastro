@@ -17,6 +17,8 @@ public class Preferences {
     public static final String MANZANA_NAME_IN_DB = "man_cve";
     public static final String MANZANA_AREA_NAME_IN_DB = "man_area";
     public static final String CONSTRUCCIONES_NAME_IN_DB = "cons_id";
+    public static final String CATMETADATO_IN_DB = "catmetadato_id";
+    public static final String GID_IN_DB = "gid";
 
     /*
      * Those constants should be set when the program starts and they must be
