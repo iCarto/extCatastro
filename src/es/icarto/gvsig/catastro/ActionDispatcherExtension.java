@@ -86,7 +86,7 @@ EndGeometryListener {
 		    geoms);
 	    if (!predioRulesEvaluator.isOK()) {
 		if (tocLayerManager.isPrediosLayerInEdition()) {
-		    te.stopEditing(layer, true);
+		    //te.stopEditing(layer, true);
 		}
 		JOptionPane.showMessageDialog(null, predioRulesEvaluator
 			.getErrorMessage(), "Divide predio",
@@ -116,7 +116,7 @@ EndGeometryListener {
 		//TODO: save previous actions
 		//te.stopEditing(layer, false);
 	    } else {
-		te.stopEditing(layer, true);
+		//te.stopEditing(layer, true);
 		JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
 			.getErrorMessage(), "Fusi�n Predios",
 			JOptionPane.WARNING_MESSAGE);
@@ -129,7 +129,7 @@ EndGeometryListener {
 		    insertedGeometry);
 	    if (!manzanaRulesEvaluator.isOK()) {
 		if (tocLayerManager.isManzanaLayerInEdition()) {
-		    te.stopEditing(layer, true);
+		    //te.stopEditing(layer, true);
 		}
 		JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
 			.getErrorMessage(), "Alta Manzana",
@@ -156,7 +156,7 @@ EndGeometryListener {
 		    insertedGeometry);
 	    if (!construccionRulesEvaluator.isOK()) {
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
-		    te.stopEditing(layer, true);
+		    //te.stopEditing(layer, true);
 		}
 		JOptionPane.showMessageDialog(null, construccionRulesEvaluator
 			.getErrorMessage(), "Alta Construccion",
