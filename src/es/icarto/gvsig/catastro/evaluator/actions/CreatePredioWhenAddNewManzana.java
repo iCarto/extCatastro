@@ -79,11 +79,11 @@ public class CreatePredioWhenAddNewManzana implements IAction {
 	    predioValues[3] = featureValues[3]; // reg_cve
 	    predioValues[4] = featureValues[4]; // lim_cve
 	    predioValues[5] = featureValues[6]; // man_cve
-	    predioValues[6] = ValueFactory.createNullValue(); // catmetadato_id
+	    predioValues[6] = ValueFactory.createValue(1); // catmetadato_id
 	    predioValues[7] = ValueFactory.createValue(1); // pre_cve
 	    predioValues[8] = featureValues[7]; // pre_area
 	    predioValues[9] = ValueFactory.createNullValue(); // zon_id
-	    predioValues[10] = ValueFactory.createNullValue(); // gid
+	    predioValues[10] = ValueFactory.createValue(""); // gid
 	}
 	return predioValues;
     }
