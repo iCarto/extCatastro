@@ -15,52 +15,54 @@ import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
 public class CheckManzanaIsWithinOneRegion implements IRule {
 
-	IGeometry insertedGeometry;
+    IGeometry insertedGeometry;
 
-	public CheckManzanaIsWithinOneRegion(IGeometry insertedGeometry) {
-		this.insertedGeometry = insertedGeometry;
-	}
+    public CheckManzanaIsWithinOneRegion(IGeometry insertedGeometry) {
+	this.insertedGeometry = insertedGeometry;
+    }
 
-	@Override
-	public boolean isObey() {
-		Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(insertedGeometry);
-		Geometry regionJTSGeom = getRegionGeom();
-		Geometry regionJTSToleranceBuffer = regionJTSGeom.buffer(0.5);
-		if (!manzanaJTSGeom.coveredBy(regionJTSToleranceBuffer)) {
-			return false;
-		}
-		return true;
+    @Override
+    public boolean isObey() {
+	Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(insertedGeometry);
+	Geometry regionJTSGeom = getRegionGeom();
+	Geometry regionJTSToleranceBuffer = regionJTSGeom.buffer(0.5);
+	if (!manzanaJTSGeom.coveredBy(regionJTSToleranceBuffer)) {
+	    return false;
 	}
+	return true;
+    }
 
-	private Geometry getRegionGeom() {
-		TOCLayerManager tocLayerManager = new TOCLayerManager();
-		FLyrVect region = tocLayerManager
-				.getLayerByName(Preferences.REGIONES_LAYER_NAME);
-		IGeometry regionGeom = getGeomFromFLyrVect(region);
-		Geometry regionJTSGeom = NewFConverter.toJtsGeometry(regionGeom);
-		return regionJTSGeom;
-	}
+    private Geometry getRegionGeom() {
+	TOCLayerManager tocLayerManager = new TOCLayerManager();
+	FLyrVect region = tocLayerManager
+		.getLayerByName(Preferences.REGIONES_LAYER_NAME);
+	IGeometry regionGeom = getGeomFromFLyrVect(region);
+	Geometry regionJTSGeom = NewFConverter.toJtsGeometry(regionGeom);
+	return regionJTSGeom;
+    }
 
-	private IGeometry getGeomFromFLyrVect(FLyrVect layer) {
-		ConstantManager constantManager = new ConstantManager();
-		try {
-			String sqlQuery = "select * from '"
-					+ layer.getRecordset().getName() + "'" + " where "
-					+ Preferences.REGION_NAME_IN_DB + " = '"
-					+ constantManager.getConstants().getRegion() + "';";
-			IFeatureIterator featureIterator = layer.getSource()
-					.getFeatureIterator(sqlQuery, null);
-			return featureIterator.next().getGeometry();
-		} catch (ReadDriverException e) {
-			e.printStackTrace();
-			return null;
-		}
+    private IGeometry getGeomFromFLyrVect(FLyrVect layer) {
+	ConstantManager constantManager = new ConstantManager();
+	try {
+	    String sqlQuery = "select * from '" + layer.getRecordset().getName() + "'" +
+		    " where " + Preferences.PAIS_NAME_IN_DB + " = " + constantManager.getConstants().getPais() + " "+
+		    " and " + Preferences.ESTADO_NAME_IN_DB + " = " + constantManager.getConstants().getEstado() + " "+
+		    " and " + Preferences.MUNICIPIO_NAME_IN_DB + " = " + constantManager.getConstants().getMunicipio() + " "+
+		    " and " + Preferences.LIMITE_NAME_IN_DB + " = " + constantManager.getConstants().getLimiteMunicipal() + " "+
+		    " and " + Preferences.REGION_NAME_IN_DB + " = " + constantManager.getConstants().getRegion() +";";
+	    IFeatureIterator featureIterator = layer.getSource()
+		    .getFeatureIterator(sqlQuery, null);
+	    return featureIterator.next().getGeometry();
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return null;
 	}
+    }
 
-	@Override
-	public String getMessage() {
-		return PluginServices
-				.getText(this, "rule_manzana_is_not_within_region");
-	}
+    @Override
+    public String getMessage() {
+	return PluginServices
+		.getText(this, "rule_manzana_is_not_within_region");
+    }
 
 }
