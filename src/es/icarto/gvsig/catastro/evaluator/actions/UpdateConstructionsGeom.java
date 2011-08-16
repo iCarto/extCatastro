@@ -3,7 +3,6 @@ package es.icarto.gvsig.catastro.evaluator.actions;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-import org.gvsig.jts.JtsUtil;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IFeature;
@@ -13,6 +12,8 @@ import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
+
+import es.icarto.gvsig.catastro.utils.JtsUtil;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 

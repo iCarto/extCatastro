@@ -1,7 +1,5 @@
 package es.icarto.gvsig.catastro.evaluator.rules;
 
-import org.gvsig.fmap.core.NewFConverter;
-
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
@@ -27,7 +25,7 @@ public class CheckGeometryIsOverlapingAnotherOne implements IRule {
     @Override
     public boolean isObey() {
 	boolean checkRule = false;
-	Geometry jtsGeom = NewFConverter.toJtsGeometry(insertedGeometry);
+	Geometry jtsGeom = insertedGeometry.toJTSGeometry();
 	TOCLayerManager tocLayerManager = new TOCLayerManager();
 	FLyrVect layer = tocLayerManager.getLayerByName(layerName);
 	SelectableDataSource layerRecordset;
@@ -37,7 +35,7 @@ public class CheckGeometryIsOverlapingAnotherOne implements IRule {
 	    for (int i = 0; i < layerRecordset.getRowCount(); i++) {
 		IGeometry gvGeom = layerSourceFeats.getShape(i);
 		if (!gvGeom.equals(jtsGeom)) {
-		    Geometry auxJTSGeom = NewFConverter.toJtsGeometry(gvGeom);
+		    Geometry auxJTSGeom = gvGeom.toJTSGeometry();
 		    if (!jtsGeom.overlaps(auxJTSGeom)) {
 			checkRule = true;
 		    } else {

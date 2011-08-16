@@ -1,7 +1,5 @@
 package es.icarto.gvsig.catastro.evaluator.rules;
 
-import org.gvsig.fmap.core.NewFConverter;
-
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
@@ -23,7 +21,7 @@ public class CheckManzanaIsWithinOneRegion implements IRule {
 
     @Override
     public boolean isObey() {
-	Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(insertedGeometry);
+	Geometry manzanaJTSGeom = insertedGeometry.toJTSGeometry();
 	Geometry regionJTSGeom = getRegionGeom();
 	Geometry regionJTSToleranceBuffer = regionJTSGeom.buffer(0.5);
 	if (!manzanaJTSGeom.coveredBy(regionJTSToleranceBuffer)) {
@@ -37,7 +35,7 @@ public class CheckManzanaIsWithinOneRegion implements IRule {
 	FLyrVect region = tocLayerManager
 		.getLayerByName(Preferences.REGIONES_LAYER_NAME);
 	IGeometry regionGeom = getGeomFromFLyrVect(region);
-	Geometry regionJTSGeom = NewFConverter.toJtsGeometry(regionGeom);
+	Geometry regionJTSGeom = regionGeom.toJTSGeometry();
 	return regionJTSGeom;
     }
 

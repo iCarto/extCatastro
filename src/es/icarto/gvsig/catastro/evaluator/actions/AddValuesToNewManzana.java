@@ -3,8 +3,6 @@ package es.icarto.gvsig.catastro.evaluator.actions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.gvsig.fmap.core.NewFConverter;
-
 import com.hardcode.driverManager.DriverLoadException;
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.data.DataSource;
@@ -90,7 +88,7 @@ public class AddValuesToNewManzana implements IAction {
 	try {
 	    IGeometry manzanaGeom = layer.getSource().getFeature(rowIndex)
 		    .getGeometry();
-	    Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(manzanaGeom);
+	    Geometry manzanaJTSGeom = manzanaGeom.toJTSGeometry();
 	    area = manzanaJTSGeom.getArea();
 	} catch (ExpansionFileReadException e) {
 	    e.printStackTrace();

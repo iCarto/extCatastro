@@ -1,12 +1,11 @@
 package es.icarto.gvsig.catastro.evaluator.actions;
 
-import org.gvsig.fmap.core.NewFConverter;
-
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.iver.cit.gvsig.fmap.core.DefaultFeature;
 import com.iver.cit.gvsig.fmap.core.IFeature;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
+import com.iver.cit.gvsig.fmap.core.v02.FConverter;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -33,8 +32,8 @@ public class ConstruccionesCutter {
 	Geometry edificioJTSFirst = predio.toJTSGeometry().intersection(edificio.getGeometry().toJTSGeometry());
 	if(edificioJTSFirst.getGeometryType().equalsIgnoreCase("Polygon")){
 	    Geometry edificioJTSSecond = edificio.getGeometry().toJTSGeometry().difference(edificioJTSFirst);
-	    IGeometry edificioFirst = NewFConverter.jts_to_igeometry(edificioJTSFirst);
-	    IGeometry edificioSecond = NewFConverter.jts_to_igeometry(edificioJTSSecond);
+	    IGeometry edificioFirst = FConverter.jts_to_igeometry(edificioJTSFirst);
+	    IGeometry edificioSecond = FConverter.jts_to_igeometry(edificioJTSSecond);
 	    try {
 		Value[] valuesEdificio1 = layer.getRecordset().getRow(index).clone();
 		Value[] valuesEdificio2 = layer.getRecordset().getRow(index).clone();

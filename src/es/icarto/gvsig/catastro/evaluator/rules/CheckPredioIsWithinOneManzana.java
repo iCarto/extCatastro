@@ -2,8 +2,6 @@ package es.icarto.gvsig.catastro.evaluator.rules;
 
 import java.util.ArrayList;
 
-import org.gvsig.fmap.core.NewFConverter;
-
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
@@ -27,7 +25,7 @@ public class CheckPredioIsWithinOneManzana implements IRule {
     public boolean isObey() {
 	Geometry manzanaJTSGeom = getManzanaGeom();
 	for (IGeometry geom : geoms) {
-	    Geometry predioJTSGeom = NewFConverter.toJtsGeometry(geom);
+	    Geometry predioJTSGeom = geom.toJTSGeometry();
 	    Geometry manzanaJTSGeomWithBuffer = manzanaJTSGeom.buffer(0.5);
 	    if (!predioJTSGeom.coveredBy(manzanaJTSGeomWithBuffer)) {
 		return false;
@@ -41,7 +39,7 @@ public class CheckPredioIsWithinOneManzana implements IRule {
 	FLyrVect manzana = tocLayerManager
 		.getLayerByName(Preferences.MANZANAS_LAYER_NAME);
 	IGeometry manzanaGeom = getGeomFromFLyrVect(manzana);
-	Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(manzanaGeom);
+	Geometry manzanaJTSGeom = manzanaGeom.toJTSGeometry();
 	return manzanaJTSGeom;
     }
 

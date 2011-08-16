@@ -1,7 +1,5 @@
 package es.icarto.gvsig.catastro.evaluator.rules;
 
-import org.gvsig.fmap.core.NewFConverter;
-
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
@@ -23,8 +21,7 @@ public class CheckConstruccionIsWithinOnePredio implements IRule {
 
     @Override
     public boolean isObey() {
-	Geometry construccionJTSGeom = NewFConverter
-		.toJtsGeometry(insertedGeometry);
+	Geometry construccionJTSGeom = insertedGeometry.toJTSGeometry();
 	Geometry predioJTSGeom = getPredioGeom();
 	Geometry predioJTSGeomWithBuffer = predioJTSGeom.buffer(0.5);
 	if (!construccionJTSGeom.coveredBy(predioJTSGeomWithBuffer)) {
@@ -44,7 +41,7 @@ public class CheckConstruccionIsWithinOnePredio implements IRule {
 	FLyrVect predio = tocLayerManager
 		.getLayerByName(Preferences.PREDIOS_LAYER_NAME);
 	IGeometry predioGeom = getGeomFromFLyrVect(predio);
-	Geometry predioJTSGeom = NewFConverter.toJtsGeometry(predioGeom);
+	Geometry predioJTSGeom = predioGeom.toJTSGeometry();
 	return predioJTSGeom;
     }
 

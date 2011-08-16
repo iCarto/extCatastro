@@ -2,8 +2,6 @@ package es.icarto.gvsig.catastro.evaluator.rules;
 
 import java.util.ArrayList;
 
-import org.gvsig.fmap.core.NewFConverter;
-
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
@@ -75,7 +73,7 @@ public class CheckAllAreaPrediosEqualsAreaManzana implements IRule {
 	TOCLayerManager tocLayerManager = new TOCLayerManager();
 	FLyrVect manzana = tocLayerManager.getLayerByName(Preferences.MANZANAS_LAYER_NAME);
 	IGeometry manzanaGeom = getGeomFromFLyrVect(manzana);
-	Geometry manzanaJTSGeom = NewFConverter.toJtsGeometry(manzanaGeom);
+	Geometry manzanaJTSGeom = manzanaGeom.toJTSGeometry();
 	return manzanaJTSGeom;
     }
 
