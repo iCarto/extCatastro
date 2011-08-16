@@ -53,12 +53,20 @@ public class CheckConstruccionIsWithinOnePredio implements IRule {
 	try {
 	    String sqlQuery = "select * from '"
 		    + layer.getRecordset().getName() + "'" + " where "
-		    + Preferences.PREDIO_NAME_IN_DB + " = '"
-		    + constantManager.getConstants().getPredio() + "' "
-		    + " and " + Preferences.MANZANA_NAME_IN_DB + " = '"
-		    + constantManager.getConstants().getManzana() + "' "
-		    + " and " + Preferences.REGION_NAME_IN_DB + " = '"
-		    + constantManager.getConstants().getRegion() + "';";
+		    + Preferences.PAIS_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getPais() + " " + " and "
+		    + Preferences.ESTADO_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getEstado() + " "
+		    + " and " + Preferences.MUNICIPIO_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getMunicipio() + " "
+		    + " and " + Preferences.LIMITE_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getLimiteMunicipal() + " "
+		    + " and " + Preferences.PREDIO_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getPredio() + " "
+		    + " and " + Preferences.MANZANA_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getManzana() + " "
+		    + " and " + Preferences.REGION_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getRegion() + ";";
 	    IFeatureIterator featureIterator = layer.getSource()
 		    .getFeatureIterator(sqlQuery, null);
 	    return featureIterator.next().getGeometry();
