@@ -38,7 +38,8 @@ public class CatastroPredioFusionExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	return selectionGeometryWrapper.isEnabled();
+	return false;
+	//	return selectionGeometryWrapper.isEnabled();
     }
 
     @Override
