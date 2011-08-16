@@ -26,7 +26,7 @@ public class ConstantsSelectionListener extends PointSelectionListener {
     private static final int LAYER_IS_PREDIO = 1;
     private static final int LAYER_IS_REGION = 2;
 
-    private TOCLayerManager tocLayerManager;
+    private final TOCLayerManager tocLayerManager;
     private final ConstantManager constantManager;
     private final HashMap<String, Integer> layerCodes;
 
@@ -75,16 +75,25 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 		}
 		switch (layerCodes.get(layerName)) {
 		case LAYER_IS_PREDIO:
-		    constantManager.getConstants().setManzana(values[manzanaIndex].toString());
-		    constantManager.getConstants().setPredio(values[predioIndex].toString());
-		    constantManager.getConstants().setRegion(values[regionIndex].toString());
+		    constantManager.getConstants().clear();
+		    constantManager.getConstants().setManzana(
+			    values[manzanaIndex].toString());
+		    constantManager.getConstants().setPredio(
+			    values[predioIndex].toString());
+		    constantManager.getConstants().setRegion(
+			    values[regionIndex].toString());
 		    break;
 		case LAYER_IS_MANZANA:
-		    constantManager.getConstants().setManzana(values[manzanaIndex].toString());
-		    constantManager.getConstants().setRegion(values[regionIndex].toString());
+		    constantManager.getConstants().clear();
+		    constantManager.getConstants().setManzana(
+			    values[manzanaIndex].toString());
+		    constantManager.getConstants().setRegion(
+			    values[regionIndex].toString());
 		    break;
 		case LAYER_IS_REGION:
-		    constantManager.getConstants().setRegion(values[regionIndex].toString());
+		    constantManager.getConstants().clear();
+		    constantManager.getConstants().setRegion(
+			    values[regionIndex].toString());
 		    break;
 		}
 		if (constantManager.getConstants() != null) {
