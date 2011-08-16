@@ -94,7 +94,7 @@ EndGeometryListener {
 	    } else {
 		int option = JOptionPane.showConfirmDialog(null, PluginServices
 			.getText(this, "save_predio_confirm"), "Divide predio",
-			JOptionPane.YES_NO_OPTION, JOptionPane.YES_NO_OPTION,
+			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 			null);
 		if (option == JOptionPane.OK_OPTION) {
 		    PredioActionsEvaluator predioActionsEvaluator = new PredioActionsEvaluator(
