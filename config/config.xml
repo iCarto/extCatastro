@@ -91,22 +91,20 @@
 				icon="images/new.png" position="1000003"/> 
 		</extension>
 	
-		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionFusionExtension" description="Join Polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionFusionExtension" description="Delete Feature" active="true">
 			<!--<tool-bar name="Catastro">
-				<action-tool icon="" tooltip="Fusionar"
-					action-command="_selection" position="2000006"/>
+				<action-tool icon="" tooltip="Eliminar"
+					action-command="_delete" position="2000006"/>
 			</tool-bar>-->
-			<menu text="Catastro/Construcciones/Fusionar" action-command="_selection"
-				icon="images/join.png" position="2000006"/> 
+			<menu text="Catastro/Construcciones/Eliminar" action-command="_selection" position="2000006"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionDivideExtension" description="Split Polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionDivideExtension" description="Redigitalize polygon" active="true">
 			<!--<tool-bar name="Catastro">
-				<action-tool icon="" tooltip="Dividir"
-					action-command="_cut_polygon" position="300009"/>
+				<action-tool icon="" tooltip="Modificar Lindero"
+					action-command="_cut_polygon" position="3000009"/>
 			</tool-bar>-->
-			<menu text="Catastro/Construcciones/Dividir" action-command="_cut_polygon"
-				icon="images/split.png" position="3000009"/> 
+			<menu text="Catastro/Construcciones/Modificar Lindero" action-command="_cut_polygon" position="3000009"/> 
 		</extension>
 				
 	<!-- UTILITIES EXTENSIONS -->	
