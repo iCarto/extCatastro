@@ -19,6 +19,7 @@ public class ConstruccionRulesEvaluator extends AbstractEvaluator {
     private void init() {
 	rules.add(new CheckGeometryIsOverlapingAnotherOne(insertedGeometry,
 		Preferences.CONSTRUCCIONES_LAYER_NAME));
+	rules.add(new CheckConstruccionIsWithinOnePredio(insertedGeometry));
     }
 
 }
