@@ -39,7 +39,8 @@ public class CatastroConstruccionNewExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	return insertAreaWrapper.isEnabled();
+	return false;
+	//return insertAreaWrapper.isEnabled();
     }
 
     @Override
