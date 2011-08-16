@@ -31,7 +31,7 @@ import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements
-	EndGeometryListener {
+EndGeometryListener {
 
     private static final int NO_ACTION = -1;
     private final int ACTION_CALCULATE_NEW_PREDIO_ID = 0;
@@ -101,10 +101,9 @@ public class ActionDispatcherExtension extends Extension implements
 			    geoms);
 		    predioActionsEvaluator.execute();
 		}
-		if (tocLayerManager.isPrediosLayerInEdition()) {
-		    // TODO: save previous actions
-		    // te.stopEditing(layer, false);
-		    te.stopEditing(layer, true);
+		if(tocLayerManager.isPrediosLayerInEdition()){
+		    //TODO: save previous actions
+		    //te.stopEditing(layer, false);
 		}
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_MERGING_PREDIO) {
@@ -119,7 +118,7 @@ public class ActionDispatcherExtension extends Extension implements
 	    } else {
 		te.stopEditing(layer, true);
 		JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
-			.getErrorMessage(), "Fusión Predios",
+			.getErrorMessage(), "Fusiï¿½n Predios",
 			JOptionPane.WARNING_MESSAGE);
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
@@ -174,7 +173,6 @@ public class ActionDispatcherExtension extends Extension implements
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
 		    // TODO: save previous actions
 		    // te.stopEditing(layer, false);
-		    te.stopEditing(layer, true);
 		}
 	    }
 	}

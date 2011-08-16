@@ -66,7 +66,7 @@ public class UpdateConstructionsGeom implements IAction {
 				ConstruccionesCutter construccionesCutter = new ConstruccionesCutter(construccionesLayer);
 				//Clip each intersecting construccion by means of the first predio
 				//This predio will contain the old ID, so do construcciones clipped by it
-				if(!construccionesCutter.clip(construccionIFeature, Integer.parseInt(construccionIFeature.getID()), predios.get(0))){
+				if(!construccionesCutter.clip(construccionIFeature, predios.get(0))){
 				    //end the process if some construction was impossible to cut
 				    return false;
 				}
