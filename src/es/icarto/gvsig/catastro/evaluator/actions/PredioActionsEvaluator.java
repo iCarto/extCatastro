@@ -20,7 +20,7 @@ public class PredioActionsEvaluator {
 
     private void init(){
 	actions.add(new UpdateConstructionsGeom(prediosGeoms));
-	actions.add(new UpdateConstructionsFather(prediosGeoms));
+	//	actions.add(new UpdateConstructionsFather(prediosGeoms));
     }
 
     public ArrayList<String> execute(){
