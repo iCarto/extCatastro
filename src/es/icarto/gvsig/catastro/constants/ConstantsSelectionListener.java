@@ -2,7 +2,6 @@ package es.icarto.gvsig.catastro.constants;
 
 import java.util.HashMap;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
@@ -27,18 +26,14 @@ public class ConstantsSelectionListener extends PointSelectionListener {
     private static final int LAYER_IS_PREDIO = 1;
     private static final int LAYER_IS_REGION = 2;
 
-    TOCLayerManager tocLayerManager;
+    private TOCLayerManager tocLayerManager;
     private final ConstantManager constantManager;
-    private final Constants constants;
     private final HashMap<String, Integer> layerCodes;
-
-    private JLabel constantsLabel;
 
     public ConstantsSelectionListener(MapControl mc) {
 	super(mc);
 	tocLayerManager = new TOCLayerManager();
 	constantManager = new ConstantManager();
-	constants = new Constants();
 	layerCodes = new HashMap<String, Integer>();
 	initLayerCodes();
     }
@@ -80,25 +75,24 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 		}
 		switch (layerCodes.get(layerName)) {
 		case LAYER_IS_PREDIO:
-		    constants.setManzana(values[manzanaIndex].toString());
-		    constants.setPredio(values[predioIndex].toString());
-		    constants.setRegion(values[regionIndex].toString());
+		    constantManager.getConstants().setManzana(values[manzanaIndex].toString());
+		    constantManager.getConstants().setPredio(values[predioIndex].toString());
+		    constantManager.getConstants().setRegion(values[regionIndex].toString());
 		    break;
 		case LAYER_IS_MANZANA:
-		    constants.setManzana(values[manzanaIndex].toString());
-		    constants.setRegion(values[regionIndex].toString());
+		    constantManager.getConstants().setManzana(values[manzanaIndex].toString());
+		    constantManager.getConstants().setRegion(values[regionIndex].toString());
 		    break;
 		case LAYER_IS_REGION:
-		    constants.setRegion(values[regionIndex].toString());
+		    constantManager.getConstants().setRegion(values[regionIndex].toString());
 		    break;
 		}
-		if (constants != null) {
+		if (constantManager.getConstants() != null) {
 		    int option = JOptionPane.showConfirmDialog(null,
 			    PluginServices.getText(this, "selection_confirm"),
 			    "Confirm selection", JOptionPane.OK_CANCEL_OPTION,
 			    JOptionPane.OK_CANCEL_OPTION, null);
 		    if (option == JOptionPane.OK_OPTION) {
-			constantManager.setConstants(constants);
 			updateConstantsStatusBar();
 			tocLayerManager.setVisibleAllLayers();
 			IGeometry geom = layer.getSource().getFeature(
@@ -106,8 +100,9 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 			layer.getMapContext().getViewPort().setExtent(
 				geom.getBounds2D());
 		    } else {
-			constants.clear();
+			constantManager.getConstants().clear();
 			layer.getRecordset().clearSelection();
+			updateConstantsStatusBar();
 		    }
 		} else {
 		    Object[] options = { "OK" };
@@ -132,10 +127,8 @@ public class ConstantsSelectionListener extends PointSelectionListener {
 	NewStatusBar footerStatusBar = mF.getStatusBar();
 
 	Constants constants = constantManager.getConstants();
-	if (constants != null) {
-	    String constantsInfo = getConstantsInfo(constants);
-	    footerStatusBar.setMessage("constants", constantsInfo);
-	}
+	String constantsInfo = getConstantsInfo(constants);
+	footerStatusBar.setMessage("constants", constantsInfo);
     }
 
     private String getConstantsInfo(Constants constants) {
@@ -147,9 +140,10 @@ public class ConstantsSelectionListener extends PointSelectionListener {
     }
 
     private String nullToString(String s) {
-	if (s == null)
+	if (s == null) {
 	    return "-";
-	else
+	} else {
 	    return s;
+	}
     }
 }

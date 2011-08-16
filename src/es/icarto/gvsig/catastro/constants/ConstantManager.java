@@ -13,6 +13,10 @@ public class ConstantManager {
     }
 
     public Constants getConstants(){
+	if(constants == null){
+	    constants = new Constants();
+	    return constants;
+	}
 	return constants;
     }
 

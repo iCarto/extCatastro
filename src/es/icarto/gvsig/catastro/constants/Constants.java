@@ -4,9 +4,9 @@ import es.icarto.gvsig.catastro.utils.Preferences;
 
 public class Constants {
 
-    private String region;
-    private String manzana;
-    private String predio;
+    private String region = null;
+    private String manzana = null;
+    private String predio = null;
 
     public Constants(){
 	clear();
