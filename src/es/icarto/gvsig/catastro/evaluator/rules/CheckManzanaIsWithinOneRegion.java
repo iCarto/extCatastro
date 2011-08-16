@@ -23,8 +23,9 @@ public class CheckManzanaIsWithinOneRegion implements IRule {
     public boolean isObey() {
 	Geometry manzanaJTSGeom = insertedGeometry.toJTSGeometry();
 	Geometry regionJTSGeom = getRegionGeom();
-	Geometry regionJTSToleranceBuffer = regionJTSGeom.buffer(0.5);
-	if (!manzanaJTSGeom.coveredBy(regionJTSToleranceBuffer)) {
+	//	Geometry regionJTSToleranceBuffer = regionJTSGeom.buffer(0.5);
+	//	if (!manzanaJTSGeom.coveredBy(regionJTSToleranceBuffer)) {
+	if (!manzanaJTSGeom.coveredBy(regionJTSGeom)) {
 	    return false;
 	}
 	return true;

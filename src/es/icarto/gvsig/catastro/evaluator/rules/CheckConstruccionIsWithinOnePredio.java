@@ -23,11 +23,12 @@ public class CheckConstruccionIsWithinOnePredio implements IRule {
     public boolean isObey() {
 	Geometry construccionJTSGeom = insertedGeometry.toJTSGeometry();
 	Geometry predioJTSGeom = getPredioGeom();
-	Geometry predioJTSGeomWithBuffer = predioJTSGeom.buffer(0.5);
-	if (!construccionJTSGeom.coveredBy(predioJTSGeomWithBuffer)) {
-	    return false;
+	//	Geometry predioJTSGeomWithBuffer = predioJTSGeom.buffer(0.5);
+	//	if (construccionJTSGeom.within(predioJTSGeomWithBuffer)) {
+	if (construccionJTSGeom.within(predioJTSGeom)) {
+	    return true;
 	}
-	return true;
+	return false;
     }
 
     @Override
