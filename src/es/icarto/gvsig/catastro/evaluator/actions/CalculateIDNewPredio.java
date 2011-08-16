@@ -26,7 +26,7 @@ public class CalculateIDNewPredio implements IAction {
     FLyrVect layer = null;
     IRowEdited selectedRow = null;
     ConstantManager constantManager = null;
-    private String[] prediosIDs;
+    private Integer[] prediosIDs;
 
     public CalculateIDNewPredio(FLyrVect l, IRowEdited row) {
 	layer = l;
@@ -59,15 +59,15 @@ public class CalculateIDNewPredio implements IAction {
 
     public Value getNewPredioID(){
 	Arrays.sort(prediosIDs);
-	int biggerPredioID = Integer.parseInt(prediosIDs[prediosIDs.length-1]);
+	int biggerPredioID = prediosIDs[prediosIDs.length-1];
 	String newPredioID = String.format("%1$03d", (biggerPredioID+1));
 	return ValueFactory.createValue(newPredioID);
     }
 
-    private String[] getAllPrediosIDInRecordset() {
+    private Integer[] getAllPrediosIDInRecordset() {
 	SelectableDataSource originalRecordset;
 	int columnIndex = getPredioIDIndex();
-	ArrayList<String> prediosID = new ArrayList<String>();
+	ArrayList<Integer> prediosID = new ArrayList<Integer>();
 	try {
 	    originalRecordset = layer.getRecordset();
 	    String sqlQuery = "select * from '" + originalRecordset.getName() + "'" +
@@ -82,9 +82,9 @@ public class CalculateIDNewPredio implements IAction {
 	    ds.setDataSourceFactory(dsf);
 	    SelectableDataSource filteredRecordset= new SelectableDataSource(ds);
 	    for (int rowIndex=0; rowIndex<filteredRecordset.getRowCount(); rowIndex++){
-		prediosID.add(filteredRecordset.getFieldValue(rowIndex, columnIndex).toString());
+		prediosID.add(Integer.parseInt(filteredRecordset.getFieldValue(rowIndex, columnIndex).toString()));
 	    }
-	    return prediosID.toArray(new String[]{""});
+	    return prediosID.toArray(new Integer[]{0});
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return null;
