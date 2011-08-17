@@ -91,13 +91,13 @@ public class ActionDispatcherExtension extends Extension implements
 		if (tocLayerManager.isPrediosLayerInEdition()) {
 		    te.stopEditing(layer, true); // don't save changes
 		}
-		JOptionPane.showMessageDialog(null,
-			predioRulesEvaluator.getErrorMessage(),
-			"Divide predio", JOptionPane.WARNING_MESSAGE);
+		JOptionPane.showMessageDialog(null, predioRulesEvaluator
+			.getErrorMessage(), "Divide predio",
+			JOptionPane.WARNING_MESSAGE);
 	    } else {
-		int option = JOptionPane.showConfirmDialog(null,
-			PluginServices.getText(this, "save_predio_confirm"),
-			"Divide predio", JOptionPane.YES_NO_OPTION,
+		int option = JOptionPane.showConfirmDialog(null, PluginServices
+			.getText(this, "save_predio_confirm"), "Divide predio",
+			JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
 		    PredioActionsDivideEvaluator predioActionsEvaluator = new PredioActionsDivideEvaluator(
@@ -124,9 +124,9 @@ public class ActionDispatcherExtension extends Extension implements
 		// te.stopEditing(layer, false);
 	    } else {
 		// te.stopEditing(layer, true);
-		JOptionPane.showMessageDialog(null,
-			fusionPrediosRulesEvaluator.getErrorMessage(),
-			"Fusión Predios", JOptionPane.WARNING_MESSAGE);
+		JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
+			.getErrorMessage(), "Fusión Predios",
+			JOptionPane.WARNING_MESSAGE);
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
 	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
@@ -138,12 +138,12 @@ public class ActionDispatcherExtension extends Extension implements
 		if (tocLayerManager.isManzanaLayerInEdition()) {
 		    te.stopEditing(layer, true);
 		}
-		JOptionPane.showMessageDialog(null,
-			manzanaRulesEvaluator.getErrorMessage(),
-			"Alta Manzana", JOptionPane.WARNING_MESSAGE);
+		JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
+			.getErrorMessage(), "Alta Manzana",
+			JOptionPane.WARNING_MESSAGE);
 	    } else {
-		int option = JOptionPane.showConfirmDialog(null,
-			PluginServices.getText(this, "save_manzana_confirm"),
+		int option = JOptionPane.showConfirmDialog(null, PluginServices
+			.getText(this, "save_manzana_confirm"),
 			"Crear Manzana", JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
@@ -164,11 +164,11 @@ public class ActionDispatcherExtension extends Extension implements
 		    insertedGeometry);
 	    if (!construccionRulesEvaluator.isOK()) {
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
-		    // te.stopEditing(layer, true);
+		    te.stopEditing(layer, true);
 		}
-		JOptionPane.showMessageDialog(null,
-			construccionRulesEvaluator.getErrorMessage(),
-			"Alta Construcción", JOptionPane.WARNING_MESSAGE);
+		JOptionPane.showMessageDialog(null, construccionRulesEvaluator
+			.getErrorMessage(), "Alta Construcción",
+			JOptionPane.WARNING_MESSAGE);
 	    } else {
 		int option = JOptionPane.showConfirmDialog(null, PluginServices
 			.getText(this, "save_construccion_confirm"),
@@ -179,10 +179,6 @@ public class ActionDispatcherExtension extends Extension implements
 			    (FLyrVect) layer, rowIndex);
 		    construccionActionsEvaluator.execute();
 		    // TODO: Launch Form
-		}
-		if (tocLayerManager.isConstruccionesLayerInEdition()) {
-		    // TODO: save previous actions
-		    // te.stopEditing(layer, false);
 		}
 	    }
 	}
