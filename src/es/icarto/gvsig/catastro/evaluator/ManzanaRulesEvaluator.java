@@ -14,6 +14,7 @@ public class ManzanaRulesEvaluator extends AbstractRulesEvaluator {
     IGeometry insertedGeometry;
 
     public ManzanaRulesEvaluator(IGeometry insertedGeometry) {
+	super();
 	this.insertedGeometry = insertedGeometry;
 	rules = new ArrayList<IRule>();
 	init();

@@ -83,13 +83,6 @@ public class ConstruccionDivideByPredio {
 	return vle.getVEA().getNewFID();
     }
 
-    private Value getNewIDForConstrucciones() {
-	ConstruccionCalculateNewID calculateID = new ConstruccionCalculateNewID(
-		layer);
-	calculateID.execute();
-	return calculateID.getNewConstruccionID();
-    }
-
     public IFeature getOldEdificio() {
 	return oldEdificio;
     }
