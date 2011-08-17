@@ -99,12 +99,12 @@
 			<menu text="Catastro/Construcciones/Eliminar" action-command="_selection" position="2000006"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.ConstruccionDivideExtension" description="Redigitalize polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.ConstruccionRedigitalizeExtension" description="Redigitalize polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Modificar Lindero"
-					action-command="_cut_polygon" position="3000009"/>
+					action-command="_redigitalize_polygon" position="3000009"/>
 			</tool-bar>-->
-			<menu text="Catastro/Construcciones/Modificar Lindero" action-command="_cut_polygon" position="3000009"/> 
+			<menu text="Catastro/Construcciones/Modificar" action-command="_redigitalize_polygon" position="3000009"/> 
 		</extension>
 				
 	<!-- UTILITIES EXTENSIONS -->	
