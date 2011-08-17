@@ -31,7 +31,7 @@ import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
 public class ActionDispatcherExtension extends Extension implements
-EndGeometryListener {
+	EndGeometryListener {
 
     private static final int NO_ACTION = -1;
     private final int ACTION_CALCULATE_NEW_PREDIO_ID = 0;
@@ -86,7 +86,7 @@ EndGeometryListener {
 		    geoms);
 	    if (!predioRulesEvaluator.isOK()) {
 		if (tocLayerManager.isPrediosLayerInEdition()) {
-		    //te.stopEditing(layer, true);
+		    // te.stopEditing(layer, true);
 		}
 		JOptionPane.showMessageDialog(null, predioRulesEvaluator
 			.getErrorMessage(), "Divide predio",
@@ -94,31 +94,32 @@ EndGeometryListener {
 	    } else {
 		int option = JOptionPane.showConfirmDialog(null, PluginServices
 			.getText(this, "save_predio_confirm"), "Divide predio",
-			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-			null);
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
 		    PredioActionsEvaluator predioActionsEvaluator = new PredioActionsEvaluator(
 			    geoms);
 		    predioActionsEvaluator.execute();
 		}
-		if(tocLayerManager.isPrediosLayerInEdition()){
-		    //TODO: save previous actions
-		    //te.stopEditing(layer, false);
+		if (tocLayerManager.isPrediosLayerInEdition()) {
+		    // TODO: save previous actions
+		    // te.stopEditing(layer, false);
 		}
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_MERGING_PREDIO) {
 	    ArrayList<IGeometry> geoms = new ArrayList<IGeometry>();
-	    IGeometry finalGeometry = ((JoinCADTool) cadTool).getJoinedGeometry();
+	    IGeometry finalGeometry = ((JoinCADTool) cadTool)
+		    .getJoinedGeometry();
 	    geoms.add(finalGeometry);
 	    FusionPrediosRulesEvaluator fusionPrediosRulesEvaluator = new FusionPrediosRulesEvaluator(
 		    geoms);
 	    if (fusionPrediosRulesEvaluator.isOK()) {
-		//TODO: save previous actions
-		//te.stopEditing(layer, false);
+		// TODO: save previous actions
+		// te.stopEditing(layer, false);
 	    } else {
-		//te.stopEditing(layer, true);
+		// te.stopEditing(layer, true);
 		JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
-			.getErrorMessage(), "Fusiï¿½n Predios",
+			.getErrorMessage(), "Fusión Predios",
 			JOptionPane.WARNING_MESSAGE);
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
@@ -129,7 +130,7 @@ EndGeometryListener {
 		    insertedGeometry);
 	    if (!manzanaRulesEvaluator.isOK()) {
 		if (tocLayerManager.isManzanaLayerInEdition()) {
-		    //te.stopEditing(layer, true);
+		    // te.stopEditing(layer, true);
 		}
 		JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
 			.getErrorMessage(), "Alta Manzana",
@@ -156,15 +157,15 @@ EndGeometryListener {
 		    insertedGeometry);
 	    if (!construccionRulesEvaluator.isOK()) {
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
-		    //te.stopEditing(layer, true);
+		    // te.stopEditing(layer, true);
 		}
 		JOptionPane.showMessageDialog(null, construccionRulesEvaluator
-			.getErrorMessage(), "Alta Construccion",
+			.getErrorMessage(), "Alta Construcción",
 			JOptionPane.WARNING_MESSAGE);
 	    } else {
 		int option = JOptionPane.showConfirmDialog(null, PluginServices
 			.getText(this, "save_construccion_confirm"),
-			"Crear Manzana", JOptionPane.YES_NO_OPTION,
+			"Alta Construcción", JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
 		    // TODO: Launch Form
