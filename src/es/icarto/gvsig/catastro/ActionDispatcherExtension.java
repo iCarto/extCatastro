@@ -23,7 +23,7 @@ import es.icarto.gvsig.catastro.evaluator.ConstruccionActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ConstruccionRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaRulesEvaluator;
-import es.icarto.gvsig.catastro.evaluator.PredioActionsEvaluator;
+import es.icarto.gvsig.catastro.evaluator.PredioActionsDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesFusionEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
@@ -98,7 +98,7 @@ public class ActionDispatcherExtension extends Extension implements
 			JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
-		    PredioActionsEvaluator predioActionsEvaluator = new PredioActionsEvaluator(
+		    PredioActionsDivideEvaluator predioActionsEvaluator = new PredioActionsDivideEvaluator(
 			    geoms);
 		    predioActionsEvaluator.execute();
 		}
