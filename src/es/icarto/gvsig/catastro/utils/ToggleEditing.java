@@ -47,7 +47,6 @@ import com.iver.cit.gvsig.ProjectExtension;
 import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileReadException;
 import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileWriteException;
 import com.iver.cit.gvsig.exceptions.layers.CancelEditingLayerException;
-import com.iver.cit.gvsig.exceptions.layers.LegendLayerException;
 import com.iver.cit.gvsig.exceptions.layers.StartEditionLayerException;
 import com.iver.cit.gvsig.exceptions.table.CancelEditingTableException;
 import com.iver.cit.gvsig.exceptions.validate.ValidateRowException;
@@ -64,7 +63,6 @@ import com.iver.cit.gvsig.fmap.core.IRow;
 import com.iver.cit.gvsig.fmap.drivers.FieldDescription;
 import com.iver.cit.gvsig.fmap.drivers.ILayerDefinition;
 import com.iver.cit.gvsig.fmap.drivers.ITableDefinition;
-import com.iver.cit.gvsig.fmap.drivers.shp.IndexedShpDriver;
 import com.iver.cit.gvsig.fmap.edition.DefaultRowEdited;
 import com.iver.cit.gvsig.fmap.edition.EditionEvent;
 import com.iver.cit.gvsig.fmap.edition.EditionExceptionOld;
@@ -82,7 +80,6 @@ import com.iver.cit.gvsig.fmap.layers.FLayers;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 import com.iver.cit.gvsig.fmap.layers.SpatialCache;
 import com.iver.cit.gvsig.fmap.rendering.ILegend;
-import com.iver.cit.gvsig.fmap.rendering.IVectorLegend;
 import com.iver.cit.gvsig.gui.cad.DefaultCADTool;
 import com.iver.cit.gvsig.layers.VectorialLayerEdited;
 import com.iver.cit.gvsig.project.documents.table.ProjectTable;
@@ -156,11 +153,14 @@ public class ToggleEditing {
 		    logger.error(e.getMessage(), e);
 		}
 
-		//		if (!(layerVectorial.getSource().getDriver() instanceof IndexedShpDriver)) {
-		//		    vle = (VectorialLayerEdited) editionManager.getLayerEdited(layerVectorial);
-		//		    vle.setLegend(legendOriginal);
-		//		}
-		vle = (VectorialLayerEdited) editionManager.getLayerEdited(layerVectorial);
+		// if (!(layerVectorial.getSource().getDriver() instanceof
+		// IndexedShpDriver)) {
+		// vle = (VectorialLayerEdited)
+		// editionManager.getLayerEdited(layerVectorial);
+		// vle.setLegend(legendOriginal);
+		// }
+		vle = (VectorialLayerEdited) editionManager
+			.getLayerEdited(layerVectorial);
 		vea.getCommandRecord().addCommandListener(mapControl);
 		// If there's a table linked to this layer, its model is changed
 		// to VectorialEditableAdapter.
@@ -246,20 +246,12 @@ public class ToggleEditing {
 		VectorialEditableAdapter vea = (VectorialEditableAdapter) ((FLyrVect) layer)
 			.getSource();
 		vea.getCommandRecord().removeCommandListener(mapControl);
-		if (!(((FLyrVect) layer).getSource().getDriver() instanceof IndexedShpDriver)) {
-		    VectorialLayerEdited vle = (VectorialLayerEdited) CADExtension
-			    .getEditionManager().getLayerEdited(layer);
-		    ((FLyrVect) layer).setLegend((IVectorLegend) vle
-			    .getLegend());
-		}
 		layer.setEditing(false);
 		layer.setActive(true);
 	    }
 	} catch (DriverException e) {
 	    logger.error(e.getMessage(), e);
 	} catch (IOException e) {
-	    logger.error(e.getMessage(), e);
-	} catch (LegendLayerException e) {
 	    logger.error(e.getMessage(), e);
 	} catch (StartEditionLayerException e) {
 	    logger.error(e.getMessage(), e);
@@ -488,8 +480,8 @@ public class ToggleEditing {
 		attributes[colPos] = newValue;
 		IGeometry geometry = ((DefaultFeature) row.getLinkedRow())
 			.getGeometry();
-		IRow newRow = new DefaultFeature(geometry, attributes,
-			row.getID());
+		IRow newRow = new DefaultFeature(geometry, attributes, row
+			.getID());
 		edAdapter.modifyRow(rowPos, newRow, "NAVTABLE MODIFY",
 			EditionEvent.ALPHANUMERIC);
 	    } else {
@@ -650,31 +642,32 @@ public class ToggleEditing {
 	try {
 	    vea.modifyRow(index, row, nameOfCADToolUsed, EditionEvent.GRAPHIC);
 	} catch (ValidateRowException e) {
-	    NotificationManager.addError(e.getMessage(),e);
+	    NotificationManager.addError(e.getMessage(), e);
 	} catch (ExpansionFileWriteException e) {
-	    NotificationManager.addError(e.getMessage(),e);
+	    NotificationManager.addError(e.getMessage(), e);
 	} catch (ReadDriverException e) {
-	    NotificationManager.addError(e.getMessage(),e);
+	    NotificationManager.addError(e.getMessage(), e);
 	}
-	//draw(row.getGeometry().cloneGeometry());
+	// draw(row.getGeometry().cloneGeometry());
     }
 
-    public void addGeometryWithParametrizedValues(IGeometry geometry, Value[] values, String nameOfCADToolUsed) {
+    public void addGeometryWithParametrizedValues(IGeometry geometry,
+	    Value[] values, String nameOfCADToolUsed) {
 	try {
 	    String newFID = vea.getNewFID();
 	    DefaultFeature df = new DefaultFeature(geometry, values, newFID);
 	    int index = vea.addRow(df, nameOfCADToolUsed, EditionEvent.GRAPHIC);
 	    clearSelection();
-	    //ArrayList selectedRow = vle.getSelectedRow();
+	    // ArrayList selectedRow = vle.getSelectedRow();
 
 	    ViewPort vp = vle.getLayer().getMapContext().getViewPort();
-	    BufferedImage selectionImage = new BufferedImage(vp
-		    .getImageWidth(), vp.getImageHeight(),
+	    BufferedImage selectionImage = new BufferedImage(
+		    vp.getImageWidth(), vp.getImageHeight(),
 		    BufferedImage.TYPE_INT_ARGB);
 	    Graphics2D gs = selectionImage.createGraphics();
-	    int inversedIndex=vea.getInversedIndex(index);
+	    int inversedIndex = vea.getInversedIndex(index);
 	    vle.addSelectionCache(new DefaultRowEdited(df,
-		    IRowEdited.STATUS_ADDED, inversedIndex ));
+		    IRowEdited.STATUS_ADDED, inversedIndex));
 	    vea.getSelection().set(inversedIndex);
 	    IGeometry geom = df.getGeometry();
 	    geom.cloneGeometry().draw(gs, vp, DefaultCADTool.selectionSymbol);
@@ -682,33 +675,34 @@ public class ToggleEditing {
 	    vea.setSelectionImage(selectionImage);
 	    insertSpatialCache(geom);
 	} catch (ReadDriverException e) {
-	    NotificationManager.addError(e.getMessage(),e);
+	    NotificationManager.addError(e.getMessage(), e);
 	    return;
 	} catch (ValidateRowException e) {
-	    NotificationManager.addError(e.getMessage(),e);
+	    NotificationManager.addError(e.getMessage(), e);
 	    return;
 	}
-	//draw(geometry.cloneGeometry());
+	// draw(geometry.cloneGeometry());
     }
 
     protected void insertSpatialCache(IGeometry geom) {
-	SpatialCache spatialCache=((FLyrVect)vle.getLayer()).getSpatialCache();
-	Rectangle2D r=geom.getBounds2D();
-	if (geom.getGeometryType()==FShape.POINT) {
-	    r = new Rectangle2D.Double(r.getX(),r.getY(),1,1);
+	SpatialCache spatialCache = ((FLyrVect) vle.getLayer())
+		.getSpatialCache();
+	Rectangle2D r = geom.getBounds2D();
+	if (geom.getGeometryType() == FShape.POINT) {
+	    r = new Rectangle2D.Double(r.getX(), r.getY(), 1, 1);
 	}
-	spatialCache.insert(r,geom);
+	spatialCache.insert(r, geom);
 
     }
 
     public void clearSelection() throws ReadDriverException {
-	if(vle != null){
+	if (vle != null) {
 	    ArrayList selectedRow = vle.getSelectedRow();
 	    ArrayList selectedHandlers = vle.getSelectedHandler();
 	    selectedRow.clear();
 	    selectedHandlers.clear();
 	}
-	if (vea != null){
+	if (vea != null) {
 	    FBitSet selection = vea.getSelection();
 	    selection.clear();
 	    vea.setSelectionImage(null);
