@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro.evaluator;
+package es.icarto.gvsig.catastro.evaluator.actions;
 
 import java.util.ArrayList;
 
@@ -6,13 +6,14 @@ import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IFeature;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
-import es.icarto.gvsig.catastro.evaluator.actions.IAction;
+
+import es.icarto.gvsig.catastro.evaluator.ConstruccionesCutter;
 import es.icarto.gvsig.catastro.utils.FeaturesRetrieverFromIntersection;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class UpdateConstruccionesAffected implements IAction {
+public class ConstruccionDivideWhenDividingPredios implements IAction {
 
     private ArrayList<IGeometry> predios;
     private FLyrVect construccionesLayer;
@@ -21,7 +22,7 @@ public class UpdateConstruccionesAffected implements IAction {
     private ToggleEditing te;
     private ArrayList<IFeature> construccionesAffected;
 
-    public UpdateConstruccionesAffected(ArrayList<IGeometry> predios,
+    public ConstruccionDivideWhenDividingPredios(ArrayList<IGeometry> predios,
 	    int idNewPredio) {
 	this.predios = predios;
 	this.idNewPredio = idNewPredio;

@@ -12,7 +12,7 @@ import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class AddValuesToNewConstruccion implements IAction {
+public class ConstruccionCalculateValues implements IAction {
 
     int rowIndex;
     FLyrVect layer = null;
@@ -20,7 +20,7 @@ public class AddValuesToNewConstruccion implements IAction {
     ConstantManager constantManager;
     private Integer[] construccionesIDs;
 
-    public AddValuesToNewConstruccion(FLyrVect layer, int rowIndex) {
+    public ConstruccionCalculateValues(FLyrVect layer, int rowIndex) {
 	this.layer = layer;
 	this.rowIndex = rowIndex;
     }

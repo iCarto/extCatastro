@@ -1,14 +1,16 @@
 package es.icarto.gvsig.catastro.evaluator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.iver.cit.gvsig.fmap.core.IFeature;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.util.PolygonExtracter;
 
-import es.icarto.gvsig.catastro.evaluator.actions.CutConstruccionesByPredio;
-import es.icarto.gvsig.catastro.utils.JtsUtil;
+import es.icarto.gvsig.catastro.evaluator.actions.ConstruccionDivideByPredio;
 
 public class ConstruccionesCutter {
 
@@ -35,7 +37,7 @@ public class ConstruccionesCutter {
 	    Geometry lineOfIntersection = prediosIntersection
 		    .intersection(edificio);
 	    if (isIntersecting(lineOfIntersection, edificio)) {
-		CutConstruccionesByPredio construccionesCutter = new CutConstruccionesByPredio(
+		ConstruccionDivideByPredio construccionesCutter = new ConstruccionDivideByPredio(
 			idNewPredio);
 		// cut the construccion by the 1st predio, which have the old ID
 		// the second predio will have a new created ID
@@ -59,7 +61,7 @@ public class ConstruccionesCutter {
 
     private Polygon[] getConstrucciones() {
 	Geometry geom = construccion.getGeometry().toJTSGeometry();
-	return JtsUtil.extractPolygons(geom);
+	return extractPolygons(geom);
     }
 
     private Geometry getPrediosIntersection() {
@@ -76,4 +78,18 @@ public class ConstruccionesCutter {
 	return featuresToAdd;
     }
 
+    public Polygon[] extractPolygons(Geometry g) {
+	Polygon[] solution = null;
+	List<Polygon> solutionList = new ArrayList<Polygon>();
+	if (g instanceof Polygon) {
+	    solutionList.add((Polygon) g);
+	} else if (g instanceof GeometryCollection) {
+	    GeometryCollection geomCol = (GeometryCollection) g;
+	    List polygons = PolygonExtracter.getPolygons(geomCol);
+	    solutionList.addAll(polygons);
+	}
+	solution = new Polygon[solutionList.size()];
+	solutionList.toArray(solution);
+	return solution;
+    }
 }

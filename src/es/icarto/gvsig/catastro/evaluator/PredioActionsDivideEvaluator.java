@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import es.icarto.gvsig.catastro.evaluator.actions.IAction;
+import es.icarto.gvsig.catastro.evaluator.actions.ConstruccionDivideWhenDividingPredios;
 
 public class PredioActionsDivideEvaluator {
 
@@ -22,7 +23,7 @@ public class PredioActionsDivideEvaluator {
     private void init() {
 	this.actions = new ArrayList<IAction>();
 	this.messages = new ArrayList<String>();
-	actions.add(new UpdateConstruccionesAffected(prediosGeoms, idNewPredio));
+	actions.add(new ConstruccionDivideWhenDividingPredios(prediosGeoms, idNewPredio));
     }
 
     public ArrayList<String> execute() {

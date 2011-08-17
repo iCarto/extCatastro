@@ -21,14 +21,14 @@ import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
-public class CalculateIDNewPredio implements IAction {
+public class PredioCalculateNewID implements IAction {
 
     FLyrVect layer = null;
     IRowEdited selectedRow = null;
     ConstantManager constantManager = null;
     private Integer[] prediosIDs;
 
-    public CalculateIDNewPredio(FLyrVect l, IRowEdited row) {
+    public PredioCalculateNewID(FLyrVect l, IRowEdited row) {
 	layer = l;
 	selectedRow = row;
 	constantManager = new ConstantManager();

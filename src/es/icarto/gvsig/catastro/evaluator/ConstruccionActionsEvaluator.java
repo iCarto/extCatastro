@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.catastro.evaluator.actions.AddValuesToNewConstruccion;
+import es.icarto.gvsig.catastro.evaluator.actions.ConstruccionCalculateValues;
 import es.icarto.gvsig.catastro.evaluator.actions.IAction;
 
 public class ConstruccionActionsEvaluator {
@@ -23,7 +23,7 @@ public class ConstruccionActionsEvaluator {
     }
 
     public void init() {
-	actions.add(new AddValuesToNewConstruccion(layer, rowIndex));
+	actions.add(new ConstruccionCalculateValues(layer, rowIndex));
     }
 
     public ArrayList<String> execute() {

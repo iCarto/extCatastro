@@ -12,13 +12,13 @@ import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class CreatePredioWhenAddNewManzana implements IAction {
+public class PredioCreateNewWhenAddNewManzana implements IAction {
 
     private static FLyrVect sourceLayer;
     private FLyrVect destinationLayer;
     private final TOCLayerManager tocLayerManager;
 
-    public CreatePredioWhenAddNewManzana(FLyrVect layer) {
+    public PredioCreateNewWhenAddNewManzana(FLyrVect layer) {
 	tocLayerManager = new TOCLayerManager();
 	this.sourceLayer = layer;
 	destinationLayer = getDestinationLayer();

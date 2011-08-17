@@ -15,14 +15,14 @@ import com.vividsolutions.jts.geom.Geometry;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
-public class CutConstruccionesByPredio {
+public class ConstruccionDivideByPredio {
 
     private FLyrVect layer;
     private IFeature newEdificio = null;
     private IFeature oldEdificio = null;
     private int idNewPredio = -1;
 
-    public CutConstruccionesByPredio(int idNewPredio) {
+    public ConstruccionDivideByPredio(int idNewPredio) {
 	this.idNewPredio = idNewPredio;
 	this.layer = getConstruccionesLayer();
     }
@@ -84,7 +84,7 @@ public class CutConstruccionesByPredio {
     }
 
     private Value getNewIDForConstrucciones() {
-	CalculateIDNewConstruccion calculateID = new CalculateIDNewConstruccion(
+	ConstruccionCalculateNewID calculateID = new ConstruccionCalculateNewID(
 		layer);
 	calculateID.execute();
 	return calculateID.getNewConstruccionID();

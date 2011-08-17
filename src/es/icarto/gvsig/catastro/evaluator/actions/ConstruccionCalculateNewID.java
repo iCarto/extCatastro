@@ -20,13 +20,13 @@ import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
-public class CalculateIDNewConstruccion implements IAction {
+public class ConstruccionCalculateNewID implements IAction {
 
     FLyrVect construccionesLayer = null;
     ConstantManager constantManager = null;
     private Integer[] construccionesIDs;
 
-    public CalculateIDNewConstruccion(FLyrVect l) {
+    public ConstruccionCalculateNewID(FLyrVect l) {
 	construccionesLayer = l;
 	constantManager = new ConstantManager();
     }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
 
-import es.icarto.gvsig.catastro.evaluator.actions.AddValuesToNewManzana;
-import es.icarto.gvsig.catastro.evaluator.actions.CreatePredioWhenAddNewManzana;
+import es.icarto.gvsig.catastro.evaluator.actions.ManzanaCalculateValues;
+import es.icarto.gvsig.catastro.evaluator.actions.PredioCreateNewWhenAddNewManzana;
 import es.icarto.gvsig.catastro.evaluator.actions.IAction;
 
 
@@ -25,8 +25,8 @@ public class ManzanaActionsEvaluator {
     }
 
     public void init() {
-	actions.add(new AddValuesToNewManzana(layer, rowIndex));
-	actions.add(new CreatePredioWhenAddNewManzana(layer));
+	actions.add(new ManzanaCalculateValues(layer, rowIndex));
+	actions.add(new PredioCreateNewWhenAddNewManzana(layer));
     }
 
     public ArrayList<String> execute() {

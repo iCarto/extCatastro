@@ -26,7 +26,7 @@ import es.icarto.gvsig.catastro.evaluator.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioActionsDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesFusionEvaluator;
-import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
+import es.icarto.gvsig.catastro.evaluator.actions.PredioCalculateNewID;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
@@ -73,7 +73,7 @@ public class ActionDispatcherExtension extends Extension implements
 	if (action == ACTION_CALCULATE_NEW_PREDIO_ID) {
 	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
 		    .getSelectedRow();
-	    CalculateIDNewPredio calculator = new CalculateIDNewPredio(
+	    PredioCalculateNewID calculator = new PredioCalculateNewID(
 		    (FLyrVect) layer, selectedRow);
 	    Value[] values = null;
 	    if (calculator.execute()) {
