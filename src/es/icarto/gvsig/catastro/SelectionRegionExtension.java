@@ -11,7 +11,7 @@ import es.icarto.gvsig.catastro.constants.ConstantsSelectionListener;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
-public class CatastroSelectionRegionExtension extends Extension {
+public class SelectionRegionExtension extends Extension {
 
     TOCLayerManager tocLayerManager;
 

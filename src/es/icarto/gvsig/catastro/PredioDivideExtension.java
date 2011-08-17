@@ -9,7 +9,7 @@ import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.wrapperscadtools.CutPolygonWrapper;
 
-public class CatastroPredioDivideExtension extends Extension {
+public class PredioDivideExtension extends Extension {
 
     private CutPolygonWrapper cutPolygonWrapper;
     private TOCLayerManager tocLayerManager;

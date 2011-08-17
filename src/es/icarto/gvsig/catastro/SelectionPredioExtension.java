@@ -11,7 +11,7 @@ import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
 
-public class CatastroSelectionPredioExtension extends Extension {
+public class SelectionPredioExtension extends Extension {
 
     TOCLayerManager tocLayerManager;
 

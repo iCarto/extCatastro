@@ -9,7 +9,7 @@ import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.wrapperscadtools.SelectionGeometryWrapper;
 
-public class CatastroConstruccionFusionExtension extends Extension {
+public class PredioFusionExtension extends Extension {
 
     private SelectionGeometryWrapper selectionGeometryWrapper;
     private TOCLayerManager tocLayerManager;
@@ -24,13 +24,13 @@ public class CatastroConstruccionFusionExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	if(constantManager.areConstantsSetForConstruccion()){
+	if(constantManager.areConstantsSetForPredio()){
 	    tocLayerManager = new TOCLayerManager();
-	    tocLayerManager.setActiveAndVisibleLayersForConstrucciones();
+	    tocLayerManager.setActiveAndVisibleLayersForPredios();
 	    selectionGeometryWrapper.execute(actionCommand);
-	} else{
+	} else {
 	    Object[] options = { "OK" };
-	    JOptionPane.showOptionDialog(null, PluginServices.getText(this, "select_predio"), "Warning",
+	    JOptionPane.showOptionDialog(null, PluginServices.getText(this, "select_manzana"), "Warning",
 		    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
 		    null, options, options[0]);
 	}

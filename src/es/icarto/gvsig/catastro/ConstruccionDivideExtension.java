@@ -7,43 +7,43 @@ import com.iver.andami.plugins.Extension;
 
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
-import es.icarto.gvsig.catastro.wrapperscadtools.InsertAreaWrapper;
+import es.icarto.gvsig.catastro.wrapperscadtools.CutPolygonWrapper;
 
-public class CatastroConstruccionNewExtension extends Extension {
+public class ConstruccionDivideExtension extends Extension {
 
-    private InsertAreaWrapper insertAreaWrapper;
+    private CutPolygonWrapper cutPolygonWrapper;
     private TOCLayerManager tocLayerManager;
     private ConstantManager constantManager;
 
     @Override
     public void initialize() {
-	insertAreaWrapper = new InsertAreaWrapper();
-	insertAreaWrapper.initialize();
+	cutPolygonWrapper = new CutPolygonWrapper();
+	cutPolygonWrapper.initialize();
 	constantManager = new ConstantManager();
     }
 
     @Override
     public void execute(String actionCommand) {
-	if (constantManager.areConstantsSetForConstruccion()) {
+	if(constantManager.areConstantsSetForConstruccion()){
 	    tocLayerManager = new TOCLayerManager();
 	    tocLayerManager.setActiveAndVisibleLayersForConstrucciones();
-	    insertAreaWrapper.execute(actionCommand);
-	} else {
+	    cutPolygonWrapper.execute(actionCommand);
+	} else{
 	    Object[] options = { "OK" };
-	    JOptionPane.showOptionDialog(null, PluginServices.getText(this,
-		    "select_predio"), "Warning", JOptionPane.DEFAULT_OPTION,
-		    JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+	    JOptionPane.showOptionDialog(null, PluginServices.getText(this, "select_predio"), "Warning",
+		    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+		    null, options, options[0]);
 	}
-
     }
 
     @Override
     public boolean isEnabled() {
-	return insertAreaWrapper.isEnabled();
+	return false;
+	//	return cutPolygonWrapper.isEnabled();
     }
 
     @Override
     public boolean isVisible() {
-	return insertAreaWrapper.isVisible();
+	return cutPolygonWrapper.isVisible();
     }
 }

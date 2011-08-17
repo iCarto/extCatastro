@@ -9,7 +9,7 @@ import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.wrapperscadtools.InsertAreaWrapper;
 
-public class CatastroManzanaNewExtension extends Extension {
+public class ManzanaNewExtension extends Extension {
 
 	private InsertAreaWrapper insertAreaWrapper;
 	private ConstantManager constantManager;

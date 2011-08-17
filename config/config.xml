@@ -17,7 +17,7 @@
 	<extensions>
 	
 		<!-- SELECT ARE TO WORK OVER: DEFINE CONSTANTS -->
-		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionRegionExtension" description="Select region" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.SelectionRegionExtension" description="Select region" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="SeleccionarRegion"
 					action-command="_select_region" position="1003"/>
@@ -25,7 +25,7 @@
 			<menu text="Catastro/Selección/Región" action-command="_select_region" position="1003"/> 
 		</extension>
 
-		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionManzanaExtension" description="Select manzana" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.SelectionManzanaExtension" description="Select manzana" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="SeleccionarManzana"
 					action-command="_select_manzana" position="2006"/>
@@ -33,7 +33,7 @@
 			<menu text="Catastro/Selección/Manzana" action-command="_select_manzana" position="2006"/> 
 		</extension>
 
-		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionPredioExtension" description="Select predio" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.SelectionPredioExtension" description="Select predio" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="SeleccionarPredio"
 					action-command="_select_predio" position="3009"/>
@@ -41,7 +41,7 @@
 			<menu text="Catastro/Selección/Predio" action-command="_select_predio" position="3009"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionResetConstantsExtension" description="Clean constants" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.SelectionResetConstantsExtension" description="Clean constants" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Limpiar selección de constantes"
 					action-command="_clean_constants" position="4012"/>
@@ -51,7 +51,7 @@
 	
 		<!-- USER FUNCTIONALITIES MENU MANZANAS -->
 		
-		<extension class-name="es.icarto.gvsig.catastro.CatastroManzanaNewExtension" description="New Feature" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.ManzanaNewExtension" description="New Feature" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Alta"
 					action-command="_area" position="10003"/>
@@ -62,7 +62,7 @@
 	
 	<!-- USER FUNCTIONALITIES MENU PREDIOS -->
 		
-		<extension class-name="es.icarto.gvsig.catastro.CatastroPredioFusionExtension" description="Join Polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.PredioFusionExtension" description="Join Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Fusionar"
 					action-command="_selection" position="100003"/>
@@ -71,7 +71,7 @@
 				icon="images/join.png" position="100003"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.CatastroPredioDivideExtension" description="Split Polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.PredioDivideExtension" description="Split Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Dividir"
 					action-command="_cut_polygon" position="200006"/>
@@ -82,7 +82,7 @@
 	
 	<!-- USER FUNCTIONALITIES MENU CONSTRUCCIONES -->
 	
-		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionNewExtension" description="New Feature" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.ConstruccionNewExtension" description="New Feature" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Alta"
 					action-command="_area" position="1000003"/>
@@ -91,7 +91,7 @@
 				icon="images/new.png" position="1000003"/> 
 		</extension>
 	
-		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionFusionExtension" description="Delete Feature" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.ConstruccionFusionExtension" description="Delete Feature" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Eliminar"
 					action-command="_delete" position="2000006"/>
@@ -99,7 +99,7 @@
 			<menu text="Catastro/Construcciones/Eliminar" action-command="_selection" position="2000006"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.CatastroConstruccionDivideExtension" description="Redigitalize polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.ConstruccionDivideExtension" description="Redigitalize polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Modificar Lindero"
 					action-command="_cut_polygon" position="3000009"/>

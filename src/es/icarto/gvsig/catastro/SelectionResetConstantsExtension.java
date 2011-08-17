@@ -6,7 +6,7 @@ import com.iver.andami.plugins.Extension;
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.constants.Constants;
 
-public class CatastroSelectionResetConstantsExtension extends Extension {
+public class SelectionResetConstantsExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
