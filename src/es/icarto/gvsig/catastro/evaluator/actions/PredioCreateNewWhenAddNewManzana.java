@@ -29,8 +29,7 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 	    ToggleEditing te = new ToggleEditing();
 	    boolean wasEditingManzanas = false;
 	    if (tocLayerManager.isManzanaLayerInEdition()) {
-		// TODO: save layer
-		// te.stopEditing(sourceLayer, false);
+		te.stopEditing(sourceLayer, false);
 		sourceLayer.setActive(false);
 		wasEditingManzanas = true;
 	    }
@@ -42,11 +41,10 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 	    te.addGeometryWithParametrizedValues(feature.getGeometry()
 		    .cloneGeometry(), getNewPredioValues(feature),
 		    "_create_new_predio");
-	    // TODO: save layer
-	    // te.stopEditing(destinationLayer, false);
+	    te.stopEditing(destinationLayer, false);
 	    destinationLayer.setActive(false);
 	    if (wasEditingManzanas) {
-		// te.startEditing(sourceLayer);
+		te.startEditing(sourceLayer);
 		sourceLayer.setActive(true);
 	    }
 	    return true;
