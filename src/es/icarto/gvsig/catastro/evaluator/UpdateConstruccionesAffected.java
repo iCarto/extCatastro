@@ -21,21 +21,22 @@ public class UpdateConstruccionesAffected implements IAction {
 
     private ArrayList<IGeometry> predios;
     private FLyrVect construccionesLayer;
-    private static FLyrVect prediosLayer;
+    private FLyrVect prediosLayer;
     private int idNewPredio = -1;
     private ToggleEditing te;
     private ArrayList<IFeature> construccionesAffected;
 
-    public UpdateConstruccionesAffected(FLyrVect prediosLayer,
-	    ArrayList<IGeometry> predios, int idNewPredio) {
+    public UpdateConstruccionesAffected(ArrayList<IGeometry> predios,
+	    int idNewPredio) {
 	this.predios = predios;
 	this.idNewPredio = idNewPredio;
-	this.prediosLayer = prediosLayer;
-	te = new ToggleEditing();
 	init();
     }
 
     private void init() {
+	TOCLayerManager toc = new TOCLayerManager();
+	te = new ToggleEditing();
+	this.prediosLayer = toc.getLayerByName(Preferences.PREDIOS_LAYER_NAME);
 	this.construccionesLayer = getConstrucciones();
 	construccionesAffected = getConstruccionesAffected();
     }

@@ -100,7 +100,7 @@ public class ActionDispatcherExtension extends Extension implements
 			JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
 		    PredioActionsDivideEvaluator predioActionsEvaluator = new PredioActionsDivideEvaluator(
-			    (FLyrVect) layer, geoms, idNewPredio);
+			    geoms, idNewPredio);
 		    predioActionsEvaluator.execute();
 		}
 		if (tocLayerManager.isPrediosLayerInEdition()) {
