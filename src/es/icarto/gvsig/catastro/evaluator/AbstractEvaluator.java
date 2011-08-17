@@ -1,6 +1,8 @@
-package es.icarto.gvsig.catastro.evaluator.rules;
+package es.icarto.gvsig.catastro.evaluator;
 
 import java.util.ArrayList;
+
+import es.icarto.gvsig.catastro.evaluator.rules.IRule;
 
 public class AbstractEvaluator {
 

@@ -1,9 +1,12 @@
-package es.icarto.gvsig.catastro.evaluator.rules;
+package es.icarto.gvsig.catastro.evaluator;
 
 import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 
+import es.icarto.gvsig.catastro.evaluator.rules.CheckConstruccionIsWithinOnePredio;
+import es.icarto.gvsig.catastro.evaluator.rules.CheckGeometryIsOverlapingAnotherOne;
+import es.icarto.gvsig.catastro.evaluator.rules.IRule;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
 public class ConstruccionRulesEvaluator extends AbstractEvaluator {

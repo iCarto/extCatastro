@@ -1,8 +1,11 @@
-package es.icarto.gvsig.catastro.evaluator.rules;
+package es.icarto.gvsig.catastro.evaluator;
 
 import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
+
+import es.icarto.gvsig.catastro.evaluator.rules.CheckAllAreaPrediosEqualsAreaManzana;
+import es.icarto.gvsig.catastro.evaluator.rules.CheckPredioIsWithinOneManzana;
 
 public class PredioRulesEvaluator extends AbstractEvaluator {
 

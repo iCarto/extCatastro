@@ -1,8 +1,11 @@
-package es.icarto.gvsig.catastro.evaluator.actions;
+package es.icarto.gvsig.catastro.evaluator;
 
 import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
+
+import es.icarto.gvsig.catastro.evaluator.actions.IAction;
+import es.icarto.gvsig.catastro.evaluator.actions.UpdateConstructionsGeom;
 
 
 public class PredioActionsEvaluator {

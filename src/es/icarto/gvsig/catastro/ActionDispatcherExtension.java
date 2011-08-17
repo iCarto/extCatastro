@@ -19,13 +19,13 @@ import com.iver.cit.gvsig.gui.cad.tools.JoinCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
+import es.icarto.gvsig.catastro.evaluator.ConstruccionRulesEvaluator;
+import es.icarto.gvsig.catastro.evaluator.ManzanaActionsEvaluator;
+import es.icarto.gvsig.catastro.evaluator.ManzanaRulesEvaluator;
+import es.icarto.gvsig.catastro.evaluator.PredioActionsEvaluator;
+import es.icarto.gvsig.catastro.evaluator.PredioRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
-import es.icarto.gvsig.catastro.evaluator.actions.ManzanaActionsEvaluator;
-import es.icarto.gvsig.catastro.evaluator.actions.PredioActionsEvaluator;
-import es.icarto.gvsig.catastro.evaluator.rules.ConstruccionRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.rules.FusionPrediosRulesEvaluator;
-import es.icarto.gvsig.catastro.evaluator.rules.ManzanaRulesEvaluator;
-import es.icarto.gvsig.catastro.evaluator.rules.PredioRulesEvaluator;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;

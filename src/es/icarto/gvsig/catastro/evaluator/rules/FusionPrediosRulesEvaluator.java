@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 
+import es.icarto.gvsig.catastro.evaluator.AbstractEvaluator;
+
 public class FusionPrediosRulesEvaluator extends AbstractEvaluator {
     
     ArrayList<IGeometry> geoms;
