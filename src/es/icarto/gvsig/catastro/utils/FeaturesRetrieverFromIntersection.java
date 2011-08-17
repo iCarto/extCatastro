@@ -16,13 +16,13 @@ import com.vividsolutions.jts.geom.Geometry;
  * and returns the features in the layer given which intersects with it.
  * Also check that the intersection is linestring or multilinestring JTS types. 
  */
-public class FeaturesRetriever {
+public class FeaturesRetrieverFromIntersection {
 
     private ArrayList<IGeometry> geoms = null;
     private static FLyrVect layer = null;
     private ArrayList<IFeature> features = null;
 
-    public FeaturesRetriever(FLyrVect layer, ArrayList<IGeometry> geoms) {
+    public FeaturesRetrieverFromIntersection(FLyrVect layer, ArrayList<IGeometry> geoms) {
 	this.geoms = geoms;
 	this.layer = layer;
 	this.features = new ArrayList<IFeature>();
