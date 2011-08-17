@@ -40,22 +40,13 @@ public class ConstruccionDivideWhenDividingPredios implements IAction {
     public boolean execute() {
 	prediosLayer.setActive(false);
 	construccionesLayer.setActive(true);
-	if (prediosLayer.isEditing()) {
-	    // TODO: save layer
-	    // te.stopEditing(prediosLayer, false);
-	}
 	te.startEditing(construccionesLayer);
 	for (IFeature construccion : construccionesAffected) {
 	    if (!save(construccion)) {
-		construccionesLayer.setActive(false);
-		prediosLayer.setActive(true);
 		return false;
 	    }
 	}
-	// TODO: save layer
-	// te.stopEditing(construccionesLayer, false);
-	construccionesLayer.setActive(false);
-	prediosLayer.setActive(true);
+	te.stopEditing(construccionesLayer, false);
 	return true;
     }
 
@@ -66,7 +57,7 @@ public class ConstruccionDivideWhenDividingPredios implements IAction {
     }
 
     private boolean save(IFeature construccion) {
-	ConstruccionesCutter construccionesCutter = new ConstruccionesCutter(
+	ConstruccionesUpdateValuesAndGeom construccionesCutter = new ConstruccionesUpdateValuesAndGeom(
 		construccion, predios, idNewPredio);
 	construccionesCutter.execute();
 	ArrayList<IFeature> featuresToModify = construccionesCutter

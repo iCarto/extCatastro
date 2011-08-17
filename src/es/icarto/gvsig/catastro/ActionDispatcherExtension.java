@@ -89,7 +89,7 @@ public class ActionDispatcherExtension extends Extension implements
 		    geoms);
 	    if (!predioRulesEvaluator.isOK()) {
 		if (tocLayerManager.isPrediosLayerInEdition()) {
-		    // te.stopEditing(layer, true);
+		    te.stopEditing(layer, true); // don't save changes
 		}
 		JOptionPane.showMessageDialog(null, predioRulesEvaluator
 			.getErrorMessage(), "Divide predio",
@@ -99,14 +99,13 @@ public class ActionDispatcherExtension extends Extension implements
 			.getText(this, "save_predio_confirm"), "Divide predio",
 			JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE, null);
+		if (tocLayerManager.isPrediosLayerInEdition()) {
+		    te.stopEditing(layer, false); // save changes
+		}
 		if (option == JOptionPane.OK_OPTION) {
 		    PredioActionsDivideEvaluator predioActionsEvaluator = new PredioActionsDivideEvaluator(
 			    geoms, idNewPredio);
 		    predioActionsEvaluator.execute();
-		}
-		if (tocLayerManager.isPrediosLayerInEdition()) {
-		    // TODO: save previous actions
-		    // te.stopEditing(layer, false);
 		}
 	    }
 	} else if (action == ACTION_CHECK_RULES_FOR_MERGING_PREDIO) {

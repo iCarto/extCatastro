@@ -11,7 +11,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.util.PolygonExtracter;
 
 
-public class ConstruccionesCutter {
+public class ConstruccionesUpdateValuesAndGeom {
 
     private IFeature construccion = null;
     private ArrayList<IGeometry> predios = null;
@@ -19,7 +19,7 @@ public class ConstruccionesCutter {
     private ArrayList<IFeature> featuresToAdd = null;
     private int idNewPredio = -1;
 
-    public ConstruccionesCutter(IFeature construccion,
+    public ConstruccionesUpdateValuesAndGeom(IFeature construccion,
 	    ArrayList<IGeometry> geoms, int idNewPredio) {
 	this.construccion = construccion;
 	this.predios = geoms;

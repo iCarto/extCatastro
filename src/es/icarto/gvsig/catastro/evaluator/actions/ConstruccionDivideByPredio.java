@@ -60,8 +60,8 @@ public class ConstruccionDivideByPredio {
 		// update ID predio containing it: pre_cve
 		valuesEdificioWithNewID[6] = ValueFactory
 			.createValue(idNewPredio);
-		// reset cons_id for new edificio as it will be set in the DB
-		valuesEdificioWithNewID[8] = ValueFactory.createNullValue();
+		// calculate the new cons_id
+		valuesEdificioWithNewID[8] = getNewIDForConstrucciones();
 		// reset gid for new edificio as it will be set in the DB
 		valuesEdificioWithNewID[11] = ValueFactory.createNullValue();
 		oldEdificio = new DefaultFeature(geomEdificioWithOldID,
@@ -81,6 +81,13 @@ public class ConstruccionDivideByPredio {
 	VectorialLayerEdited vle = (VectorialLayerEdited) CADExtension
 		.getEditionManager().getActiveLayerEdited();
 	return vle.getVEA().getNewFID();
+    }
+
+    private Value getNewIDForConstrucciones() {
+	ConstruccionCalculateNewID calculateID = new ConstruccionCalculateNewID(
+		layer);
+	calculateID.execute();
+	return calculateID.getNewConstruccionID();
     }
 
     public IFeature getOldEdificio() {
