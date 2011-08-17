@@ -46,7 +46,8 @@ public class UpdateConstruccionesAffected implements IAction {
 	prediosLayer.setActive(false);
 	construccionesLayer.setActive(true);
 	if (prediosLayer.isEditing()) {
-	    te.stopEditing(prediosLayer, false);
+	    // TODO: save layer
+	    // te.stopEditing(prediosLayer, false);
 	}
 	te.startEditing(construccionesLayer);
 	for (IFeature construccion : construccionesAffected) {
@@ -56,7 +57,8 @@ public class UpdateConstruccionesAffected implements IAction {
 		return false;
 	    }
 	}
-	te.stopEditing(construccionesLayer, false);
+	// TODO: save layer
+	// te.stopEditing(construccionesLayer, false);
 	construccionesLayer.setActive(false);
 	prediosLayer.setActive(true);
 	return true;
