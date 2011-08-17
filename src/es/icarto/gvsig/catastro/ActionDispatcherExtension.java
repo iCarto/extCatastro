@@ -20,12 +20,12 @@ import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
 import es.icarto.gvsig.catastro.evaluator.ConstruccionRulesEvaluator;
+import es.icarto.gvsig.catastro.evaluator.PredioRulesFusionEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioActionsEvaluator;
-import es.icarto.gvsig.catastro.evaluator.PredioRulesEvaluator;
+import es.icarto.gvsig.catastro.evaluator.PredioRulesDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
-import es.icarto.gvsig.catastro.evaluator.rules.FusionPrediosRulesEvaluator;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
@@ -82,7 +82,7 @@ public class ActionDispatcherExtension extends Extension implements
 	} else if (action == ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO) {
 	    ArrayList<IGeometry> geoms = ((CutPolygonCADTool) cadTool)
 		    .getGeometriesCreated();
-	    PredioRulesEvaluator predioRulesEvaluator = new PredioRulesEvaluator(
+	    PredioRulesDivideEvaluator predioRulesEvaluator = new PredioRulesDivideEvaluator(
 		    geoms);
 	    if (!predioRulesEvaluator.isOK()) {
 		if (tocLayerManager.isPrediosLayerInEdition()) {
@@ -111,7 +111,7 @@ public class ActionDispatcherExtension extends Extension implements
 	    IGeometry finalGeometry = ((JoinCADTool) cadTool)
 		    .getJoinedGeometry();
 	    geoms.add(finalGeometry);
-	    FusionPrediosRulesEvaluator fusionPrediosRulesEvaluator = new FusionPrediosRulesEvaluator(
+	    PredioRulesFusionEvaluator fusionPrediosRulesEvaluator = new PredioRulesFusionEvaluator(
 		    geoms);
 	    if (fusionPrediosRulesEvaluator.isOK()) {
 		// TODO: save previous actions

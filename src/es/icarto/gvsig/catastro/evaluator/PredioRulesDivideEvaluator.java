@@ -7,11 +7,11 @@ import com.iver.cit.gvsig.fmap.core.IGeometry;
 import es.icarto.gvsig.catastro.evaluator.rules.CheckAllAreaPrediosEqualsAreaManzana;
 import es.icarto.gvsig.catastro.evaluator.rules.CheckPredioIsWithinOneManzana;
 
-public class PredioRulesEvaluator extends AbstractEvaluator {
+public class PredioRulesDivideEvaluator extends AbstractRulesEvaluator {
 
     ArrayList<IGeometry> geoms;
 
-    public PredioRulesEvaluator(ArrayList<IGeometry> geoms) {
+    public PredioRulesDivideEvaluator(ArrayList<IGeometry> geoms) {
 	super();
 	this.geoms = geoms;
 	init();

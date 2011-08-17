@@ -1,7 +1,7 @@
-package es.icarto.gvsig.catastro.wrappers;
+package es.icarto.gvsig.catastro.wrapperscadtools;
 
 import com.iver.andami.PluginServices;
-import com.iver.cit.gvsig.CutPolygonExtension;
+import com.iver.cit.gvsig.InsertAreaExtension;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
@@ -10,7 +10,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class CutPolygonWrapper extends CutPolygonExtension {
+public class InsertAreaWrapper extends InsertAreaExtension {
 	
 	public void initialize() {
 		super.initialize();
@@ -40,6 +40,7 @@ public class CutPolygonWrapper extends CutPolygonExtension {
 		FLayers flayers = mapControl.getMapContext().getLayers();
 		FLyrVect actLayer = null;
 		for (int i = 0; i < flayers.getActives().length; i++) {
+			
 			if (!(flayers.getActives()[i] instanceof FLayers)) {
 				actLayer = (FLyrVect) flayers.getActives()[i];
 			}

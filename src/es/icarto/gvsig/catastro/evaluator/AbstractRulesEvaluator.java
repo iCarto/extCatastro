@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import es.icarto.gvsig.catastro.evaluator.rules.IRule;
 
-public class AbstractEvaluator {
+public class AbstractRulesEvaluator {
 
     private String errorMessage = null;
     protected ArrayList<IRule> rules;
 
-    public AbstractEvaluator() {
+    public AbstractRulesEvaluator() {
 	rules = new ArrayList<IRule>();
     }
 

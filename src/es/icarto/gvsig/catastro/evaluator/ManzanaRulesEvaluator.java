@@ -9,7 +9,7 @@ import es.icarto.gvsig.catastro.evaluator.rules.CheckManzanaIsWithinOneRegion;
 import es.icarto.gvsig.catastro.evaluator.rules.IRule;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
-public class ManzanaRulesEvaluator extends AbstractEvaluator {
+public class ManzanaRulesEvaluator extends AbstractRulesEvaluator {
 
     IGeometry insertedGeometry;
 

@@ -9,7 +9,7 @@ import es.icarto.gvsig.catastro.evaluator.rules.CheckGeometryIsOverlapingAnother
 import es.icarto.gvsig.catastro.evaluator.rules.IRule;
 import es.icarto.gvsig.catastro.utils.Preferences;
 
-public class ConstruccionRulesEvaluator extends AbstractEvaluator {
+public class ConstruccionRulesEvaluator extends AbstractRulesEvaluator {
 
     IGeometry insertedGeometry;
 

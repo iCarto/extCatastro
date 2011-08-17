@@ -7,7 +7,7 @@ import com.iver.andami.plugins.Extension;
 
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
-import es.icarto.gvsig.catastro.wrappers.CutPolygonWrapper;
+import es.icarto.gvsig.catastro.wrapperscadtools.CutPolygonWrapper;
 
 public class CatastroConstruccionDivideExtension extends Extension {
 

@@ -7,7 +7,7 @@ import com.iver.andami.plugins.Extension;
 
 import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
-import es.icarto.gvsig.catastro.wrappers.InsertAreaWrapper;
+import es.icarto.gvsig.catastro.wrapperscadtools.InsertAreaWrapper;
 
 public class CatastroConstruccionNewExtension extends Extension {
 

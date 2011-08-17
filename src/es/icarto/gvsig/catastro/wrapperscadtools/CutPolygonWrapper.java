@@ -1,7 +1,7 @@
-package es.icarto.gvsig.catastro.wrappers;
+package es.icarto.gvsig.catastro.wrapperscadtools;
 
 import com.iver.andami.PluginServices;
-import com.iver.cit.gvsig.SelectionGeometryExtension;
+import com.iver.cit.gvsig.CutPolygonExtension;
 import com.iver.cit.gvsig.fmap.MapControl;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
 import com.iver.cit.gvsig.fmap.layers.FLayers;
@@ -10,7 +10,7 @@ import com.iver.cit.gvsig.project.documents.view.gui.BaseView;
 
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class SelectionGeometryWrapper extends SelectionGeometryExtension {
+public class CutPolygonWrapper extends CutPolygonExtension {
 	
 	public void initialize() {
 		super.initialize();
@@ -32,7 +32,7 @@ public class SelectionGeometryWrapper extends SelectionGeometryExtension {
 	public boolean isVisible() {
 		return true;
 	}
-
+	
 	private FLayer getActiveLayer() {
 		BaseView view = (BaseView) PluginServices.getMDIManager()
 		.getActiveWindow();
@@ -46,4 +46,5 @@ public class SelectionGeometryWrapper extends SelectionGeometryExtension {
 		}
 		return actLayer;
 	}
+
 }
