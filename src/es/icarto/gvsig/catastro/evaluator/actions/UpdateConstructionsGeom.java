@@ -64,7 +64,7 @@ public class UpdateConstructionsGeom implements IAction {
 			    String isIntersecting = lineOfIntersection.getGeometryType();
 			    if((lineOfIntersection.getNumGeometries() > 0) &&
 				    ((isIntersecting.equalsIgnoreCase("LineString")) || (isIntersecting.equalsIgnoreCase("MultiLineString")))){
-				ConstruccionesCutter construccionesCutter = new ConstruccionesCutter(construccionesLayer);
+				CutConstruccionesByPredio construccionesCutter = new CutConstruccionesByPredio(construccionesLayer);
 				//Clip each intersecting construccion by means of the first predio
 				//This predio will contain the old ID, so do construcciones clipped by it
 				if(!construccionesCutter.clip(construccionIFeature, predios.get(0))){

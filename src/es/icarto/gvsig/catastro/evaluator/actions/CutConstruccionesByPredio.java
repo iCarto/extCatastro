@@ -13,10 +13,10 @@ import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class ConstruccionesCutter {
+public class CutConstruccionesByPredio {
 
     private FLyrVect layer;
-    public ConstruccionesCutter(FLyrVect construccionesLayer){
+    public CutConstruccionesByPredio(FLyrVect construccionesLayer){
 	this.layer = construccionesLayer;
     }
 
