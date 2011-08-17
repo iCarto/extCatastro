@@ -14,6 +14,7 @@ public class ConstruccionRulesEvaluator extends AbstractRulesEvaluator {
     IGeometry insertedGeometry;
 
     public ConstruccionRulesEvaluator(IGeometry insertedGeometry) {
+	super();
 	this.insertedGeometry = insertedGeometry;
 	rules = new ArrayList<IRule>();
 	init();

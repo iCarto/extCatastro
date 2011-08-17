@@ -1,4 +1,4 @@
-package es.icarto.gvsig.catastro.evaluator;
+package es.icarto.gvsig.catastro.evaluator.actions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,6 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.util.PolygonExtracter;
 
-import es.icarto.gvsig.catastro.evaluator.actions.ConstruccionDivideByPredio;
 
 public class ConstruccionesCutter {
 
