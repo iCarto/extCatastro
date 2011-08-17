@@ -41,7 +41,7 @@
 			<menu text="Catastro/Selección/Predio" action-command="_select_predio" position="3009"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.CleanAllConstantsExtension" description="Clean constants" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.CatastroSelectionResetConstantsExtension" description="Clean constants" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Limpiar selección de constantes"
 					action-command="_clean_constants" position="4012"/>
