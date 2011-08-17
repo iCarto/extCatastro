@@ -24,22 +24,29 @@ public class UpdateConstruccionesAffected implements IAction {
     private static FLyrVect prediosLayer;
     private int idNewPredio = -1;
     private ToggleEditing te;
+    private ArrayList<IFeature> construccionesAffected;
 
     public UpdateConstruccionesAffected(FLyrVect prediosLayer,
 	    ArrayList<IGeometry> predios, int idNewPredio) {
 	this.predios = predios;
-	this.construccionesLayer = getConstrucciones();
 	this.idNewPredio = idNewPredio;
 	this.prediosLayer = prediosLayer;
 	te = new ToggleEditing();
+	init();
+    }
+
+    private void init() {
+	this.construccionesLayer = getConstrucciones();
+	construccionesAffected = getConstruccionesAffected();
     }
 
     @Override
     public boolean execute() {
-	ArrayList<IFeature> construccionesAffected = getConstruccionesAffected();
-
 	prediosLayer.setActive(false);
 	construccionesLayer.setActive(true);
+	if (prediosLayer.isEditing()) {
+	    te.stopEditing(prediosLayer, false);
+	}
 	te.startEditing(construccionesLayer);
 	for (IFeature construccion : construccionesAffected) {
 	    if (!save(construccion)) {
@@ -48,10 +55,9 @@ public class UpdateConstruccionesAffected implements IAction {
 		return false;
 	    }
 	}
-	// te.stopEditing(construccionesLayer, false);
+	te.stopEditing(construccionesLayer, false);
 	construccionesLayer.setActive(false);
 	prediosLayer.setActive(true);
-
 	return true;
     }
 
