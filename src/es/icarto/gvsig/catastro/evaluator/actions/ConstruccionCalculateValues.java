@@ -1,5 +1,8 @@
 package es.icarto.gvsig.catastro.evaluator.actions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileReadException;
@@ -34,8 +37,8 @@ public class ConstruccionCalculateValues implements IAction {
 	    e.printStackTrace();
 	    return false;
 	}
-
-	if (addValues(rowIndex, layer)) {
+	construccionesIDs = getAllConstruccionesIDInRecordset();
+	if (construccionesIDs != null && addValues(rowIndex, layer)) {
 	    return true;
 	} else {
 	    return false;
@@ -103,7 +106,7 @@ public class ConstruccionCalculateValues implements IAction {
 		    } else if (layer.getRecordset().getFieldName(i)
 			    .compareToIgnoreCase(
 				    Preferences.CONSTRUCCIONES_NAME_IN_DB) == 0) {
-			construccionValues[j] = "";
+			construccionValues[j] = getNewConstruccionID();
 			positions[j] = i;
 			break;
 		    } else if (layer.getRecordset().getFieldName(i)
@@ -143,6 +146,32 @@ public class ConstruccionCalculateValues implements IAction {
 	    e.printStackTrace();
 	}
 	return area;
+    }
+
+    private String getNewConstruccionID() {
+	Arrays.sort(construccionesIDs);
+	int biggerConstruccionID = construccionesIDs[construccionesIDs.length - 1];
+	String newConstruccionID = String.format("%1$03d",
+		(biggerConstruccionID + 1));
+	return newConstruccionID;
+    }
+
+    private Integer[] getAllConstruccionesIDInRecordset() {
+	SelectableDataSource construccionRecordset;
+	ArrayList<Integer> construccionesID = new ArrayList<Integer>();
+	try {
+	    int columnIndex = getConstruccionIndex();
+	    construccionRecordset = layer.getRecordset();
+	    for (int rowIndex = 0; rowIndex < construccionRecordset
+		    .getRowCount() - 1; rowIndex++) {
+		construccionesID.add(Integer.parseInt(construccionRecordset
+			.getFieldValue(rowIndex, columnIndex).toString()));
+	    }
+	    return construccionesID.toArray(new Integer[] { 0 });
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return null;
+	}
     }
 
     private int getConstruccionIndex() throws ReadDriverException {
