@@ -24,23 +24,22 @@ public class CatastroConstruccionNewExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	if(constantManager.areConstantsSetForConstruccion()){
+	if (constantManager.areConstantsSetForConstruccion()) {
 	    tocLayerManager = new TOCLayerManager();
 	    tocLayerManager.setActiveAndVisibleLayersForConstrucciones();
 	    insertAreaWrapper.execute(actionCommand);
-	} else{
+	} else {
 	    Object[] options = { "OK" };
-	    JOptionPane.showOptionDialog(null, PluginServices.getText(this, "select_predio"), "Warning",
-		    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-		    null, options, options[0]);
+	    JOptionPane.showOptionDialog(null, PluginServices.getText(this,
+		    "select_predio"), "Warning", JOptionPane.DEFAULT_OPTION,
+		    JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 	}
 
     }
 
     @Override
     public boolean isEnabled() {
-	return false;
-	//return insertAreaWrapper.isEnabled();
+	return insertAreaWrapper.isEnabled();
     }
 
     @Override

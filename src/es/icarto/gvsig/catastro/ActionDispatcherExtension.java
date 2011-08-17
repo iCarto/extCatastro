@@ -19,12 +19,13 @@ import com.iver.cit.gvsig.gui.cad.tools.JoinCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
+import es.icarto.gvsig.catastro.evaluator.ConstruccionActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ConstruccionRulesEvaluator;
-import es.icarto.gvsig.catastro.evaluator.PredioRulesFusionEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesDivideEvaluator;
+import es.icarto.gvsig.catastro.evaluator.PredioRulesFusionEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.CalculateIDNewPredio;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
@@ -153,6 +154,7 @@ public class ActionDispatcherExtension extends Extension implements
 	} else if (action == ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION) {
 	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
 		    .getInsertedGeometry();
+	    int rowIndex = ((AreaCADTool) cadTool).getVirtualIndex();
 	    ConstruccionRulesEvaluator construccionRulesEvaluator = new ConstruccionRulesEvaluator(
 		    insertedGeometry);
 	    if (!construccionRulesEvaluator.isOK()) {
@@ -168,6 +170,9 @@ public class ActionDispatcherExtension extends Extension implements
 			"Alta Construcción", JOptionPane.YES_NO_OPTION,
 			JOptionPane.QUESTION_MESSAGE, null);
 		if (option == JOptionPane.OK_OPTION) {
+		    ConstruccionActionsEvaluator construccionActionsEvaluator = new ConstruccionActionsEvaluator(
+			    (FLyrVect) layer, rowIndex);
+		    construccionActionsEvaluator.execute();
 		    // TODO: Launch Form
 		}
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
