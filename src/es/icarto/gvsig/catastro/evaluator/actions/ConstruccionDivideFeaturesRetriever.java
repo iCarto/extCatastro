@@ -11,7 +11,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.util.PolygonExtracter;
 
 
-public class ConstruccionesUpdateValuesAndGeom {
+public class ConstruccionDivideFeaturesRetriever {
 
     private IFeature construccion = null;
     private ArrayList<IGeometry> predios = null;
@@ -19,7 +19,7 @@ public class ConstruccionesUpdateValuesAndGeom {
     private ArrayList<IFeature> featuresToAdd = null;
     private int idNewPredio = -1;
 
-    public ConstruccionesUpdateValuesAndGeom(IFeature construccion,
+    public ConstruccionDivideFeaturesRetriever(IFeature construccion,
 	    ArrayList<IGeometry> geoms, int idNewPredio) {
 	this.construccion = construccion;
 	this.predios = geoms;
@@ -36,7 +36,7 @@ public class ConstruccionesUpdateValuesAndGeom {
 	    Geometry lineOfIntersection = prediosIntersection
 		    .intersection(edificio);
 	    if (isIntersecting(lineOfIntersection, edificio)) {
-		ConstruccionDivideByPredio construccionesCutter = new ConstruccionDivideByPredio(
+		ConstruccionDivideUpdateGeomAndValues construccionesCutter = new ConstruccionDivideUpdateGeomAndValues(
 			idNewPredio);
 		// cut the construccion by the 1st predio, which have the old ID
 		// the second predio will have a new created ID

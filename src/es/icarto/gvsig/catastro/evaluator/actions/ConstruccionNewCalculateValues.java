@@ -1,8 +1,5 @@
 package es.icarto.gvsig.catastro.evaluator.actions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.exceptions.expansionfile.ExpansionFileReadException;
@@ -15,16 +12,16 @@ import es.icarto.gvsig.catastro.constants.ConstantManager;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
 
-public class ConstruccionCalculateValues implements IAction {
+public class ConstruccionNewCalculateValues implements IAction {
 
     int rowIndex;
-    FLyrVect layer = null;
+    FLyrVect construccionesLayer = null;
     SelectableDataSource recordset;
     ConstantManager constantManager;
     private Integer[] construccionesIDs;
 
-    public ConstruccionCalculateValues(FLyrVect layer, int rowIndex) {
-	this.layer = layer;
+    public ConstruccionNewCalculateValues(FLyrVect layer, int rowIndex) {
+	this.construccionesLayer = layer;
 	this.rowIndex = rowIndex;
     }
 
@@ -32,13 +29,12 @@ public class ConstruccionCalculateValues implements IAction {
     public boolean execute() {
 	constantManager = new ConstantManager();
 	try {
-	    recordset = layer.getRecordset();
+	    recordset = construccionesLayer.getRecordset();
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return false;
 	}
-	construccionesIDs = getAllConstruccionesIDInRecordset();
-	if (construccionesIDs != null && addValues(rowIndex, layer)) {
+	if (addValues(rowIndex, construccionesLayer)) {
 	    return true;
 	} else {
 	    return false;
@@ -65,7 +61,9 @@ public class ConstruccionCalculateValues implements IAction {
 				.getEstado();
 			positions[j] = i;
 			break;
-		    } else if (layer.getRecordset().getFieldName(i)
+		    } else if (layer
+			    .getRecordset()
+			    .getFieldName(i)
 			    .compareToIgnoreCase(
 				    Preferences.MUNICIPIO_NAME_IN_DB) == 0) {
 			construccionValues[j] = constantManager.getConstants()
@@ -103,13 +101,17 @@ public class ConstruccionCalculateValues implements IAction {
 			construccionValues[j] = "1";
 			positions[j] = i;
 			break;
-		    } else if (layer.getRecordset().getFieldName(i)
+		    } else if (layer
+			    .getRecordset()
+			    .getFieldName(i)
 			    .compareToIgnoreCase(
 				    Preferences.CONSTRUCCIONES_NAME_IN_DB) == 0) {
-			construccionValues[j] = getNewConstruccionID();
+			construccionValues[j] = getNewIDForConstrucciones();
 			positions[j] = i;
 			break;
-		    } else if (layer.getRecordset().getFieldName(i)
+		    } else if (layer
+			    .getRecordset()
+			    .getFieldName(i)
 			    .compareToIgnoreCase(
 				    Preferences.CONSTRUCCIONES_AREA_NAME_IN_DB) == 0) {
 			construccionValues[j] = Double
@@ -133,11 +135,18 @@ public class ConstruccionCalculateValues implements IAction {
 	return true;
     }
 
+    private String getNewIDForConstrucciones() {
+	ConstruccionCalculateNewID calculateID = new ConstruccionCalculateNewID(
+		construccionesLayer);
+	calculateID.execute();
+	return calculateID.getNewConstruccionID().toString();
+    }
+
     private double getAreaOfNewConstruccion() {
 	double area = 0;
 	try {
-	    IGeometry construccionGeom = layer.getSource().getFeature(rowIndex)
-		    .getGeometry();
+	    IGeometry construccionGeom = construccionesLayer.getSource()
+		    .getFeature(rowIndex).getGeometry();
 	    Geometry construccionJTSGeom = construccionGeom.toJTSGeometry();
 	    area = construccionJTSGeom.getArea();
 	} catch (ExpansionFileReadException e) {
@@ -146,37 +155,6 @@ public class ConstruccionCalculateValues implements IAction {
 	    e.printStackTrace();
 	}
 	return area;
-    }
-
-    private String getNewConstruccionID() {
-	Arrays.sort(construccionesIDs);
-	int biggerConstruccionID = construccionesIDs[construccionesIDs.length - 1];
-	String newConstruccionID = String.format("%1$03d",
-		(biggerConstruccionID + 1));
-	return newConstruccionID;
-    }
-
-    private Integer[] getAllConstruccionesIDInRecordset() {
-	SelectableDataSource construccionRecordset;
-	ArrayList<Integer> construccionesID = new ArrayList<Integer>();
-	try {
-	    int columnIndex = getConstruccionIndex();
-	    construccionRecordset = layer.getRecordset();
-	    for (int rowIndex = 0; rowIndex < construccionRecordset
-		    .getRowCount() - 1; rowIndex++) {
-		construccionesID.add(Integer.parseInt(construccionRecordset
-			.getFieldValue(rowIndex, columnIndex).toString()));
-	    }
-	    return construccionesID.toArray(new Integer[] { 0 });
-	} catch (ReadDriverException e) {
-	    e.printStackTrace();
-	    return null;
-	}
-    }
-
-    private int getConstruccionIndex() throws ReadDriverException {
-	return recordset
-		.getFieldIndexByName(Preferences.CONSTRUCCIONES_NAME_IN_DB);
     }
 
     @Override

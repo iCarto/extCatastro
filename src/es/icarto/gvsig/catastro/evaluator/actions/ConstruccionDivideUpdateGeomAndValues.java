@@ -15,14 +15,14 @@ import com.vividsolutions.jts.geom.Geometry;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 
-public class ConstruccionDivideByPredio {
+public class ConstruccionDivideUpdateGeomAndValues {
 
     private FLyrVect layer;
     private IFeature newEdificio = null;
     private IFeature oldEdificio = null;
     private int idNewPredio = -1;
 
-    public ConstruccionDivideByPredio(int idNewPredio) {
+    public ConstruccionDivideUpdateGeomAndValues(int idNewPredio) {
 	this.idNewPredio = idNewPredio;
 	this.layer = getConstruccionesLayer();
     }

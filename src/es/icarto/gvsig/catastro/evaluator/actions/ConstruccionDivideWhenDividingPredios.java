@@ -57,7 +57,7 @@ public class ConstruccionDivideWhenDividingPredios implements IAction {
     }
 
     private boolean save(IFeature construccion) {
-	ConstruccionesUpdateValuesAndGeom construccionesCutter = new ConstruccionesUpdateValuesAndGeom(
+	ConstruccionDivideFeaturesRetriever construccionesCutter = new ConstruccionDivideFeaturesRetriever(
 		construccion, predios, idNewPredio);
 	construccionesCutter.execute();
 	ArrayList<IFeature> featuresToModify = construccionesCutter

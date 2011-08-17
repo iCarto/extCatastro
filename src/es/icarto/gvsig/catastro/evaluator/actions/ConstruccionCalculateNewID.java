@@ -44,8 +44,16 @@ public class ConstruccionCalculateNewID implements IAction {
 	try {
 	    recordset = construccionesLayer.getRecordset();
 	    for (int rowIndex = 0; rowIndex < recordset.getRowCount(); rowIndex++) {
-		construccionesID.add(Integer.parseInt(recordset.getFieldValue(
-			rowIndex, columnIndex).toString()));
+		String id = recordset.getFieldValue(rowIndex, columnIndex)
+			.toString();
+		if (!id.equals("")) {
+		    /*
+		     * When adding a new construccion, their id will be void.
+		     * Don't include those values in the array to calculate the
+		     * maximum.
+		     */
+		    construccionesID.add(Integer.parseInt(id));
+		}
 	    }
 	    return construccionesID.toArray(new Integer[] { 0 });
 	} catch (ReadDriverException e) {
