@@ -91,7 +91,7 @@
 				icon="images/new.png" position="1000003"/> 
 		</extension>
 	
-		<extension class-name="es.icarto.gvsig.catastro.ConstruccionFusionExtension" description="Delete Feature" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.ConstruccionDeleteExtension" description="Delete Feature" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Eliminar"
 					action-command="_delete" position="2000006"/>
