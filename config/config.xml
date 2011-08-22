@@ -79,6 +79,22 @@
 			<menu text="Catastro/Predios/Dividir" action-command="_cut_polygon"
 				icon="images/split.png" position="200006"/> 
 		</extension>
+		
+		<extension class-name="es.icarto.gvsig.catastro.PredioDeslindeExtension" description="Redigitalize Polygon" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="Deslinde"
+					action-command="_redigitalize_polygon" position="300009"/>
+			</tool-bar>-->
+			<menu text="Catastro/Predios/Deslinde" action-command="_redigitalize_polygon" position="300009"/> 
+		</extension>
+		
+		<extension class-name="es.icarto.gvsig.catastro.PredioDeslindeWithManzanaExtension" description="Redigitalize Polygon" active="true">
+			<!--<tool-bar name="Catastro">
+				<action-tool icon="" tooltip="Deslinde con manzana"
+					action-command="_cut_polygon" position="400012"/>
+			</tool-bar>-->
+			<menu text="Catastro/Predios/Deslinde con Manzana" action-command="_redigitalize_polygon" position="400012"/>
+		</extension>
 	
 	<!-- USER FUNCTIONALITIES MENU CONSTRUCCIONES -->
 	
