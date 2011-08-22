@@ -16,6 +16,7 @@ import com.iver.cit.gvsig.gui.cad.CADTool;
 import com.iver.cit.gvsig.gui.cad.tools.AreaCADTool;
 import com.iver.cit.gvsig.gui.cad.tools.CutPolygonCADTool;
 import com.iver.cit.gvsig.gui.cad.tools.JoinCADTool;
+import com.iver.cit.gvsig.gui.cad.tools.RedigitalizePolygonCADTool;
 import com.iver.cit.gvsig.listeners.CADListenerManager;
 import com.iver.cit.gvsig.listeners.EndGeometryListener;
 
@@ -40,6 +41,7 @@ public class ActionDispatcherExtension extends Extension implements
     private final int ACTION_CHECK_RULES_FOR_MERGING_PREDIO = 2;
     private static final int ACTION_CHECK_RULES_FOR_NEW_MANZANA = 3;
     private static final int ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION = 4;
+    private static final int ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION = 5;
     private int idNewPredio = -1;
 
     @Override
@@ -188,6 +190,33 @@ public class ActionDispatcherExtension extends Extension implements
 		    }
 		}
 	    }
+	} else if (action == ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION) {
+	    IGeometry insertedGeometry = ((RedigitalizePolygonCADTool) cadTool)
+		    .getgeometryResulting();
+	    ConstruccionRulesEvaluator construccionRulesEvaluator = new ConstruccionRulesEvaluator(
+		    insertedGeometry);
+	    if (!construccionRulesEvaluator.isOK()) {
+		if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    te.stopEditing(layer, true); // don't save values
+		}
+		JOptionPane.showMessageDialog(null, construccionRulesEvaluator
+			.getErrorMessage(), "Alta Construcción",
+			JOptionPane.WARNING_MESSAGE);
+	    } else {
+		int option = JOptionPane.showConfirmDialog(null, PluginServices
+			.getText(this, "save_construccion_confirm"),
+			"Alta Construcción", JOptionPane.YES_NO_OPTION,
+			JOptionPane.QUESTION_MESSAGE, null);
+		if (option == JOptionPane.OK_OPTION) {
+		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
+			te.stopEditing(layer, false); // save values
+		    }
+		} else {
+		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
+			te.stopEditing(layer, true); // don't save values
+		    }
+		}
+	    }
 	}
     }
 
@@ -217,6 +246,13 @@ public class ActionDispatcherExtension extends Extension implements
 		&& layer.getName().compareToIgnoreCase(
 			Preferences.CONSTRUCCIONES_LAYER_NAME) == 0) {
 	    return ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION;
+	} else if (cadToolKey
+		.equalsIgnoreCase(RedigitalizePolygonCADTool.REDIGITALIZE_ACTION_COMMAND)
+		&& (cadTool instanceof RedigitalizePolygonCADTool)
+		&& (layer instanceof FLyrVect)
+		&& layer.getName().compareToIgnoreCase(
+			Preferences.CONSTRUCCIONES_LAYER_NAME) == 0) {
+	    return ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION;
 	}
 	return NO_ACTION;
     }
