@@ -24,11 +24,11 @@ import es.icarto.gvsig.catastro.evaluator.ConstruccionActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ConstruccionRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaRulesEvaluator;
+import es.icarto.gvsig.catastro.evaluator.PredioActionsDeslindeEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioActionsDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesFusionEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.PredioCalculateNewID;
-import es.icarto.gvsig.catastro.evaluator.actions.PredioDeslindeWithManzana;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
@@ -222,9 +222,24 @@ public class ActionDispatcherExtension extends Extension implements
 	} else if (action == ACTION_DESLINDE_PREDIO_WITH_MANZANA) {
 	    IGeometry newPredioGeometry = ((CutPolygonCADTool) cadTool)
 		    .getRemainingGeometry();
-	    PredioDeslindeWithManzana predioDeslindeWithManzana = new PredioDeslindeWithManzana(
+	    PredioActionsDeslindeEvaluator predioActionsDeslindeEvaluator = new PredioActionsDeslindeEvaluator(
 		    newPredioGeometry);
-	    predioDeslindeWithManzana.execute();
+	    ArrayList<String> errorMessages = predioActionsDeslindeEvaluator
+		    .execute();
+	    if (errorMessages.size() == 0) {
+		te
+			.stopEditing(
+				tocLayerManager
+					.getLayerByName(Preferences.MANZANAS_LAYER_NAME),
+				false);
+		te.stopEditing(tocLayerManager
+			.getLayerByName(Preferences.PREDIOS_LAYER_NAME), false);
+	    } else {
+		te.stopEditing(tocLayerManager
+			.getLayerByName(Preferences.MANZANAS_LAYER_NAME), true);
+		te.stopEditing(tocLayerManager
+			.getLayerByName(Preferences.MANZANAS_LAYER_NAME), true);
+	    }
 	}
     }
 
