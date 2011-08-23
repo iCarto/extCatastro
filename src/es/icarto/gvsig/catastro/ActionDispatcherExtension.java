@@ -28,6 +28,7 @@ import es.icarto.gvsig.catastro.evaluator.PredioActionsDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesFusionEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.PredioCalculateNewID;
+import es.icarto.gvsig.catastro.evaluator.actions.PredioDeslindeWithManzana;
 import es.icarto.gvsig.catastro.utils.Preferences;
 import es.icarto.gvsig.catastro.utils.TOCLayerManager;
 import es.icarto.gvsig.catastro.utils.ToggleEditing;
@@ -42,6 +43,7 @@ public class ActionDispatcherExtension extends Extension implements
     private static final int ACTION_CHECK_RULES_FOR_NEW_MANZANA = 3;
     private static final int ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION = 4;
     private static final int ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION = 5;
+    private static final int ACTION_DESLINDE_PREDIO_WITH_MANZANA = 6;
     private int idNewPredio = -1;
 
     @Override
@@ -217,6 +219,12 @@ public class ActionDispatcherExtension extends Extension implements
 		    }
 		}
 	    }
+	} else if (action == ACTION_DESLINDE_PREDIO_WITH_MANZANA) {
+	    IGeometry newPredioGeometry = ((CutPolygonCADTool) cadTool)
+		    .getRemainingGeometry();
+	    PredioDeslindeWithManzana predioDeslindeWithManzana = new PredioDeslindeWithManzana(
+		    newPredioGeometry);
+	    predioDeslindeWithManzana.execute();
 	}
     }
 
@@ -253,6 +261,11 @@ public class ActionDispatcherExtension extends Extension implements
 		&& layer.getName().compareToIgnoreCase(
 			Preferences.CONSTRUCCIONES_LAYER_NAME) == 0) {
 	    return ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION;
+	} else if (cadToolKey
+		.equalsIgnoreCase(CutPolygonCADTool.CUT_ACTION_COMMAND)
+		&& (cadTool instanceof CutPolygonCADTool)
+		&& (layer instanceof FLyrVect)) {
+	    return ACTION_DESLINDE_PREDIO_WITH_MANZANA;
 	}
 	return NO_ACTION;
     }

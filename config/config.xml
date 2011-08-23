@@ -88,12 +88,12 @@
 			<menu text="Catastro/Predios/Deslinde" action-command="_redigitalize_polygon" position="300009"/> 
 		</extension>
 		
-		<extension class-name="es.icarto.gvsig.catastro.PredioDeslindeWithManzanaExtension" description="Redigitalize Polygon" active="true">
+		<extension class-name="es.icarto.gvsig.catastro.PredioDeslindeWithManzanaExtension" description="Cut Polygon" active="true">
 			<!--<tool-bar name="Catastro">
 				<action-tool icon="" tooltip="Deslinde con manzana"
 					action-command="_cut_polygon" position="400012"/>
 			</tool-bar>-->
-			<menu text="Catastro/Predios/Deslinde con Manzana" action-command="_redigitalize_polygon" position="400012"/>
+			<menu text="Catastro/Predios/Deslinde con Manzana" action-command="_cut_polygon" position="400012"/>
 		</extension>
 	
 	<!-- USER FUNCTIONALITIES MENU CONSTRUCCIONES -->
