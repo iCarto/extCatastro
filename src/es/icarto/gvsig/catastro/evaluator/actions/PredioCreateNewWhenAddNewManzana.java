@@ -41,8 +41,6 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 	    te.addGeometryWithParametrizedValues(feature.getGeometry()
 		    .cloneGeometry(), getNewPredioValues(feature),
 		    "_create_new_predio");
-	    te.stopEditing(destinationLayer, false);
-	    destinationLayer.setActive(false);
 	    if (wasEditingManzanas) {
 		te.startEditing(sourceLayer);
 		sourceLayer.setActive(true);

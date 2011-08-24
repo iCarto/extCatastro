@@ -46,6 +46,10 @@ public class ActionDispatcherExtension extends Extension implements
     private static final int ACTION_DESLINDE_PREDIO_WITH_MANZANA = 6;
     private int idNewPredio = -1;
 
+    private CADTool cadTool;
+    private ToggleEditing te;
+    private TOCLayerManager tocLayerManager;
+
     @Override
     public void initialize() {
 	CADListenerManager.removeEndGeometryListener("catastro");
@@ -70,176 +74,283 @@ public class ActionDispatcherExtension extends Extension implements
     @Override
     public void endGeometry(FLayer layer, String cadToolKey) {
 
-	CADTool cadTool = CADExtension.getCADTool();
+	cadTool = CADExtension.getCADTool();
 	int action = getAction(layer, cadToolKey, cadTool);
-	ToggleEditing te = new ToggleEditing();
-	TOCLayerManager tocLayerManager = new TOCLayerManager();
+	te = new ToggleEditing();
+	tocLayerManager = new TOCLayerManager();
 
 	if (action == ACTION_CALCULATE_NEW_PREDIO_ID) {
-	    IRowEdited selectedRow = ((CutPolygonCADTool) cadTool)
-		    .getSelectedRow();
-	    PredioCalculateNewID calculator = new PredioCalculateNewID(
-		    (FLyrVect) layer, selectedRow);
-	    Value[] values = null;
-	    if (calculator.execute()) {
-		values = calculator.getAttributes();
-		idNewPredio = Integer.parseInt(values[7].toString());
-	    }
-	    ((CutPolygonCADTool) cadTool).setParametrizableValues(values);
+	    calculateNewPredioIdAction(layer, cadToolKey);
 	} else if (action == ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO) {
-	    ArrayList<IGeometry> geoms = ((CutPolygonCADTool) cadTool)
-		    .getGeometriesCreated();
-	    PredioRulesDivideEvaluator predioRulesEvaluator = new PredioRulesDivideEvaluator(
-		    geoms);
-	    if (!predioRulesEvaluator.isOK()) {
-		if (tocLayerManager.isPrediosLayerInEdition()) {
-		    te.stopEditing(layer, true); // don't save changes
-		}
-		JOptionPane.showMessageDialog(null, predioRulesEvaluator
-			.getErrorMessage(), "Divide predio",
-			JOptionPane.WARNING_MESSAGE);
-	    } else {
-		int option = JOptionPane.showConfirmDialog(null, PluginServices
-			.getText(this, "save_predio_confirm"), "Divide predio",
-			JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE, null);
-		if (option == JOptionPane.OK_OPTION) {
-		    PredioActionsDivideEvaluator predioActionsEvaluator = new PredioActionsDivideEvaluator(
-			    geoms, idNewPredio);
-		    predioActionsEvaluator.execute();
+	    checkRulesForDividingPredioAction(layer, cadToolKey);
+	} else if (action == ACTION_CHECK_RULES_FOR_MERGING_PREDIO) {
+	    checkRulesForMergingPredioAction(layer, cadToolKey);
+	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
+	    checkRulesForNewManzanaAction(layer, cadToolKey);
+	} else if (action == ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION) {
+	    checkRulesForNewConstruccionAction(layer, cadToolKey);
+	} else if (action == ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION) {
+	    checkRulesForModifyingConstruccionAction(layer, cadToolKey);
+	} else if (action == ACTION_DESLINDE_PREDIO_WITH_MANZANA) {
+	    deslindePredioWithManzanaAction(layer, cadToolKey);
+	}
+    }
+
+    private void calculateNewPredioIdAction(FLayer layer, String cadToolKey) {
+	IRowEdited selectedRow = ((CutPolygonCADTool) cadTool).getSelectedRow();
+	PredioCalculateNewID calculator = new PredioCalculateNewID(
+		(FLyrVect) layer, selectedRow);
+	Value[] values = null;
+	if (calculator.execute()) {
+	    values = calculator.getAttributes();
+	    idNewPredio = Integer.parseInt(values[7].toString());
+	}
+	((CutPolygonCADTool) cadTool).setParametrizableValues(values);
+    }
+
+    private void checkRulesForDividingPredioAction(FLayer layer,
+	    String cadToolKey) {
+	ArrayList<IGeometry> geoms = ((CutPolygonCADTool) cadTool)
+		.getGeometriesCreated();
+	PredioRulesDivideEvaluator predioRulesEvaluator = new PredioRulesDivideEvaluator(
+		geoms);
+	if (!predioRulesEvaluator.isOK()) {
+	    if (tocLayerManager.isPrediosLayerInEdition()) {
+		te.stopEditing(layer, true); // don't save changes
+	    }
+	    JOptionPane.showMessageDialog(null, predioRulesEvaluator
+		    .getErrorMessage(), "Divide predio",
+		    JOptionPane.WARNING_MESSAGE);
+	} else {
+	    int option = JOptionPane.showConfirmDialog(null, PluginServices
+		    .getText(this, "save_predio_confirm"), "Divide predio",
+		    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+		    null);
+	    if (option == JOptionPane.OK_OPTION) {
+		PredioActionsDivideEvaluator predioActionsEvaluator = new PredioActionsDivideEvaluator(
+			geoms, idNewPredio);
+		ArrayList<String> errorMessages = predioActionsEvaluator
+			.execute();
+		if (errorMessages.size() == 0) {
+		    // Saving changes in layer
 		    if (tocLayerManager.isPrediosLayerInEdition()) {
-			te.stopEditing(layer, false); // save changes
+			te.stopEditing(layer, false);
 		    }
 		} else {
+		    // Do not save changes in layer
 		    if (tocLayerManager.isPrediosLayerInEdition()) {
 			te.stopEditing(layer, true); // don't save changes
 		    }
+		    if (tocLayerManager.isManzanaLayerInEdition()) {
+			te.stopEditing(layer, true);
+		    }
+		    String message = "";
+		    for (int i = 0; i < errorMessages.size(); i++) {
+			message = message + errorMessages.get(i) + "\n";
+		    }
+		    JOptionPane.showMessageDialog(null, message,
+			    "Divide predio", JOptionPane.WARNING_MESSAGE);
+		}
+
+	    } else {
+		if (tocLayerManager.isPrediosLayerInEdition()) {
+		    te.stopEditing(layer, true); // don't save changes
 		}
 	    }
-	} else if (action == ACTION_CHECK_RULES_FOR_MERGING_PREDIO) {
-	    ArrayList<IGeometry> geoms = new ArrayList<IGeometry>();
-	    IGeometry finalGeometry = ((JoinCADTool) cadTool)
-		    .getJoinedGeometry();
-	    geoms.add(finalGeometry);
-	    PredioRulesFusionEvaluator fusionPrediosRulesEvaluator = new PredioRulesFusionEvaluator(
-		    geoms);
-	    if (fusionPrediosRulesEvaluator.isOK()) {
-		// TODO: save previous actions
-		// te.stopEditing(layer, false);
-	    } else {
-		// te.stopEditing(layer, true);
-		JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
-			.getErrorMessage(), "Fusión Predios",
-			JOptionPane.WARNING_MESSAGE);
+	}
+    }
+
+    private void checkRulesForMergingPredioAction(FLayer layer,
+	    String cadToolKey) {
+	ArrayList<IGeometry> geoms = new ArrayList<IGeometry>();
+	IGeometry finalGeometry = ((JoinCADTool) cadTool).getJoinedGeometry();
+	geoms.add(finalGeometry);
+	PredioRulesFusionEvaluator fusionPrediosRulesEvaluator = new PredioRulesFusionEvaluator(
+		geoms);
+	if (fusionPrediosRulesEvaluator.isOK()) {
+	    // TODO: save previous actions
+	    // te.stopEditing(layer, false);
+	} else {
+	    // te.stopEditing(layer, true);
+	    JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
+		    .getErrorMessage(), "Fusión Predios",
+		    JOptionPane.WARNING_MESSAGE);
+	}
+    }
+
+    private void checkRulesForNewManzanaAction(FLayer layer, String cadToolKey) {
+	IGeometry insertedGeometry = ((AreaCADTool) cadTool)
+		.getInsertedGeometry();
+	int rowIndex = ((AreaCADTool) cadTool).getVirtualIndex();
+	ManzanaRulesEvaluator manzanaRulesEvaluator = new ManzanaRulesEvaluator(
+		insertedGeometry);
+	if (!manzanaRulesEvaluator.isOK()) {
+	    if (tocLayerManager.isManzanaLayerInEdition()) {
+		te.stopEditing(layer, true);
 	    }
-	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
-	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
-		    .getInsertedGeometry();
-	    int rowIndex = ((AreaCADTool) cadTool).getVirtualIndex();
-	    ManzanaRulesEvaluator manzanaRulesEvaluator = new ManzanaRulesEvaluator(
-		    insertedGeometry);
-	    if (!manzanaRulesEvaluator.isOK()) {
+	    JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
+		    .getErrorMessage(), "Alta Manzana",
+		    JOptionPane.WARNING_MESSAGE);
+	} else {
+	    int option = JOptionPane.showConfirmDialog(null, PluginServices
+		    .getText(this, "save_manzana_confirm"), "Crear Manzana",
+		    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+		    null);
+	    if (option == JOptionPane.OK_OPTION) {
+		ManzanaActionsEvaluator manzanaActionsEvaluator = new ManzanaActionsEvaluator(
+			(FLyrVect) layer, rowIndex);
+		ArrayList<String> errorMessages = manzanaActionsEvaluator
+			.execute();
+		if (errorMessages.size() == 0) {
+		    // Saving changes in layer
+		    if (tocLayerManager.isManzanaLayerInEdition()) {
+			te.stopEditing(layer, false);
+		    }
+		    if (tocLayerManager.isPrediosLayerInEdition()) {
+			te
+				.stopEditing(
+					tocLayerManager
+						.getLayerByName(Preferences.PREDIOS_LAYER_NAME),
+					false);
+		    }
+		} else {
+		    // Do not save changes in layer
+		    if (tocLayerManager.isManzanaLayerInEdition()) {
+			te.stopEditing(layer, true);
+		    }
+		    if (tocLayerManager.isPrediosLayerInEdition()) {
+			te
+				.stopEditing(
+					tocLayerManager
+						.getLayerByName(Preferences.PREDIOS_LAYER_NAME),
+					true);
+		    }
+		    String message = "";
+		    for (int i = 0; i < errorMessages.size(); i++) {
+			message = message + errorMessages.get(i) + "\n";
+		    }
+		    JOptionPane.showMessageDialog(null, message,
+			    "Alta Manzana", JOptionPane.WARNING_MESSAGE);
+		}
+	    } else {
+		// Do not save changes in layer
 		if (tocLayerManager.isManzanaLayerInEdition()) {
 		    te.stopEditing(layer, true);
 		}
-		JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
-			.getErrorMessage(), "Alta Manzana",
-			JOptionPane.WARNING_MESSAGE);
-	    } else {
-		int option = JOptionPane.showConfirmDialog(null, PluginServices
-			.getText(this, "save_manzana_confirm"),
-			"Crear Manzana", JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE, null);
-		if (option == JOptionPane.OK_OPTION) {
-		    ManzanaActionsEvaluator manzanaActionsEvaluator = new ManzanaActionsEvaluator(
-			    (FLyrVect) layer, rowIndex);
-		    manzanaActionsEvaluator.execute();
-		}
-		if (tocLayerManager.isManzanaLayerInEdition()) {
-		    // TODO: save previous actions
-		    te.stopEditing(layer, false);
+		if (tocLayerManager.isPrediosLayerInEdition()) {
+		    te.stopEditing(tocLayerManager
+			    .getLayerByName(Preferences.PREDIOS_LAYER_NAME),
+			    true);
 		}
 	    }
-	} else if (action == ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION) {
-	    IGeometry insertedGeometry = ((AreaCADTool) cadTool)
-		    .getInsertedGeometry();
-	    int rowIndex = ((AreaCADTool) cadTool).getVirtualIndex();
-	    ConstruccionRulesEvaluator construccionRulesEvaluator = new ConstruccionRulesEvaluator(
-		    insertedGeometry);
-	    if (!construccionRulesEvaluator.isOK()) {
-		if (tocLayerManager.isConstruccionesLayerInEdition()) {
-		    te.stopEditing(layer, true); // don't save values
-		}
-		JOptionPane.showMessageDialog(null, construccionRulesEvaluator
-			.getErrorMessage(), "Alta Construcción",
-			JOptionPane.WARNING_MESSAGE);
-	    } else {
-		int option = JOptionPane.showConfirmDialog(null, PluginServices
-			.getText(this, "save_construccion_confirm"),
-			"Alta Construcción", JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE, null);
-		if (option == JOptionPane.OK_OPTION) {
-		    ConstruccionActionsEvaluator construccionActionsEvaluator = new ConstruccionActionsEvaluator(
-			    (FLyrVect) layer, rowIndex);
-		    construccionActionsEvaluator.execute();
+	}
+    }
+
+    private void checkRulesForNewConstruccionAction(FLayer layer,
+	    String cadToolKey) {
+	IGeometry insertedGeometry = ((AreaCADTool) cadTool)
+		.getInsertedGeometry();
+	int rowIndex = ((AreaCADTool) cadTool).getVirtualIndex();
+	ConstruccionRulesEvaluator construccionRulesEvaluator = new ConstruccionRulesEvaluator(
+		insertedGeometry);
+	if (!construccionRulesEvaluator.isOK()) {
+	    if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		te.stopEditing(layer, true); // don't save values
+	    }
+	    JOptionPane.showMessageDialog(null, construccionRulesEvaluator
+		    .getErrorMessage(), "Alta Construcción",
+		    JOptionPane.WARNING_MESSAGE);
+	} else {
+	    int option = JOptionPane.showConfirmDialog(null, PluginServices
+		    .getText(this, "save_construccion_confirm"),
+		    "Alta Construcción", JOptionPane.YES_NO_OPTION,
+		    JOptionPane.QUESTION_MESSAGE, null);
+	    if (option == JOptionPane.OK_OPTION) {
+		ConstruccionActionsEvaluator construccionActionsEvaluator = new ConstruccionActionsEvaluator(
+			(FLyrVect) layer, rowIndex);
+		ArrayList<String> errorMessages = construccionActionsEvaluator
+			.execute();
+		if (errorMessages.size() == 0) {
 		    // TODO: Launch Form
+		    // Saving changes in layer
 		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
-			te.stopEditing(layer, false); // save values
+			te.stopEditing(layer, false);
 		    }
 		} else {
+		    // Do not save changes in layer
 		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
-			te.stopEditing(layer, true); // don't save values
+			te.stopEditing(layer, true);
 		    }
+		    String message = "";
+		    for (int i = 0; i < errorMessages.size(); i++) {
+			message = message + errorMessages.get(i) + "\n";
+		    }
+		    JOptionPane.showMessageDialog(null, message,
+			    "Alta Construcción", JOptionPane.WARNING_MESSAGE);
 		}
-	    }
-	} else if (action == ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION) {
-	    IGeometry insertedGeometry = ((RedigitalizePolygonCADTool) cadTool)
-		    .getgeometryResulting();
-	    ConstruccionRulesEvaluator construccionRulesEvaluator = new ConstruccionRulesEvaluator(
-		    insertedGeometry);
-	    if (!construccionRulesEvaluator.isOK()) {
+	    } else {
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
 		    te.stopEditing(layer, true); // don't save values
 		}
-		JOptionPane.showMessageDialog(null, construccionRulesEvaluator
-			.getErrorMessage(), "Alta Construcción",
-			JOptionPane.WARNING_MESSAGE);
+	    }
+	}
+    }
+
+    private void checkRulesForModifyingConstruccionAction(FLayer layer,
+	    String cadToolKey) {
+	IGeometry insertedGeometry = ((RedigitalizePolygonCADTool) cadTool)
+		.getgeometryResulting();
+	ConstruccionRulesEvaluator construccionRulesEvaluator = new ConstruccionRulesEvaluator(
+		insertedGeometry);
+	if (!construccionRulesEvaluator.isOK()) {
+	    if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		te.stopEditing(layer, true); // don't save values
+	    }
+	    JOptionPane.showMessageDialog(null, construccionRulesEvaluator
+		    .getErrorMessage(), "Modificar Construcción",
+		    JOptionPane.WARNING_MESSAGE);
+	} else {
+	    int option = JOptionPane.showConfirmDialog(null, PluginServices
+		    .getText(this, "save_construccion_confirm"),
+		    "Modificar Construcción", JOptionPane.YES_NO_OPTION,
+		    JOptionPane.QUESTION_MESSAGE, null);
+	    if (option == JOptionPane.OK_OPTION) {
+		if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    te.stopEditing(layer, false); // save values
+		}
 	    } else {
-		int option = JOptionPane.showConfirmDialog(null, PluginServices
-			.getText(this, "save_construccion_confirm"),
-			"Alta Construcción", JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE, null);
-		if (option == JOptionPane.OK_OPTION) {
-		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
-			te.stopEditing(layer, false); // save values
-		    }
-		} else {
-		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
-			te.stopEditing(layer, true); // don't save values
-		    }
+		if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    te.stopEditing(layer, true); // don't save values
 		}
 	    }
-	} else if (action == ACTION_DESLINDE_PREDIO_WITH_MANZANA) {
-	    IGeometry newPredioGeometry = ((CutPolygonCADTool) cadTool)
-		    .getRemainingGeometry();
-	    PredioActionsDeslindeEvaluator predioActionsDeslindeEvaluator = new PredioActionsDeslindeEvaluator(
-		    newPredioGeometry);
-	    ArrayList<String> errorMessages = predioActionsDeslindeEvaluator
-		    .execute();
-	    if (errorMessages.size() == 0) {
-		te
-			.stopEditing(
-				tocLayerManager
-					.getLayerByName(Preferences.MANZANAS_LAYER_NAME),
-				false);
-		te.stopEditing(tocLayerManager
-			.getLayerByName(Preferences.PREDIOS_LAYER_NAME), false);
-	    } else {
-		te.stopEditing(tocLayerManager
-			.getLayerByName(Preferences.MANZANAS_LAYER_NAME), true);
-		te.stopEditing(tocLayerManager
-			.getLayerByName(Preferences.MANZANAS_LAYER_NAME), true);
+	}
+    }
+
+    private void deslindePredioWithManzanaAction(FLayer layer, String cadToolKey) {
+	IGeometry newPredioGeometry = ((CutPolygonCADTool) cadTool)
+		.getRemainingGeometry();
+	PredioActionsDeslindeEvaluator predioActionsDeslindeEvaluator = new PredioActionsDeslindeEvaluator(
+		newPredioGeometry);
+	ArrayList<String> errorMessages = predioActionsDeslindeEvaluator
+		.execute();
+	if (errorMessages.size() == 0) {
+	    // Saving changes in layers
+	    te.stopEditing(tocLayerManager
+		    .getLayerByName(Preferences.MANZANAS_LAYER_NAME), false);
+	    te.stopEditing(tocLayerManager
+		    .getLayerByName(Preferences.PREDIOS_LAYER_NAME), false);
+	} else {
+	    // Do not save changes in layers
+	    te.stopEditing(tocLayerManager
+		    .getLayerByName(Preferences.MANZANAS_LAYER_NAME), true);
+	    te.stopEditing(tocLayerManager
+		    .getLayerByName(Preferences.MANZANAS_LAYER_NAME), true);
+	    String message = "";
+	    for (int i = 0; i < errorMessages.size(); i++) {
+		message = message + errorMessages.get(i) + "\n";
 	    }
+	    JOptionPane.showMessageDialog(null, message,
+		    "Deslinde con manzana", JOptionPane.WARNING_MESSAGE);
 	}
     }
 
