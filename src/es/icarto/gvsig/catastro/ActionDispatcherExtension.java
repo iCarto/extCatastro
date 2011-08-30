@@ -356,11 +356,11 @@ public class ActionDispatcherExtension extends Extension implements
 
     private int getAction(FLayer layer, String cadToolKey, CADTool cadTool) {
 	if ((cadToolKey
-		.equalsIgnoreCase(CutPolygonCADTool.CUT_END_FIRST_POLYGON))
+		.equalsIgnoreCase(CutPolygonCADTool.CUT_LISTENER_END_FIRST_POLYGON))
 		&& (cadTool instanceof CutPolygonCADTool)
 		&& (layer instanceof FLyrVect)) {
 	    return ACTION_CALCULATE_NEW_PREDIO_ID;
-	} else if ((cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_END))
+	} else if ((cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_LISTENER_END_SECOND_POLYGON))
 		&& (cadTool instanceof CutPolygonCADTool)
 		&& (layer instanceof FLyrVect)) {
 	    return ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO;
@@ -388,7 +388,7 @@ public class ActionDispatcherExtension extends Extension implements
 			Preferences.CONSTRUCCIONES_LAYER_NAME) == 0) {
 	    return ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION;
 	} else if (cadToolKey
-		.equalsIgnoreCase(CutPolygonCADTool.CUT_ACTION_COMMAND)
+		.equalsIgnoreCase(CutPolygonCADTool.CUT_LISTENER_DELETE_SECOND_POLYGON)
 		&& (cadTool instanceof CutPolygonCADTool)
 		&& (layer instanceof FLyrVect)) {
 	    return ACTION_DESLINDE_PREDIO_WITH_MANZANA;
