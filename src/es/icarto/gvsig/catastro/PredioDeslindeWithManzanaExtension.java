@@ -37,7 +37,8 @@ public class PredioDeslindeWithManzanaExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	return cutPolygonWrapper.isEnabled();
+	return false;
+	// return cutPolygonWrapper.isEnabled();
     }
 
     @Override
