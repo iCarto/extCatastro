@@ -20,6 +20,7 @@ public class Preferences {
     public static final String CONSTRUCCIONES_AREA_NAME_IN_DB = "cons_area";
     public static final String CATMETADATO_IN_DB = "catmetadato_id";
     public static final String GID_IN_DB = "gid";
+    public static final String ZONA_NAME_IN_DB = "zon_id";
 
     /*
      * Those constants should be set when the program starts and they must be

@@ -55,9 +55,9 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 	}
     }
 
-    private Value[] getNewPredioValues(IFeature feature) {
+    private Value[] getNewPredioValues(IFeature manzanaFeature) {
 	Value[] predioValues = new Value[11];
-	Value[] featureValues = feature.getAttributes().clone();
+	Value[] manzanaValues = manzanaFeature.getAttributes().clone();
 	// int destinationNumFields;
 	// int sourceNumFields;
 	// try {
@@ -68,19 +68,67 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 	// for(int i = 0; i < destinationNumFields; i++) {
 	//		
 	// }
-	for (int i = 0; i < featureValues.length; i++) {
-	    predioValues[0] = featureValues[0]; // pais_cve
-	    predioValues[1] = featureValues[1]; // edo_cve
-	    predioValues[2] = featureValues[2]; // mun_cve
-	    predioValues[3] = featureValues[3]; // reg_cve
-	    predioValues[4] = featureValues[4]; // lim_cve
-	    predioValues[5] = featureValues[6]; // man_cve
-	    predioValues[6] = ValueFactory.createValue(1); // catmetadato_id
-	    predioValues[7] = ValueFactory.createValue(1); // pre_cve
-	    predioValues[8] = featureValues[7]; // pre_area
-	    predioValues[9] = ValueFactory.createNullValue(); // zon_id
-	    predioValues[10] = ValueFactory.createValue(""); // gid
+	// TODO: get the Index From the names instead of set the numbers hard
+	// coded
+	try {
+	    int paisIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.PAIS_NAME_IN_DB);
+	    int estadoIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.ESTADO_NAME_IN_DB);
+	    int municipioIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.MUNICIPIO_NAME_IN_DB);
+	    int regionIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.REGION_NAME_IN_DB);
+	    int limiteIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.LIMITE_NAME_IN_DB);
+	    int manzanaIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.MANZANA_NAME_IN_DB);
+	    int catmetadatoIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.CATMETADATO_IN_DB);
+	    int predioIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.PREDIO_NAME_IN_DB);
+	    int predioAreaIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.PREDIO_AREA_NAME_IN_DB);
+	    int zonIndexInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.ZONA_NAME_IN_DB);
+	    int gidInPredio = destinationLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.GID_IN_DB);
+
+	    int paisIndexInManzana = sourceLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.PAIS_NAME_IN_DB);
+	    int estadoIndexInManzana = sourceLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.ESTADO_NAME_IN_DB);
+	    int municipioIndexInManzana = sourceLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.MUNICIPIO_NAME_IN_DB);
+	    int regionIndexInManzana = sourceLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.REGION_NAME_IN_DB);
+	    int limiteIndexInManzana = sourceLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.LIMITE_NAME_IN_DB);
+	    int manzanaIndexInManzana = sourceLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.MANZANA_NAME_IN_DB);
+	    int manzanaAreaIndexInManzana = sourceLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.MANZANA_AREA_NAME_IN_DB);
+
+	    for (int i = 0; i < manzanaValues.length; i++) {
+		predioValues[paisIndexInPredio] = manzanaValues[paisIndexInManzana]; // pais_cve
+		predioValues[estadoIndexInPredio] = manzanaValues[estadoIndexInManzana]; // edo_cve
+		predioValues[municipioIndexInPredio] = manzanaValues[municipioIndexInManzana]; // mun_cve
+		predioValues[regionIndexInPredio] = manzanaValues[regionIndexInManzana]; // reg_cve
+		predioValues[limiteIndexInPredio] = manzanaValues[limiteIndexInManzana]; // lim_cve
+		predioValues[manzanaIndexInPredio] = manzanaValues[manzanaIndexInManzana]; // man_cve
+		predioValues[catmetadatoIndexInPredio] = ValueFactory
+			.createValue(1); // catmetadato_id
+		predioValues[predioIndexInPredio] = ValueFactory.createValue(1); // pre_cve
+		// pre_area = man_area
+		predioValues[predioAreaIndexInPredio] = manzanaValues[manzanaAreaIndexInManzana]; 
+		predioValues[zonIndexInPredio] = ValueFactory.createNullValue(); // zon_id
+		predioValues[gidInPredio] = ValueFactory.createNullValue(); // gid
+	    }
+
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
 	}
+
 	return predioValues;
     }
 
