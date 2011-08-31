@@ -58,12 +58,20 @@ public class ConstruccionDivideUpdateGeomAndValues {
 			.getRow(index).clone();
 		// update values for new construccion
 		// update ID predio containing it: pre_cve
-		valuesEdificioWithNewID[6] = ValueFactory
+		int predioIDColumIndex = layer.getRecordset()
+			.getFieldIndexByName(Preferences.PREDIO_NAME_IN_DB);
+		valuesEdificioWithNewID[predioIDColumIndex] = ValueFactory
 			.createValue(idNewPredio);
 		// calculate the new cons_id
-		valuesEdificioWithNewID[8] = getNewIDForConstrucciones();
+		int construccionColumnIndex = layer.getRecordset()
+			.getFieldIndexByName(
+				Preferences.CONSTRUCCIONES_NAME_IN_DB);
+		valuesEdificioWithNewID[construccionColumnIndex] = getNewIDForConstrucciones();
 		// reset gid for new edificio as it will be set in the DB
-		valuesEdificioWithNewID[11] = ValueFactory.createNullValue();
+		int gidColumnIndex = layer.getRecordset().getFieldIndexByName(
+			Preferences.GID_IN_DB);
+		valuesEdificioWithNewID[gidColumnIndex] = ValueFactory
+			.createNullValue();
 		oldEdificio = new DefaultFeature(geomEdificioWithOldID,
 			valuesEdificioWithOldID, construccion.getID());
 		newEdificio = new DefaultFeature(geomEdificioWithNewID,
