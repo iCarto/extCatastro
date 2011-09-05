@@ -127,6 +127,7 @@ public class ConstruccionNewCalculateValues implements IAction {
 		}
 	    }
 	    ToggleEditing te = new ToggleEditing();
+	    // TODO: review ID
 	    te.modifyValues(layer, rowIndex, positions, construccionValues);
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();

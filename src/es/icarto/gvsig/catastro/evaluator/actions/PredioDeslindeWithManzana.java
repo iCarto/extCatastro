@@ -43,6 +43,7 @@ public class PredioDeslindeWithManzana implements IAction {
 		    .clone();
 	    redigitalizedManzana = new DefaultFeature(newManzanaGeom,
 		    valuesManzana, getManzanaID());
+	    // TODO: review this ID
 	    te.modifyFeature(index, redigitalizedManzana,
 		    "_redigitalizedPredio");
 	} catch (ReadDriverException e) {

@@ -65,10 +65,12 @@ public class ConstruccionDivideWhenDividingPredios implements IAction {
 	ArrayList<IFeature> featuresToAdd = construccionesCutter
 		.getFeaturesToAdd();
 	for (IFeature feature : featuresToModify) {
+	    // TODO: review this ID
 	    te.modifyFeature(Integer.parseInt(feature.getID()), feature,
 		    "_cutConstruccionesAffected");
 	}
 	for (IFeature feature : featuresToAdd) {
+	    // TODO: check ID
 	    te.addGeometryWithParametrizedValues(feature.getGeometry(),
 		    feature.getAttributes(), "_cutConstrucciones");
 	}

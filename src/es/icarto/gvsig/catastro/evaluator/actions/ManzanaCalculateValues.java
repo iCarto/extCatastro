@@ -71,7 +71,8 @@ public class ManzanaCalculateValues implements IAction {
 	    updateValues[0] = constantManager.getConstants().getPais();
 	    updateValues[1] = constantManager.getConstants().getEstado();
 	    updateValues[2] = constantManager.getConstants().getMunicipio();
-	    updateValues[3] = constantManager.getConstants().getLimiteMunicipal();
+	    updateValues[3] = constantManager.getConstants()
+		    .getLimiteMunicipal();
 	    updateValues[4] = constantManager.getConstants().getRegion();
 	    updateValues[5] = getNewManzanaID();
 	    updateValues[6] = Double.toString(getAreaOfNewManzana());
@@ -79,6 +80,7 @@ public class ManzanaCalculateValues implements IAction {
 	    updateValues[8] = "";
 
 	    ToggleEditing te = new ToggleEditing();
+	    // TODO: review ID
 	    te.modifyValues(layer, rowIndex, updatePositions, updateValues);
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
@@ -116,21 +118,26 @@ public class ManzanaCalculateValues implements IAction {
 	try {
 	    int columnIndex = getManzanaIndex();
 	    originalRecordset = layer.getRecordset();
-	    String sqlQuery = "select * from '" + layer.getRecordset().getName() + "'" +
-		    " where " + Preferences.PAIS_NAME_IN_DB + " = " + constantManager.getConstants().getPais() + " "+
-		    " and " + Preferences.ESTADO_NAME_IN_DB + " = " + constantManager.getConstants().getEstado() + " "+
-		    " and " + Preferences.MUNICIPIO_NAME_IN_DB + " = " + constantManager.getConstants().getMunicipio() + " "+
-		    " and " + Preferences.LIMITE_NAME_IN_DB + " = " + constantManager.getConstants().getLimiteMunicipal() + " "+
-		    " and " + Preferences.REGION_NAME_IN_DB + " = " + constantManager.getConstants().getRegion() + " " +
-		    ";";
+	    String sqlQuery = "select * from '"
+		    + layer.getRecordset().getName() + "'" + " where "
+		    + Preferences.PAIS_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getPais() + " " + " and "
+		    + Preferences.ESTADO_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getEstado() + " "
+		    + " and " + Preferences.MUNICIPIO_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getMunicipio() + " "
+		    + " and " + Preferences.LIMITE_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getLimiteMunicipal() + " "
+		    + " and " + Preferences.REGION_NAME_IN_DB + " = "
+		    + constantManager.getConstants().getRegion() + " " + ";";
 	    DataSourceFactory dsf = originalRecordset.getDataSourceFactory();
 	    DataSource ds = dsf.executeSQL(sqlQuery, EditionEvent.ALPHANUMERIC);
 	    ds.setDataSourceFactory(dsf);
 	    SelectableDataSource filteredRecordset = new SelectableDataSource(
 		    ds);
 	    for (int rowIndex = 0; rowIndex < filteredRecordset.getRowCount(); rowIndex++) {
-		manzanasID.add(Integer.parseInt(filteredRecordset.getFieldValue(rowIndex,
-			columnIndex).toString()));
+		manzanasID.add(Integer.parseInt(filteredRecordset
+			.getFieldValue(rowIndex, columnIndex).toString()));
 	    }
 	    return manzanasID.toArray(new Integer[] { 0 });
 	} catch (ReadDriverException e) {
@@ -180,14 +187,12 @@ public class ManzanaCalculateValues implements IAction {
 		.getFieldIndexByName(Preferences.MANZANA_AREA_NAME_IN_DB);
     }
 
-    private int getCatMetadatoIDIndex() throws ReadDriverException{
-	return recordset
-		.getFieldIndexByName(Preferences.CATMETADATO_IN_DB);
+    private int getCatMetadatoIDIndex() throws ReadDriverException {
+	return recordset.getFieldIndexByName(Preferences.CATMETADATO_IN_DB);
     }
 
-    private int getGIDIndex() throws ReadDriverException{
-	return recordset
-		.getFieldIndexByName(Preferences.GID_IN_DB);
+    private int getGIDIndex() throws ReadDriverException {
+	return recordset.getFieldIndexByName(Preferences.GID_IN_DB);
     }
 
     @Override

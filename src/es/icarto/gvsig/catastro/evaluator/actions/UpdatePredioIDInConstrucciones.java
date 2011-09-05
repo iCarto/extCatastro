@@ -42,6 +42,7 @@ public class UpdatePredioIDInConstrucciones implements IAction {
 		    construccion.setAttributes(atts);
 		    construccion.setID(Integer.toString(Integer
 			    .parseInt(construccion.getID()) + 1));
+		    // TODO: review this ID
 		    te.modifyFeature(Integer.parseInt(construccion.getID()),
 			    construccion, "_none");
 		}

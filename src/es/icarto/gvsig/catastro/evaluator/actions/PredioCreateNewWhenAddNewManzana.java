@@ -38,6 +38,7 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 	    FBitSet indexes = sourceLayer.getRecordset().getSelection();
 	    IFeature feature = sourceLayer.getSource().getFeature(
 		    indexes.nextSetBit(0));
+	    // TODO: check ID
 	    te.addGeometryWithParametrizedValues(feature.getGeometry()
 		    .cloneGeometry(), getNewPredioValues(feature),
 		    "_create_new_predio");
@@ -66,7 +67,7 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 	// destinationLayer.getRecordset().getFieldCount();
 	// Value[] prediovalues = new Value[destinationNumFields];
 	// for(int i = 0; i < destinationNumFields; i++) {
-	//		
+	//
 	// }
 	// TODO: get the Index From the names instead of set the numbers hard
 	// coded
@@ -120,7 +121,7 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 			.createValue(1); // catmetadato_id
 		predioValues[predioIndexInPredio] = ValueFactory.createValue(1); // pre_cve
 		// pre_area = man_area
-		predioValues[predioAreaIndexInPredio] = manzanaValues[manzanaAreaIndexInManzana]; 
+		predioValues[predioAreaIndexInPredio] = manzanaValues[manzanaAreaIndexInManzana];
 		predioValues[zonIndexInPredio] = ValueFactory.createNullValue(); // zon_id
 		predioValues[gidInPredio] = ValueFactory.createNullValue(); // gid
 	    }
