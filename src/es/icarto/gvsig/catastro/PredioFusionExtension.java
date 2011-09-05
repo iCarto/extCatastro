@@ -24,13 +24,14 @@ public class PredioFusionExtension extends Extension {
 
     @Override
     public void execute(String actionCommand) {
-	if(constantManager.areConstantsSetForPredio()){
+	if (constantManager.areConstantsSetForPredio()) {
 	    tocLayerManager = new TOCLayerManager();
 	    tocLayerManager.setActiveAndVisibleLayersForPredios();
 	    selectionGeometryWrapper.execute(actionCommand);
 	} else {
 	    Object[] options = { "OK" };
-	    JOptionPane.showOptionDialog(null, PluginServices.getText(this, "select_manzana"), "Warning",
+	    JOptionPane.showOptionDialog(null,
+		    PluginServices.getText(this, "select_predio"), "Warning",
 		    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
 		    null, options, options[0]);
 	}
@@ -38,8 +39,7 @@ public class PredioFusionExtension extends Extension {
 
     @Override
     public boolean isEnabled() {
-	return false;
-	//	return selectionGeometryWrapper.isEnabled();
+	return selectionGeometryWrapper.isEnabled();
     }
 
     @Override

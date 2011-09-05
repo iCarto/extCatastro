@@ -8,6 +8,7 @@ import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
 import com.iver.cit.gvsig.CADExtension;
+import com.iver.cit.gvsig.fmap.core.IFeature;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.edition.IRowEdited;
 import com.iver.cit.gvsig.fmap.layers.FLayer;
@@ -26,6 +27,7 @@ import es.icarto.gvsig.catastro.evaluator.ManzanaActionsEvaluator;
 import es.icarto.gvsig.catastro.evaluator.ManzanaRulesEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioActionsDeslindeEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioActionsDivideEvaluator;
+import es.icarto.gvsig.catastro.evaluator.PredioActionsFusionEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesDivideEvaluator;
 import es.icarto.gvsig.catastro.evaluator.PredioRulesFusionEvaluator;
 import es.icarto.gvsig.catastro.evaluator.actions.PredioCalculateNewID;
@@ -38,11 +40,11 @@ public class ActionDispatcherExtension extends Extension implements
 
     private static final int NO_ACTION = -1;
     private final int ACTION_CALCULATE_NEW_PREDIO_ID = 0;
-    private final int ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO = 1;
-    private final int ACTION_CHECK_RULES_FOR_MERGING_PREDIO = 2;
-    private static final int ACTION_CHECK_RULES_FOR_NEW_MANZANA = 3;
-    private static final int ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION = 4;
-    private static final int ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION = 5;
+    private final int ACTION_DIVIDE_PREDIO = 1;
+    private final int ACTION_MERGING_PREDIO = 2;
+    private static final int ACTION_NEW_MANZANA = 3;
+    private static final int ACTION_NEW_CONSTRUCCION = 4;
+    private static final int ACTION_MODIFYING_CONSTRUCCION = 5;
     private static final int ACTION_DESLINDE_PREDIO_WITH_MANZANA = 6;
     private int idNewPredio = -1;
 
@@ -81,15 +83,15 @@ public class ActionDispatcherExtension extends Extension implements
 
 	if (action == ACTION_CALCULATE_NEW_PREDIO_ID) {
 	    calculateNewPredioIdAction(layer, cadToolKey);
-	} else if (action == ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO) {
+	} else if (action == ACTION_DIVIDE_PREDIO) {
 	    checkRulesForDividingPredioAction(layer, cadToolKey);
-	} else if (action == ACTION_CHECK_RULES_FOR_MERGING_PREDIO) {
+	} else if (action == ACTION_MERGING_PREDIO) {
 	    checkRulesForMergingPredioAction(layer, cadToolKey);
-	} else if (action == ACTION_CHECK_RULES_FOR_NEW_MANZANA) {
+	} else if (action == ACTION_NEW_MANZANA) {
 	    checkRulesForNewManzanaAction(layer, cadToolKey);
-	} else if (action == ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION) {
+	} else if (action == ACTION_NEW_CONSTRUCCION) {
 	    checkRulesForNewConstruccionAction(layer, cadToolKey);
-	} else if (action == ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION) {
+	} else if (action == ACTION_MODIFYING_CONSTRUCCION) {
 	    checkRulesForModifyingConstruccionAction(layer, cadToolKey);
 	} else if (action == ACTION_DESLINDE_PREDIO_WITH_MANZANA) {
 	    deslindePredioWithManzanaAction(layer, cadToolKey);
@@ -118,14 +120,14 @@ public class ActionDispatcherExtension extends Extension implements
 	    if (tocLayerManager.isPrediosLayerInEdition()) {
 		te.stopEditing(layer, true); // don't save changes
 	    }
-	    JOptionPane.showMessageDialog(null, predioRulesEvaluator
-		    .getErrorMessage(), "Divide predio",
+	    JOptionPane.showMessageDialog(null,
+		    predioRulesEvaluator.getErrorMessage(), "Divide predio",
 		    JOptionPane.WARNING_MESSAGE);
 	} else {
-	    int option = JOptionPane.showConfirmDialog(null, PluginServices
-		    .getText(this, "save_predio_confirm"), "Divide predio",
-		    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-		    null);
+	    int option = JOptionPane.showConfirmDialog(null,
+		    PluginServices.getText(this, "save_predio_confirm"),
+		    "Divide predio", JOptionPane.YES_NO_OPTION,
+		    JOptionPane.QUESTION_MESSAGE, null);
 	    if (option == JOptionPane.OK_OPTION) {
 		PredioActionsDivideEvaluator predioActionsEvaluator = new PredioActionsDivideEvaluator(
 			geoms, idNewPredio);
@@ -163,18 +165,59 @@ public class ActionDispatcherExtension extends Extension implements
     private void checkRulesForMergingPredioAction(FLayer layer,
 	    String cadToolKey) {
 	ArrayList<IGeometry> geoms = new ArrayList<IGeometry>();
-	IGeometry finalGeometry = ((JoinCADTool) cadTool).getJoinedGeometry();
-	geoms.add(finalGeometry);
+	IFeature predioFusioned = ((JoinCADTool) cadTool).getJoinedFeature();
+	geoms.add(predioFusioned.getGeometry());
 	PredioRulesFusionEvaluator fusionPrediosRulesEvaluator = new PredioRulesFusionEvaluator(
 		geoms);
-	if (fusionPrediosRulesEvaluator.isOK()) {
-	    // TODO: save previous actions
-	    // te.stopEditing(layer, false);
+	if (!fusionPrediosRulesEvaluator.isOK()) {
+	    if (tocLayerManager.isPrediosLayerInEdition()) {
+		te.stopEditing(layer, true);
+	    }
+	    JOptionPane.showMessageDialog(null,
+		    fusionPrediosRulesEvaluator.getErrorMessage(),
+		    "Fusión Predios", JOptionPane.WARNING_MESSAGE);
 	} else {
-	    // te.stopEditing(layer, true);
-	    JOptionPane.showMessageDialog(null, fusionPrediosRulesEvaluator
-		    .getErrorMessage(), "Fusión Predios",
-		    JOptionPane.WARNING_MESSAGE);
+	    int option = JOptionPane.showConfirmDialog(null,
+		    PluginServices.getText(this, "save_predio_confirm"),
+		    "Crear Predio", JOptionPane.YES_NO_OPTION,
+		    JOptionPane.QUESTION_MESSAGE, null);
+	    if (option == JOptionPane.OK_OPTION) {
+		FLayer construccionesLayer = tocLayerManager
+			.getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
+		PredioActionsFusionEvaluator predioEvaluator = new PredioActionsFusionEvaluator(
+			construccionesLayer, predioFusioned);
+		ArrayList<String> errorMessages = predioEvaluator.execute();
+		if (errorMessages.size() == 0) {
+		    // it's required to save first construcciones layer,
+		    // as there is a BD dependence which check if the composited
+		    // PK in gconstruccion table
+		    // don't allow to save gpredio table
+		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
+			FLayer construcciones = tocLayerManager
+				.getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
+			te.stopEditing(construcciones, false);
+		    }
+		    if (tocLayerManager.isPrediosLayerInEdition()) {
+			te.stopEditing(layer, false);
+		    }
+		} else {
+		    // do not save changes in any layer
+		    if (tocLayerManager.isPrediosLayerInEdition()) {
+			te.stopEditing(layer, true);
+		    }
+		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
+			te.stopEditing(layer, true);
+		    }
+		}
+	    } else {
+		// do not save changes in any layer
+		if (tocLayerManager.isPrediosLayerInEdition()) {
+		    te.stopEditing(layer, true);
+		}
+		if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    te.stopEditing(layer, true);
+		}
+	    }
 	}
     }
 
@@ -188,14 +231,14 @@ public class ActionDispatcherExtension extends Extension implements
 	    if (tocLayerManager.isManzanaLayerInEdition()) {
 		te.stopEditing(layer, true);
 	    }
-	    JOptionPane.showMessageDialog(null, manzanaRulesEvaluator
-		    .getErrorMessage(), "Alta Manzana",
+	    JOptionPane.showMessageDialog(null,
+		    manzanaRulesEvaluator.getErrorMessage(), "Alta Manzana",
 		    JOptionPane.WARNING_MESSAGE);
 	} else {
-	    int option = JOptionPane.showConfirmDialog(null, PluginServices
-		    .getText(this, "save_manzana_confirm"), "Crear Manzana",
-		    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-		    null);
+	    int option = JOptionPane.showConfirmDialog(null,
+		    PluginServices.getText(this, "save_manzana_confirm"),
+		    "Crear Manzana", JOptionPane.YES_NO_OPTION,
+		    JOptionPane.QUESTION_MESSAGE, null);
 	    if (option == JOptionPane.OK_OPTION) {
 		ManzanaActionsEvaluator manzanaActionsEvaluator = new ManzanaActionsEvaluator(
 			(FLyrVect) layer, rowIndex);
@@ -207,11 +250,10 @@ public class ActionDispatcherExtension extends Extension implements
 			te.stopEditing(layer, false);
 		    }
 		    if (tocLayerManager.isPrediosLayerInEdition()) {
-			te
-				.stopEditing(
-					tocLayerManager
-						.getLayerByName(Preferences.PREDIOS_LAYER_NAME),
-					false);
+			te.stopEditing(
+				tocLayerManager
+					.getLayerByName(Preferences.PREDIOS_LAYER_NAME),
+				false);
 		    }
 		} else {
 		    // Do not save changes in layer
@@ -219,11 +261,10 @@ public class ActionDispatcherExtension extends Extension implements
 			te.stopEditing(layer, true);
 		    }
 		    if (tocLayerManager.isPrediosLayerInEdition()) {
-			te
-				.stopEditing(
-					tocLayerManager
-						.getLayerByName(Preferences.PREDIOS_LAYER_NAME),
-					true);
+			te.stopEditing(
+				tocLayerManager
+					.getLayerByName(Preferences.PREDIOS_LAYER_NAME),
+				true);
 		    }
 		    String message = "";
 		    for (int i = 0; i < errorMessages.size(); i++) {
@@ -257,13 +298,13 @@ public class ActionDispatcherExtension extends Extension implements
 	    if (tocLayerManager.isConstruccionesLayerInEdition()) {
 		te.stopEditing(layer, true); // don't save values
 	    }
-	    JOptionPane.showMessageDialog(null, construccionRulesEvaluator
-		    .getErrorMessage(), "Alta Construcción",
-		    JOptionPane.WARNING_MESSAGE);
+	    JOptionPane.showMessageDialog(null,
+		    construccionRulesEvaluator.getErrorMessage(),
+		    "Alta Construcciï¿½n", JOptionPane.WARNING_MESSAGE);
 	} else {
-	    int option = JOptionPane.showConfirmDialog(null, PluginServices
-		    .getText(this, "save_construccion_confirm"),
-		    "Alta Construcción", JOptionPane.YES_NO_OPTION,
+	    int option = JOptionPane.showConfirmDialog(null,
+		    PluginServices.getText(this, "save_construccion_confirm"),
+		    "Alta Construcciï¿½n", JOptionPane.YES_NO_OPTION,
 		    JOptionPane.QUESTION_MESSAGE, null);
 	    if (option == JOptionPane.OK_OPTION) {
 		ConstruccionActionsEvaluator construccionActionsEvaluator = new ConstruccionActionsEvaluator(
@@ -286,7 +327,7 @@ public class ActionDispatcherExtension extends Extension implements
 			message = message + errorMessages.get(i) + "\n";
 		    }
 		    JOptionPane.showMessageDialog(null, message,
-			    "Alta Construcción", JOptionPane.WARNING_MESSAGE);
+			    "Alta Construcciï¿½n", JOptionPane.WARNING_MESSAGE);
 		}
 	    } else {
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
@@ -306,13 +347,13 @@ public class ActionDispatcherExtension extends Extension implements
 	    if (tocLayerManager.isConstruccionesLayerInEdition()) {
 		te.stopEditing(layer, true); // don't save values
 	    }
-	    JOptionPane.showMessageDialog(null, construccionRulesEvaluator
-		    .getErrorMessage(), "Modificar Construcción",
-		    JOptionPane.WARNING_MESSAGE);
+	    JOptionPane.showMessageDialog(null,
+		    construccionRulesEvaluator.getErrorMessage(),
+		    "Modificar Construcciï¿½n", JOptionPane.WARNING_MESSAGE);
 	} else {
-	    int option = JOptionPane.showConfirmDialog(null, PluginServices
-		    .getText(this, "save_construccion_confirm"),
-		    "Modificar Construcción", JOptionPane.YES_NO_OPTION,
+	    int option = JOptionPane.showConfirmDialog(null,
+		    PluginServices.getText(this, "save_construccion_confirm"),
+		    "Modificar Construcciï¿½n", JOptionPane.YES_NO_OPTION,
 		    JOptionPane.QUESTION_MESSAGE, null);
 	    if (option == JOptionPane.OK_OPTION) {
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
@@ -360,33 +401,34 @@ public class ActionDispatcherExtension extends Extension implements
 		&& (cadTool instanceof CutPolygonCADTool)
 		&& (layer instanceof FLyrVect)) {
 	    return ACTION_CALCULATE_NEW_PREDIO_ID;
-	} else if ((cadToolKey.equalsIgnoreCase(CutPolygonCADTool.CUT_LISTENER_END_SECOND_POLYGON))
+	} else if ((cadToolKey
+		.equalsIgnoreCase(CutPolygonCADTool.CUT_LISTENER_END_SECOND_POLYGON))
 		&& (cadTool instanceof CutPolygonCADTool)
 		&& (layer instanceof FLyrVect)) {
-	    return ACTION_CHECK_RULES_FOR_DIVIDING_PREDIO;
+	    return ACTION_DIVIDE_PREDIO;
 	} else if (cadToolKey.equalsIgnoreCase(JoinCADTool.JOIN_ACTION_COMMAND)
 		&& (cadTool instanceof JoinCADTool)
 		&& (layer instanceof FLyrVect)) {
-	    return ACTION_CHECK_RULES_FOR_MERGING_PREDIO;
+	    return ACTION_MERGING_PREDIO;
 	} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
 		&& (cadTool instanceof AreaCADTool)
 		&& (layer instanceof FLyrVect)
 		&& layer.getName().compareToIgnoreCase(
 			Preferences.MANZANAS_LAYER_NAME) == 0) {
-	    return ACTION_CHECK_RULES_FOR_NEW_MANZANA;
+	    return ACTION_NEW_MANZANA;
 	} else if (cadToolKey.equalsIgnoreCase(AreaCADTool.AREA_ACTION_COMMAND)
 		&& (cadTool instanceof AreaCADTool)
 		&& (layer instanceof FLyrVect)
 		&& layer.getName().compareToIgnoreCase(
 			Preferences.CONSTRUCCIONES_LAYER_NAME) == 0) {
-	    return ACTION_CHECK_RULES_FOR_NEW_CONSTRUCCION;
+	    return ACTION_NEW_CONSTRUCCION;
 	} else if (cadToolKey
 		.equalsIgnoreCase(RedigitalizePolygonCADTool.REDIGITALIZE_ACTION_COMMAND)
 		&& (cadTool instanceof RedigitalizePolygonCADTool)
 		&& (layer instanceof FLyrVect)
 		&& layer.getName().compareToIgnoreCase(
 			Preferences.CONSTRUCCIONES_LAYER_NAME) == 0) {
-	    return ACTION_CHECK_RULES_FOR_MODIFYING_CONSTRUCCION;
+	    return ACTION_MODIFYING_CONSTRUCCION;
 	} else if (cadToolKey
 		.equalsIgnoreCase(CutPolygonCADTool.CUT_LISTENER_DELETE_SECOND_POLYGON)
 		&& (cadTool instanceof CutPolygonCADTool)
