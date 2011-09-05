@@ -291,6 +291,7 @@ public class ActionDispatcherExtension extends Extension implements
 	    String cadToolKey) {
 	IGeometry insertedGeometry = ((AreaCADTool) cadTool)
 		.getInsertedGeometry();
+	// TODO: check ID
 	int rowIndex = ((AreaCADTool) cadTool).getVirtualIndex();
 	ConstruccionRulesEvaluator construccionRulesEvaluator = new ConstruccionRulesEvaluator(
 		insertedGeometry);

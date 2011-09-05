@@ -59,18 +59,7 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
     private Value[] getNewPredioValues(IFeature manzanaFeature) {
 	Value[] predioValues = new Value[11];
 	Value[] manzanaValues = manzanaFeature.getAttributes().clone();
-	// int destinationNumFields;
-	// int sourceNumFields;
-	// try {
-	// sourceNumFields = sourceLayer.getRecordset().getFieldCount();
-	// destinationNumFields =
-	// destinationLayer.getRecordset().getFieldCount();
-	// Value[] prediovalues = new Value[destinationNumFields];
-	// for(int i = 0; i < destinationNumFields; i++) {
-	//
-	// }
-	// TODO: get the Index From the names instead of set the numbers hard
-	// coded
+
 	try {
 	    int paisIndexInPredio = destinationLayer.getRecordset()
 		    .getFieldIndexByName(Preferences.PAIS_NAME_IN_DB);

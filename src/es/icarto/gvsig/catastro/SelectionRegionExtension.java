@@ -17,7 +17,7 @@ public class SelectionRegionExtension extends Extension {
 
     @Override
     public void initialize() {
-	// TODO Auto-generated method stub
+	// do nothing
     }
 
     @Override
@@ -43,8 +43,8 @@ public class SelectionRegionExtension extends Extension {
     public boolean isVisible() {
 	ConstantManager constantManager = new ConstantManager();
 	if (constantManager.getConstants() == null) {
-	    PluginServices.getMainFrame().getStatusBar().setMessage(
-		    "constants", "R:- M:- P:-");
+	    PluginServices.getMainFrame().getStatusBar()
+		    .setMessage("constants", "R:- M:- P:-");
 	}
 	return true;
     }
