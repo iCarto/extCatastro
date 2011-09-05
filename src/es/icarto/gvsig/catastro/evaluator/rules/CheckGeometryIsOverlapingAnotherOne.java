@@ -45,7 +45,6 @@ public class CheckGeometryIsOverlapingAnotherOne implements IRule {
 		}
 	    }
 	} catch (ReadDriverException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 	return checkRule;
