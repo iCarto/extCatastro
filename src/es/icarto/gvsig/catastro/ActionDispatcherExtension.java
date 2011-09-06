@@ -145,16 +145,16 @@ public class ActionDispatcherExtension extends Extension implements
 		ArrayList<String> errorMessages = predioActionsEvaluator
 			.execute();
 		if (errorMessages.size() == 0) {
-		    // Saving changes in layer
-		    if (tocLayerManager.isPrediosLayerInEdition()) {
-			te.stopEditing(layer, false);
-		    }
-		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
-			FLayer construcciones = tocLayerManager
-				.getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
-			construcciones.setActive(true);
-			te.stopEditing(construcciones, false);
-		    }
+		    // // Saving changes in layer
+		    // if (tocLayerManager.isPrediosLayerInEdition()) {
+		    // te.stopEditing(layer, false);
+		    // }
+		    // if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    // FLayer construcciones = tocLayerManager
+		    // .getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
+		    // construcciones.setActive(true);
+		    // te.stopEditing(construcciones, false);
+		    // }
 		} else {
 		    // Do not save changes in layer
 		    if (tocLayerManager.isPrediosLayerInEdition()) {
@@ -209,14 +209,14 @@ public class ActionDispatcherExtension extends Extension implements
 		    // as there is a BD dependence which check if the composited
 		    // PK in gconstruccion table
 		    // don't allow to save gpredio table
-		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
-			FLayer construcciones = tocLayerManager
-				.getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
-			te.stopEditing(construcciones, false);
-		    }
-		    if (tocLayerManager.isPrediosLayerInEdition()) {
-			te.stopEditing(layer, false);
-		    }
+		    // if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    // FLayer construcciones = tocLayerManager
+		    // .getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
+		    // te.stopEditing(construcciones, false);
+		    // }
+		    // if (tocLayerManager.isPrediosLayerInEdition()) {
+		    // te.stopEditing(layer, false);
+		    // }
 		} else {
 		    // do not save changes in any layer
 		    if (tocLayerManager.isPrediosLayerInEdition()) {
@@ -262,16 +262,16 @@ public class ActionDispatcherExtension extends Extension implements
 		ArrayList<String> errorMessages = manzanaActionsEvaluator
 			.execute();
 		if (errorMessages.size() == 0) {
-		    // Saving changes in layer
-		    if (tocLayerManager.isManzanaLayerInEdition()) {
-			te.stopEditing(layer, false);
-		    }
-		    if (tocLayerManager.isPrediosLayerInEdition()) {
-			te.stopEditing(
-				tocLayerManager
-					.getLayerByName(Preferences.PREDIOS_LAYER_NAME),
-				false);
-		    }
+		    // // Saving changes in layer
+		    // if (tocLayerManager.isManzanaLayerInEdition()) {
+		    // te.stopEditing(layer, false);
+		    // }
+		    // if (tocLayerManager.isPrediosLayerInEdition()) {
+		    // te.stopEditing(
+		    // tocLayerManager
+		    // .getLayerByName(Preferences.PREDIOS_LAYER_NAME),
+		    // false);
+		    // }
 		} else {
 		    // Do not save changes in layer
 		    if (tocLayerManager.isManzanaLayerInEdition()) {
@@ -331,9 +331,9 @@ public class ActionDispatcherExtension extends Extension implements
 		if (errorMessages.size() == 0) {
 		    // TODO: Launch Form
 		    // Saving changes in layer
-		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
-			te.stopEditing(layer, false);
-		    }
+		    // if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		    // te.stopEditing(layer, false);
+		    // }
 		} else {
 		    // Do not save changes in layer
 		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
@@ -373,9 +373,9 @@ public class ActionDispatcherExtension extends Extension implements
 		    "Modificar Construcci�n", JOptionPane.YES_NO_OPTION,
 		    JOptionPane.QUESTION_MESSAGE, null);
 	    if (option == JOptionPane.OK_OPTION) {
-		if (tocLayerManager.isConstruccionesLayerInEdition()) {
-		    te.stopEditing(layer, false); // save values
-		}
+		// if (tocLayerManager.isConstruccionesLayerInEdition()) {
+		// te.stopEditing(layer, false); // save values
+		// }
 	    } else {
 		if (tocLayerManager.isConstruccionesLayerInEdition()) {
 		    te.stopEditing(layer, true); // don't save values
@@ -393,10 +393,10 @@ public class ActionDispatcherExtension extends Extension implements
 		.execute();
 	if (errorMessages.size() == 0) {
 	    // Saving changes in layers
-	    te.stopEditing(tocLayerManager
-		    .getLayerByName(Preferences.MANZANAS_LAYER_NAME), false);
-	    te.stopEditing(tocLayerManager
-		    .getLayerByName(Preferences.PREDIOS_LAYER_NAME), false);
+	    // te.stopEditing(tocLayerManager
+	    // .getLayerByName(Preferences.MANZANAS_LAYER_NAME), false);
+	    // te.stopEditing(tocLayerManager
+	    // .getLayerByName(Preferences.PREDIOS_LAYER_NAME), false);
 	} else {
 	    // Do not save changes in layers
 	    te.stopEditing(tocLayerManager
