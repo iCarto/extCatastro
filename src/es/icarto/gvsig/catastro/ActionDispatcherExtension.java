@@ -301,11 +301,11 @@ public class ActionDispatcherExtension extends Extension implements
 	    }
 	    JOptionPane.showMessageDialog(null,
 		    construccionRulesEvaluator.getErrorMessage(),
-		    "Alta Construcciï¿½n", JOptionPane.WARNING_MESSAGE);
+		    "Alta Construcción", JOptionPane.WARNING_MESSAGE);
 	} else {
 	    int option = JOptionPane.showConfirmDialog(null,
 		    PluginServices.getText(this, "save_construccion_confirm"),
-		    "Alta Construcciï¿½n", JOptionPane.YES_NO_OPTION,
+		    "Alta Construcción", JOptionPane.YES_NO_OPTION,
 		    JOptionPane.QUESTION_MESSAGE, null);
 	    if (option == JOptionPane.OK_OPTION) {
 		ConstruccionActionsEvaluator construccionActionsEvaluator = new ConstruccionActionsEvaluator(
