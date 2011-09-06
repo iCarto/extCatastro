@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.hardcode.gdbms.engine.values.Value;
 import com.iver.andami.PluginServices;
 import com.iver.andami.plugins.Extension;
@@ -105,9 +106,19 @@ public class ActionDispatcherExtension extends Extension implements
 	Value[] values = null;
 	if (calculator.execute()) {
 	    values = calculator.getAttributes();
-	    idNewPredio = Integer.parseInt(values[7].toString());
+	    int indexPredioID;
+	    try {
+		indexPredioID = ((FLyrVect) layer).getRecordset()
+			.getFieldIndexByName(Preferences.PREDIO_NAME_IN_DB);
+		idNewPredio = Integer
+			.parseInt(values[indexPredioID].toString());
+	    } catch (ReadDriverException e) {
+		idNewPredio = -1;
+		e.printStackTrace();
+	    } finally {
+		((CutPolygonCADTool) cadTool).setParametrizableValues(values);
+	    }
 	}
-	((CutPolygonCADTool) cadTool).setParametrizableValues(values);
     }
 
     private void checkRulesForDividingPredioAction(FLayer layer,
