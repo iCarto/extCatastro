@@ -149,6 +149,12 @@ public class ActionDispatcherExtension extends Extension implements
 		    if (tocLayerManager.isPrediosLayerInEdition()) {
 			te.stopEditing(layer, false);
 		    }
+		    if (tocLayerManager.isConstruccionesLayerInEdition()) {
+			FLayer construcciones = tocLayerManager
+				.getLayerByName(Preferences.CONSTRUCCIONES_LAYER_NAME);
+			construcciones.setActive(true);
+			te.stopEditing(construcciones, false);
+		    }
 		} else {
 		    // Do not save changes in layer
 		    if (tocLayerManager.isPrediosLayerInEdition()) {

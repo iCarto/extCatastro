@@ -46,7 +46,6 @@ public class ConstruccionDivideWhenDividingPredios implements IAction {
 		return false;
 	    }
 	}
-	te.stopEditing(construccionesLayer, false);
 	return true;
     }
 
