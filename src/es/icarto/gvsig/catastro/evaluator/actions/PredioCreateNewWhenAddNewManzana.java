@@ -38,7 +38,6 @@ public class PredioCreateNewWhenAddNewManzana implements IAction {
 	    FBitSet indexes = sourceLayer.getRecordset().getSelection();
 	    IFeature feature = sourceLayer.getSource().getFeature(
 		    indexes.nextSetBit(0));
-	    // TODO: check ID
 	    te.addGeometryWithParametrizedValues(feature.getGeometry()
 		    .cloneGeometry(), getNewPredioValues(feature),
 		    "_create_new_predio");

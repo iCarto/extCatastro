@@ -80,7 +80,6 @@ public class ManzanaCalculateValues implements IAction {
 	    updateValues[8] = "";
 
 	    ToggleEditing te = new ToggleEditing();
-	    // TODO: review ID
 	    te.modifyValues(layer, rowIndex, updatePositions, updateValues);
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
