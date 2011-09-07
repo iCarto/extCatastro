@@ -9,6 +9,7 @@ import com.iver.cit.gvsig.fmap.core.IFeature;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.core.v02.FConverter;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.iver.cit.gvsig.layers.VectorialLayerEdited;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -51,7 +52,7 @@ public class ConstruccionDivideUpdateGeomAndValues {
 			.jts_to_igeometry(edificioWithOldID);
 		IGeometry geomEdificioWithNewID = FConverter
 			.jts_to_igeometry(edificioWithNewID);
-		int index = Integer.parseInt(construccion.getID()) - 1;
+		int index = getIndexOfFeatureSelected(construccion);
 		Value[] valuesEdificioWithOldID = layer.getRecordset()
 			.getRow(index).clone();
 		Value[] valuesEdificioWithNewID = layer.getRecordset()
@@ -83,6 +84,29 @@ public class ConstruccionDivideUpdateGeomAndValues {
 	    }
 	}
 	return false;
+    }
+
+    private int getIndexOfFeatureSelected(IFeature construccion) {
+	try {
+	    SelectableDataSource sds = layer.getRecordset();
+	    int col = sds.getFieldIndexByName(Preferences.GID_IN_DB);
+	    // for some reason, construccion feature only have 1 value: the gid
+	    int colInFeature = 0;
+	    for (int row = 0; row < sds.getRowCount(); row++) {
+		if (sds.getFieldValue(row, col)
+			.toString()
+			.equalsIgnoreCase(
+				construccion.getAttribute(colInFeature)
+					.toString())) {
+		    return row;
+		}
+	    }
+	    return -1;
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return -1;
+	}
+	// return Integer.parseInt(construccion.getID()) - 1;
     }
 
     private String getNewIndex() {

@@ -2,10 +2,12 @@ package es.icarto.gvsig.catastro.evaluator.actions;
 
 import java.util.ArrayList;
 
+import com.hardcode.gdbms.driver.exceptions.ReadDriverException;
 import com.iver.andami.PluginServices;
 import com.iver.cit.gvsig.fmap.core.IFeature;
 import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 
 import es.icarto.gvsig.catastro.utils.FeaturesRetrieverFromIntersection;
 import es.icarto.gvsig.catastro.utils.Preferences;
@@ -64,16 +66,41 @@ public class ConstruccionDivideWhenDividingPredios implements IAction {
 	ArrayList<IFeature> featuresToAdd = construccionesCutter
 		.getFeaturesToAdd();
 	for (IFeature feature : featuresToModify) {
-	    // TODO: review this ID
-	    te.modifyFeature(Integer.parseInt(feature.getID()), feature,
-		    "_cutConstruccionesAffected");
+	    int row = getIndexOfFeatureSelected(feature);
+	    SelectableDataSource sds;
+	    try {
+		sds = construccionesLayer.getRecordset();
+		int col = sds.getFieldIndexByName(Preferences.GID_IN_DB);
+		feature.setID(construccionesLayer.getRecordset()
+			.getFieldValue(row, col).toString());
+		te.modifyFeature(row + 1, feature, "_cutConstruccionesAffected");
+	    } catch (ReadDriverException e) {
+		e.printStackTrace();
+		return false;
+	    }
 	}
 	for (IFeature feature : featuresToAdd) {
-	    // TODO: check ID
 	    te.addGeometryWithParametrizedValues(feature.getGeometry(),
 		    feature.getAttributes(), "_cutConstrucciones");
 	}
 	return true;
+    }
+
+    private int getIndexOfFeatureSelected(IFeature feature) {
+	try {
+	    SelectableDataSource sds = construccionesLayer.getRecordset();
+	    int col = sds.getFieldIndexByName(Preferences.GID_IN_DB);
+	    for (int row = 0; row < sds.getRowCount(); row++) {
+		if (sds.getFieldValue(row, col).toString()
+			.equalsIgnoreCase(feature.getAttribute(col).toString())) {
+		    return row;
+		}
+	    }
+	    return -1;
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return -1;
+	}
     }
 
     private ArrayList<IFeature> getConstruccionesAffected() {
