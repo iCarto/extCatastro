@@ -35,22 +35,40 @@ public class UpdatePredioIDInConstrucciones implements IAction {
 	    te.startEditing(construccionesLayer);
 	    while (iterator.hasNext()) {
 		IFeature construccion = iterator.next();
+		int indexOfFeature = getIndexOfFeatureInRecordset(construccion);
+		SelectableDataSource sds = construccionesLayer.getRecordset();
+		int col = sds.getFieldIndexByName(Preferences.GID_IN_DB);
 		if (construccion.getGeometry().toJTSGeometry()
 			.coveredBy(predio.getGeometry().toJTSGeometry())) {
 		    Value[] atts = construccion.getAttributes().clone();
 		    atts[construccionIndex] = newPredioID;
 		    construccion.setAttributes(atts);
-		    construccion.setID(Integer.toString(Integer
-			    .parseInt(construccion.getID()) + 1));
-		    // TODO: review this ID
-		    te.modifyFeature(Integer.parseInt(construccion.getID()),
-			    construccion, "_none");
+		    construccion.setID(construccionesLayer.getRecordset()
+			    .getFieldValue(indexOfFeature, col).toString());
+		    te.modifyFeature(indexOfFeature + 1, construccion, "_none");
 		}
 	    }
 	    return true;
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return false;
+	}
+    }
+
+    private int getIndexOfFeatureInRecordset(IFeature feature) {
+	try {
+	    SelectableDataSource sds = construccionesLayer.getRecordset();
+	    int col = sds.getFieldIndexByName(Preferences.GID_IN_DB);
+	    for (int row = 0; row < sds.getRowCount(); row++) {
+		if (sds.getFieldValue(row, col).toString()
+			.equalsIgnoreCase(feature.getAttribute(col).toString())) {
+		    return row;
+		}
+	    }
+	    return -1;
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return -1;
 	}
     }
 
