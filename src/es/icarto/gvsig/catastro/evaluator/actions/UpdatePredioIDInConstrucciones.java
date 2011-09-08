@@ -73,8 +73,15 @@ public class UpdatePredioIDInConstrucciones implements IAction {
     }
 
     private Value getNewPredioID() {
-	Value[] values = predio.getAttributes();
-	return values[6]; // TODO: get name from layer
+	try {
+	    int indexPredioID = construccionesLayer.getRecordset()
+		    .getFieldIndexByName(Preferences.PREDIO_NAME_IN_DB);
+	    Value[] values = predio.getAttributes();
+	    return values[indexPredioID];
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return null;
+	}
     }
 
     private IFeatureIterator getFeatureIterator() {
