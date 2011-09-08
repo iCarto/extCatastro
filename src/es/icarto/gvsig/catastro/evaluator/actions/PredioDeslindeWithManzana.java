@@ -9,6 +9,7 @@ import com.iver.cit.gvsig.fmap.core.IGeometry;
 import com.iver.cit.gvsig.fmap.core.v02.FConverter;
 import com.iver.cit.gvsig.fmap.drivers.IFeatureIterator;
 import com.iver.cit.gvsig.fmap.layers.FLyrVect;
+import com.iver.cit.gvsig.fmap.layers.SelectableDataSource;
 import com.vividsolutions.jts.geom.Geometry;
 
 import es.icarto.gvsig.catastro.constants.ConstantManager;
@@ -20,9 +21,11 @@ public class PredioDeslindeWithManzana implements IAction {
 
     private final IGeometry redigitalizedPredioGeom;
     private IFeature redigitalizedManzana = null;
+    private FLyrVect manzanasLayer = null;
 
     public PredioDeslindeWithManzana(IGeometry redigitalizedPredioGeom) {
 	this.redigitalizedPredioGeom = redigitalizedPredioGeom;
+	this.manzanasLayer = getManzanasLayer();
     }
 
     @Override
@@ -34,23 +37,43 @@ public class PredioDeslindeWithManzana implements IAction {
 		.difference(redigitalizedPredioJTSGeom);
 	IGeometry newManzanaGeom = FConverter
 		.jts_to_igeometry(newManzanaJTSGeom);
-	int index = Integer.parseInt(getManzanaID());
 	Value[] valuesManzana;
 	try {
+	    int rowIndex = getIndexOfRow();
+	    SelectableDataSource sds = manzanasLayer.getRecordset();
+	    int col = sds.getFieldIndexByName(Preferences.GID_IN_DB);
 	    ToggleEditing te = new ToggleEditing();
 	    te.startEditing(getManzanasLayer());
-	    valuesManzana = getManzanasLayer().getRecordset().getRow(index)
+	    valuesManzana = getManzanasLayer().getRecordset().getRow(rowIndex)
 		    .clone();
 	    redigitalizedManzana = new DefaultFeature(newManzanaGeom,
-		    valuesManzana, getManzanaID());
-	    // TODO: review this ID
-	    te.modifyFeature(index, redigitalizedManzana,
+		    valuesManzana, valuesManzana[col].toString());
+	    te.modifyFeature(rowIndex + 1, redigitalizedManzana,
 		    "_redigitalizedPredio");
 	} catch (ReadDriverException e) {
 	    e.printStackTrace();
 	    return false;
 	}
 	return true;
+    }
+
+    private int getIndexOfRow() {
+	IFeature manzana = getGeomFromFLyrVect(manzanasLayer);
+	SelectableDataSource sds;
+	try {
+	    sds = manzanasLayer.getRecordset();
+	    int col = sds.getFieldIndexByName(Preferences.GID_IN_DB);
+	    for (int row = 0; row < sds.getRowCount(); row++) {
+		if (sds.getFieldValue(row, col).toString()
+			.equalsIgnoreCase(manzana.getAttribute(col).toString())) {
+		    return row;
+		}
+	    }
+	    return -1;
+	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return -1;
+	}
     }
 
     @Override
@@ -62,12 +85,6 @@ public class PredioDeslindeWithManzana implements IAction {
     private FLyrVect getManzanasLayer() {
 	TOCLayerManager tocLayerManager = new TOCLayerManager();
 	return tocLayerManager.getLayerByName(Preferences.MANZANAS_LAYER_NAME);
-    }
-
-    private String getManzanaID() {
-	FLyrVect manzanasLayer = getManzanasLayer();
-	IFeature manzana = getGeomFromFLyrVect(manzanasLayer);
-	return manzana.getID();
     }
 
     private Geometry getManzanaGeom() {
