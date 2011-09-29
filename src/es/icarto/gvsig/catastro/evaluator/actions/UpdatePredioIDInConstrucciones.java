@@ -45,11 +45,17 @@ public class UpdatePredioIDInConstrucciones implements IAction {
 		    construccion.setAttributes(atts);
 		    construccion.setID(construccionesLayer.getRecordset()
 			    .getFieldValue(indexOfFeature, col).toString());
-		    te.modifyFeature(indexOfFeature + 1, construccion, "_none");
+		    // te.modifyFeature(indexOfFeature + 1, construccion,
+		    // "_none");
+		    te.modifyValue(construccionesLayer, indexOfFeature,
+			    construccionIndex, newPredioID);
 		}
 	    }
 	    return true;
 	} catch (ReadDriverException e) {
+	    e.printStackTrace();
+	    return false;
+	} catch (Exception e) {
 	    e.printStackTrace();
 	    return false;
 	}

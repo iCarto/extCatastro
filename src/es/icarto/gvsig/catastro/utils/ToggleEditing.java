@@ -480,8 +480,8 @@ public class ToggleEditing {
 		attributes[colPos] = newValue;
 		IGeometry geometry = ((DefaultFeature) row.getLinkedRow())
 			.getGeometry();
-		IRow newRow = new DefaultFeature(geometry, attributes, row
-			.getID());
+		IRow newRow = new DefaultFeature(geometry, attributes,
+			row.getID());
 		edAdapter.modifyRow(rowPos, newRow, "NAVTABLE MODIFY",
 			EditionEvent.ALPHANUMERIC);
 	    } else {
@@ -640,6 +640,12 @@ public class ToggleEditing {
 
     public void modifyFeature(int index, IFeature row, String nameOfCADToolUsed) {
 	try {
+	    /*
+	     * TODO: use this method with CARE!! Test how row is calculated in
+	     * other methods and modify this method to match that. In certain
+	     * unidentified ocasions, row needs to be the row in recordset,
+	     * other times, needs to be "row+1"
+	     */
 	    vea.modifyRow(index, row, nameOfCADToolUsed, EditionEvent.GRAPHIC);
 	} catch (ValidateRowException e) {
 	    NotificationManager.addError(e.getMessage(), e);
